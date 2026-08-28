@@ -1,0 +1,645 @@
+/* =========================================================
+   ATLAS — EMPLOYEE ATTENDANCE — DARK THEME
+========================================================= */
+
+.employee-attendance-page {
+  width: 100%;
+  max-width: none;
+
+  margin: 0;
+
+  padding: 38px 42px 60px 42px;
+
+  box-sizing: border-box;
+
+  color: #e5e7eb;
+}
+/* =========================================================
+   HEADER
+========================================================= */
+
+.employee-attendance-header {
+  margin-bottom: 26px;
+}
+
+.employee-attendance-eyebrow {
+  display: inline-block;
+
+  margin-bottom: 8px;
+
+  color: #818cf8;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.employee-attendance-header h1 {
+  margin: 0;
+
+  color: #f8fafc;
+
+  font-size: clamp(28px, 3vw, 38px);
+  font-weight: 750;
+
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+}
+
+.employee-attendance-header p {
+  max-width: 650px;
+
+  margin: 9px 0 0;
+
+  color: #94a3b8;
+
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* =========================================================
+   TODAY
+========================================================= */
+
+.employee-attendance-today {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 24px;
+
+  min-height: 150px;
+
+  margin-bottom: 20px;
+  padding: 25px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(17, 24, 39, 0.98),
+      rgba(11, 17, 28, 0.98)
+    );
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+
+  border-radius: 15px;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.18);
+
+  box-sizing: border-box;
+}
+
+.employee-attendance-date-label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #64748b;
+
+  font-size: 10px;
+  font-weight: 750;
+
+  letter-spacing: 0.13em;
+}
+
+.employee-attendance-today-info h2 {
+  margin: 0;
+
+  color: #f1f5f9;
+
+  font-size: 21px;
+  font-weight: 700;
+
+  letter-spacing: -0.02em;
+}
+
+.employee-attendance-today-info p {
+  margin: 6px 0 0;
+
+  color: #94a3b8;
+
+  font-size: 12px;
+}
+
+/* =========================================================
+   ACTION
+========================================================= */
+
+.employee-attendance-action {
+  display: flex;
+  align-items: flex-end;
+
+  flex-direction: column;
+
+  gap: 11px;
+}
+
+.employee-attendance-current-status {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  color: #94a3b8;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.employee-attendance-status-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #475569;
+}
+
+.employee-attendance-status-dot.active {
+  background: #34d399;
+
+  box-shadow:
+    0 0 0 4px rgba(52, 211, 153, 0.1);
+}
+
+.employee-attendance-checkin,
+.employee-attendance-checkout {
+  min-width: 120px;
+  min-height: 42px;
+
+  padding: 0 18px;
+
+  border-radius: 9px;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 650;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    color 0.18s ease;
+}
+
+.employee-attendance-checkin {
+  border: 1px solid rgba(99, 102, 241, 0.3);
+
+  background:
+    linear-gradient(
+      135deg,
+      #4f46e5,
+      #6366f1
+    );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 7px 20px rgba(79, 70, 229, 0.22);
+}
+
+.employee-attendance-checkin:hover {
+  background:
+    linear-gradient(
+      135deg,
+      #5b54eb,
+      #7174f5
+    );
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 10px 25px rgba(79, 70, 229, 0.3);
+}
+
+.employee-attendance-checkout {
+  border: 1px solid rgba(248, 113, 113, 0.2);
+
+  color: #fca5a5;
+
+  background:
+    rgba(127, 29, 29, 0.12);
+}
+
+.employee-attendance-checkout:hover {
+  background:
+    rgba(127, 29, 29, 0.2);
+
+  border-color:
+    rgba(248, 113, 113, 0.32);
+
+  color: #fecaca;
+
+  transform: translateY(-1px);
+}
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+.employee-attendance-summary {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 14px;
+
+  margin-bottom: 24px;
+}
+
+.employee-attendance-summary-card {
+  min-height: 92px;
+
+  padding: 17px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(17, 24, 39, 0.96),
+      rgba(12, 17, 28, 0.96)
+    );
+
+  border: 1px solid rgba(255, 255, 255, 0.065);
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.14);
+
+  box-sizing: border-box;
+}
+
+.employee-attendance-summary-card span {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #94a3b8;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.employee-attendance-summary-card strong {
+  color: #f8fafc;
+
+  font-size: 21px;
+  font-weight: 750;
+
+  letter-spacing: -0.025em;
+}
+
+/* =========================================================
+   HISTORY CARD
+========================================================= */
+
+.employee-attendance-card {
+  overflow: hidden;
+
+  margin-bottom: 24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(17, 24, 39, 0.98),
+      rgba(10, 15, 25, 0.98)
+    );
+
+  border: 1px solid rgba(255, 255, 255, 0.065);
+
+  border-radius: 15px;
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.16);
+}
+
+.employee-attendance-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 22px 24px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+}
+
+.employee-attendance-card-header h2 {
+  margin: 0;
+
+  color: #eef2f7;
+
+  font-size: 17px;
+  font-weight: 700;
+
+  letter-spacing: -0.015em;
+}
+
+.employee-attendance-card-header p {
+  margin: 4px 0 0;
+
+  color: #717b8b;
+
+  font-size: 11px;
+}
+
+.employee-attendance-filter {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 12px;
+
+  min-height: 36px;
+
+  padding: 0 12px;
+
+  color: #cbd5e1;
+
+  background: #111827;
+
+  border: 1px solid #273449;
+
+  border-radius: 8px;
+
+  font-family: inherit;
+  font-size: 11px;
+
+  cursor: pointer;
+
+  outline: none;
+
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease;
+}
+
+.employee-attendance-filter:hover {
+  background: #172033;
+
+  border-color: #3b4a61;
+}
+
+.employee-attendance-filter:focus {
+  border-color: #6366f1;
+
+  box-shadow:
+    0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.employee-attendance-filter span {
+  color: #64748b;
+
+  font-size: 14px;
+}
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.employee-attendance-table-wrapper {
+  width: 100%;
+
+  overflow-x: auto;
+}
+
+.employee-attendance-table {
+  width: 100%;
+
+  min-width: 700px;
+
+  border-collapse: collapse;
+}
+
+.employee-attendance-table thead {
+  background: #0f172a;
+}
+
+.employee-attendance-table th {
+  padding: 12px 20px;
+
+  color: #64748b;
+
+  border-bottom: 1px solid #273449;
+
+  font-size: 10px;
+  font-weight: 750;
+
+  letter-spacing: 0.06em;
+
+  text-align: left;
+  text-transform: uppercase;
+
+  white-space: nowrap;
+}
+
+.employee-attendance-table td {
+  padding: 15px 20px;
+
+  color: #94a3b8;
+
+  border-bottom: 1px solid rgba(30, 41, 59, 0.8);
+
+  font-size: 12px;
+
+  white-space: nowrap;
+}
+
+.employee-attendance-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.employee-attendance-table tbody tr {
+  transition:
+    background 0.15s ease;
+}
+
+.employee-attendance-table tbody tr:hover {
+  background: rgba(99, 102, 241, 0.035);
+}
+
+/* =========================================================
+   DATE
+========================================================= */
+
+.employee-attendance-date strong {
+  display: block;
+
+  color: #dbe3ee;
+
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.employee-attendance-date span {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #64748b;
+
+  font-size: 10px;
+}
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.employee-attendance-status {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 6px;
+
+  min-height: 27px;
+
+  padding: 0 9px;
+
+  border-radius: 7px;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+.employee-attendance-status-small-dot {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: currentColor;
+}
+
+.employee-attendance-status.present {
+  color: #6ee7b7;
+
+  background:
+    rgba(52, 211, 153, 0.08);
+
+  border: 1px solid
+    rgba(52, 211, 153, 0.12);
+}
+
+.employee-attendance-status.late {
+  color: #fdba74;
+
+  background:
+    rgba(251, 146, 60, 0.08);
+
+  border: 1px solid
+    rgba(251, 146, 60, 0.12);
+}
+
+.employee-attendance-status.on-leave {
+  color: #c4b5fd;
+
+  background:
+    rgba(139, 92, 246, 0.09);
+
+  border: 1px solid
+    rgba(139, 92, 246, 0.13);
+}
+
+.employee-attendance-status.absent {
+  color: #fca5a5;
+
+  background:
+    rgba(248, 113, 113, 0.08);
+
+  border: 1px solid
+    rgba(248, 113, 113, 0.12);
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+  .employee-attendance-summary {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 640px) {
+  .employee-attendance-page {
+    padding-bottom: 28px;
+  }
+
+  .employee-attendance-header h1 {
+    font-size: 27px;
+  }
+
+  .employee-attendance-header p {
+    font-size: 12px;
+  }
+
+  .employee-attendance-today {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    padding: 19px;
+  }
+
+  .employee-attendance-today-info h2 {
+    font-size: 17px;
+  }
+
+  .employee-attendance-action {
+    align-items: stretch;
+
+    width: 100%;
+  }
+
+  .employee-attendance-current-status {
+    justify-content: center;
+  }
+
+  .employee-attendance-checkin,
+  .employee-attendance-checkout {
+    width: 100%;
+  }
+
+  .employee-attendance-summary {
+    grid-template-columns: 1fr;
+
+    gap: 10px;
+  }
+
+  .employee-attendance-summary-card {
+    min-height: 82px;
+  }
+
+  .employee-attendance-card-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    padding: 18px;
+  }
+
+  .employee-attendance-filter {
+    width: 100%;
+
+    justify-content: space-between;
+  }
+
+  .employee-attendance-table th,
+  .employee-attendance-table td {
+    padding: 12px 14px;
+  }
+}

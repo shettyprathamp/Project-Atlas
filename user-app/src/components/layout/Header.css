@@ -1,0 +1,431 @@
+/* =========================================================
+   ATLAS HEADER
+   ========================================================= */
+
+.atlas-header {
+  position: sticky;
+  top: 0;
+  z-index: 500;
+
+  min-height: 82px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 30px;
+
+  background:
+    rgba(11, 15, 24, 0.88);
+
+  border-bottom: 1px solid
+    rgba(255, 255, 255, 0.06);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+/* =========================================================
+   LEFT
+   ========================================================= */
+
+.header-left {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 17px;
+}
+
+.header-heading {
+  min-width: 0;
+}
+
+.header-eyebrow {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #606a7d;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 0.16em;
+}
+
+.header-heading h1 {
+  margin: 0;
+
+  color: #f5f7fb;
+
+  font-size: 20px;
+  line-height: 1.25;
+
+  font-weight: 650;
+
+  letter-spacing: -0.025em;
+}
+
+.header-heading p {
+  margin: 4px 0 0;
+
+  color: #747e91;
+
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+/* =========================================================
+   MOBILE MENU
+   ========================================================= */
+
+.mobile-menu-button {
+  width: 40px;
+  height: 40px;
+
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 4px;
+
+  padding: 0;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.08);
+
+  border-radius: 10px;
+
+  background:
+    rgba(255, 255, 255, 0.035);
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.mobile-menu-button span {
+  width: 16px;
+  height: 1.5px;
+
+  display: block;
+
+  border-radius: 2px;
+
+  background: #b9c0cf;
+
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease;
+}
+
+.mobile-menu-button:hover {
+  background:
+    rgba(99, 102, 241, 0.1);
+
+  border-color:
+    rgba(99, 102, 241, 0.2);
+}
+
+.mobile-menu-button:hover span {
+  background: #a5b4fc;
+}
+
+/* =========================================================
+   RIGHT
+   ========================================================= */
+
+.header-right {
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+}
+
+/* =========================================================
+   NOTIFICATION
+   ========================================================= */
+
+.notification-button {
+  position: relative;
+
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.07);
+
+  border-radius: 10px;
+
+  background:
+    rgba(255, 255, 255, 0.035);
+
+  color: #929bad;
+
+  cursor: pointer;
+
+  transition:
+    color 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.notification-button:hover {
+  color: #dfe4ee;
+
+  background:
+    rgba(255, 255, 255, 0.06);
+
+  border-color:
+    rgba(255, 255, 255, 0.11);
+
+  transform: translateY(-1px);
+}
+
+.notification-icon {
+  font-size: 20px;
+
+  line-height: 1;
+
+  transform: rotate(-25deg);
+}
+
+.notification-dot {
+  position: absolute;
+
+  top: 8px;
+  right: 8px;
+
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: #818cf8;
+
+  box-shadow:
+    0 0 0 3px
+      rgba(129, 140, 248, 0.1);
+}
+
+/* =========================================================
+   DIVIDER
+   ========================================================= */
+
+.header-divider {
+  width: 1px;
+  height: 32px;
+
+  background:
+    rgba(255, 255, 255, 0.07);
+}
+
+/* =========================================================
+   USER
+   ========================================================= */
+
+.header-user {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 5px 7px 5px 5px;
+
+  border: 1px solid
+    transparent;
+
+  border-radius: 11px;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.header-user:hover {
+  background:
+    rgba(255, 255, 255, 0.035);
+
+  border-color:
+    rgba(255, 255, 255, 0.05);
+}
+
+.header-avatar {
+  width: 36px;
+  height: 36px;
+
+  flex: 0 0 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #252b3b,
+      #171c29
+    );
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.09);
+
+  color: #e4e8f1;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.header-user-info {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.header-user-info strong {
+  max-width: 150px;
+
+  overflow: hidden;
+
+  color: #dce1eb;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.header-user-info span {
+  color: #707a8e;
+
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.header-user-arrow {
+  margin-left: 3px;
+
+  color: #646e81;
+
+  font-size: 12px;
+
+  transition:
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.header-user:hover .header-user-arrow {
+  color: #a5aec0;
+
+  transform: translateY(1px);
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .atlas-header {
+    min-height: 74px;
+
+    padding: 0 20px;
+  }
+
+  .mobile-menu-button {
+    display: flex;
+  }
+
+  .header-heading h1 {
+    font-size: 18px;
+  }
+
+  .header-heading p {
+    font-size: 10px;
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 640px) {
+  .atlas-header {
+    padding: 0 14px;
+  }
+
+  .header-left {
+    gap: 10px;
+  }
+
+  .header-eyebrow,
+  .header-heading p {
+    display: none;
+  }
+
+  .header-heading h1 {
+    max-width: 190px;
+
+    overflow: hidden;
+
+    font-size: 16px;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+  }
+
+  .header-right {
+    gap: 8px;
+  }
+
+  .header-divider,
+  .header-user-info,
+  .header-user-arrow {
+    display: none;
+  }
+
+  .header-user {
+    padding: 0;
+  }
+
+  .header-avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .notification-button {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (max-width: 400px) {
+  .header-heading h1 {
+    max-width: 145px;
+  }
+
+  .atlas-header {
+    padding: 0 10px;
+  }
+}

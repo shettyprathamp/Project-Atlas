@@ -1,0 +1,552 @@
+/* =========================================================
+   MANAGER EMPLOYEES PAGE
+========================================================= */
+
+.manager-employees-page {
+  width: 100%;
+  min-height: 100%;
+  color: #f5f5f5;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.employees-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 28px;
+}
+
+.employees-header-label {
+  margin-bottom: 7px;
+  color: #666c75;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+}
+
+.employees-header h1 {
+  margin: 0;
+  color: #f5f5f5;
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.employees-header p {
+  margin: 8px 0 0;
+  color: #777e88;
+  font-size: 13px;
+}
+
+.employees-header-count {
+  min-width: 170px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 12px 15px;
+  border: 1px solid #20242a;
+  border-radius: 10px;
+  background: #101216;
+  color: #aeb4bd;
+}
+
+.employees-header-count svg {
+  color: #858b94;
+}
+
+.employees-header-count span {
+  display: block;
+  color: #717780;
+  font-size: 10px;
+}
+
+.employees-header-count strong {
+  display: block;
+  margin-top: 3px;
+  color: #f5f5f5;
+  font-size: 17px;
+}
+
+
+/* =========================================================
+   SUMMARY GRID
+========================================================= */
+
+.employees-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.employees-summary-card {
+  min-height: 96px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid #20242a;
+  border-radius: 11px;
+  background: #101216;
+}
+
+.employees-summary-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 9px;
+  background: #191c21;
+  color: #aeb4bd;
+}
+
+.employees-summary-card span {
+  display: block;
+  color: #777e88;
+  font-size: 10px;
+}
+
+.employees-summary-card strong {
+  display: block;
+  margin-top: 5px;
+  color: #f5f5f5;
+  font-size: 21px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   MAIN PANEL
+========================================================= */
+
+.employees-panel {
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid #20242a;
+  border-radius: 12px;
+  background: #101216;
+}
+
+
+/* =========================================================
+   PANEL HEADER
+========================================================= */
+
+.employees-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 22px 18px;
+}
+
+.employees-panel-header h2 {
+  margin: 0;
+  color: #f1f1f1;
+  font-size: 15px;
+  font-weight: 650;
+}
+
+.employees-panel-header p {
+  margin: 6px 0 0;
+  color: #707781;
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   FILTER BAR
+========================================================= */
+
+.employees-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 22px 18px;
+  border-bottom: 1px solid #20242a;
+}
+
+.employees-search {
+  height: 38px;
+  flex: 1;
+  min-width: 220px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 12px;
+  border: 1px solid #252930;
+  border-radius: 8px;
+  background: #0d0f12;
+  color: #666d77;
+}
+
+.employees-search:focus-within {
+  border-color: #353a42;
+}
+
+.employees-search svg {
+  flex-shrink: 0;
+}
+
+.employees-search input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #eeeeee;
+  font-family: inherit;
+  font-size: 11px;
+}
+
+.employees-search input::placeholder {
+  color: #60666f;
+}
+
+
+.employees-filter-button {
+  height: 38px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 11px;
+  border: 1px solid #252930;
+  border-radius: 8px;
+  background: #0d0f12;
+  color: #898f98;
+  font-family: inherit;
+  font-size: 10px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.employees-filter-button:hover {
+  border-color: #343941;
+  background: #171a1f;
+  color: #ffffff;
+}
+
+.employees-filter-button svg {
+  flex-shrink: 0;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.employees-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.employees-table {
+  width: 100%;
+  min-width: 900px;
+  border-collapse: collapse;
+}
+
+.employees-table thead {
+  background: #0d0f12;
+}
+
+.employees-table th {
+  height: 43px;
+  padding: 0 18px;
+  border-bottom: 1px solid #20242a;
+  color: #666d77;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.9px;
+  text-align: left;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.employees-table td {
+  height: 70px;
+  padding: 0 18px;
+  border-bottom: 1px solid #1b1e23;
+  color: #aeb4bd;
+  font-size: 11px;
+  vertical-align: middle;
+}
+
+.employees-table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.employees-table tbody tr:hover {
+  background: #14171b;
+}
+
+.employees-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+
+/* =========================================================
+   EMPLOYEE PERSON
+========================================================= */
+
+.employee-person {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 190px;
+}
+
+.employee-avatar {
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #1a1d22;
+  color: #aeb4bd;
+}
+
+.employee-person-info {
+  min-width: 0;
+}
+
+.employee-person-info strong {
+  display: block;
+  overflow: hidden;
+  color: #e6e7e9;
+  font-size: 11px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.employee-person-info span {
+  display: block;
+  margin-top: 3px;
+  overflow: hidden;
+  color: #666d77;
+  font-size: 9px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   EMPLOYEE ID
+========================================================= */
+
+.employee-id {
+  color: #777e88;
+  font-family: monospace;
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   ROLE
+========================================================= */
+
+.employee-role {
+  color: #aeb4bd;
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   TEAM
+========================================================= */
+
+.employee-team {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #9298a2;
+  white-space: nowrap;
+}
+
+.employee-team svg {
+  color: #686f78;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.employee-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.employee-status.active {
+  background: #151c18;
+  color: #8ca992;
+}
+
+.employee-status.inactive {
+  background: #1b1818;
+  color: #9b8585;
+}
+
+.employee-status-dot {
+  width: 5px;
+  height: 5px;
+  display: block;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.employee-actions {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.employee-actions button {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: #707781;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.employee-actions button:hover {
+  border-color: #292d34;
+  background: #191c21;
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   TABLE FOOTER
+========================================================= */
+
+.employees-table-footer {
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 0 22px;
+  border-top: 1px solid #20242a;
+}
+
+.employees-table-footer > span {
+  color: #666d77;
+  font-size: 10px;
+}
+
+.employees-pagination {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.employees-pagination button {
+  min-width: 30px;
+  height: 30px;
+  padding: 0 9px;
+  border: 1px solid #252930;
+  border-radius: 6px;
+  background: #0d0f12;
+  color: #777e88;
+  font-family: inherit;
+  font-size: 9px;
+  cursor: pointer;
+}
+
+.employees-pagination button:hover:not(:disabled) {
+  background: #191c21;
+  color: #ffffff;
+}
+
+.employees-pagination button.active {
+  background: #1a1d22;
+  color: #ffffff;
+}
+
+.employees-pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+  .employees-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .employees-filter-bar {
+    flex-wrap: wrap;
+  }
+
+  .employees-search {
+    flex-basis: 100%;
+  }
+}
+
+
+@media (max-width: 800px) {
+  .employees-header {
+    flex-direction: column;
+  }
+
+  .employees-header-count {
+    width: 100%;
+  }
+}
+
+
+@media (max-width: 620px) {
+  .employees-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .employees-panel-header {
+    padding: 18px;
+  }
+
+  .employees-filter-bar {
+    padding: 0 18px 16px;
+  }
+
+  .employees-table-footer {
+    padding: 0 18px;
+  }
+}

@@ -1,0 +1,526 @@
+/* =========================================================
+   MANAGER MY PAYROLL
+========================================================= */
+
+.manager-my-payroll-page {
+  width: 100%;
+  min-height: 100%;
+  padding: 30px;
+  box-sizing: border-box;
+  color: #f5f5f5;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.manager-my-payroll-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.manager-my-payroll-eyebrow {
+  display: block;
+  margin-bottom: 8px;
+  color: #858585;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.16em;
+}
+
+.manager-my-payroll-header h1 {
+  margin: 0;
+  color: #f2f2f2;
+  font-size: 32px;
+  line-height: 1.15;
+  font-weight: 750;
+  letter-spacing: -0.03em;
+}
+
+.manager-my-payroll-header p {
+  max-width: 680px;
+  margin: 10px 0 0;
+  color: #858585;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.manager-my-payroll-refresh {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 41px;
+  padding: 0 14px;
+  border: 1px solid #2b2b2b;
+  border-radius: 9px;
+  background: #151515;
+  color: #dddddd;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.manager-my-payroll-refresh:hover:not(:disabled) {
+  border-color: #444444;
+  background: #1c1c1c;
+}
+
+.manager-my-payroll-refresh:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.manager-my-payroll-spin {
+  animation: managerPayrollSpin 0.9s linear infinite;
+}
+
+@keyframes managerPayrollSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   ALERT
+========================================================= */
+
+.manager-my-payroll-alert {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 20px;
+  padding: 13px 15px;
+  border: 1px solid #633333;
+  border-radius: 10px;
+  background: #241414;
+  color: #eab0b0;
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+.manager-my-payroll-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 13px;
+  margin-bottom: 26px;
+}
+
+.manager-my-payroll-summary-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  min-height: 118px;
+  padding: 18px;
+  box-sizing: border-box;
+  border: 1px solid #242424;
+  border-radius: 13px;
+  background: #111111;
+}
+
+.summary-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 35px;
+  height: 35px;
+  border: 1px solid #292929;
+  border-radius: 9px;
+  background: #171717;
+  color: #a5a5a5;
+}
+
+.manager-my-payroll-summary-card span {
+  display: block;
+  margin-bottom: 7px;
+  color: #797979;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.manager-my-payroll-summary-card strong {
+  display: block;
+  margin-bottom: 5px;
+  color: #eeeeee;
+  font-size: 22px;
+  font-weight: 750;
+}
+
+.manager-my-payroll-summary-card small {
+  color: #5f5f5f;
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.manager-my-payroll-section {
+  margin-bottom: 26px;
+  padding: 22px;
+  border: 1px solid #242424;
+  border-radius: 14px;
+  background: #101010;
+}
+
+.manager-my-payroll-section-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.manager-my-payroll-section-heading > div > span {
+  display: block;
+  margin-bottom: 7px;
+  color: #707070;
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: 0.14em;
+}
+
+.manager-my-payroll-section-heading h2 {
+  margin: 0;
+  color: #eeeeee;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.manager-my-payroll-section-heading p {
+  margin: 7px 0 0;
+  color: #707070;
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   LATEST PAYROLL
+========================================================= */
+
+.manager-my-payroll-latest {
+  overflow: hidden;
+  border: 1px solid #242424;
+  border-radius: 11px;
+  background: #141414;
+}
+
+.salary-main {
+  padding: 22px;
+  border-bottom: 1px solid #232323;
+}
+
+.salary-main span {
+  display: block;
+  margin-bottom: 7px;
+  color: #666666;
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: 0.12em;
+}
+
+.salary-main strong {
+  display: block;
+  color: #f0f0f0;
+  font-size: 30px;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+}
+
+.salary-main small {
+  display: block;
+  margin-top: 5px;
+  color: #696969;
+  font-size: 11px;
+}
+
+.salary-breakdown {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.salary-breakdown > div {
+  padding: 15px;
+  border-right: 1px solid #222222;
+  border-bottom: 1px solid #222222;
+}
+
+.salary-breakdown > div:nth-child(5n) {
+  border-right: 0;
+}
+
+.salary-breakdown span {
+  display: block;
+  margin-bottom: 6px;
+  color: #656565;
+  font-size: 9px;
+}
+
+.salary-breakdown strong {
+  color: #d5d5d5;
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   PAYMENT
+========================================================= */
+
+.manager-my-payroll-payment {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  margin-top: 12px;
+  border: 1px solid #222222;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #222222;
+}
+
+.manager-my-payroll-payment > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px;
+  background: #141414;
+}
+
+.manager-my-payroll-payment span {
+  color: #646464;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.manager-my-payroll-payment strong {
+  color: #d0d0d0;
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.manager-my-payroll-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 24px;
+  padding: 0 9px;
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 750;
+}
+
+.my-payroll-status-paid {
+  border: 1px solid #285239;
+  background: #13251a;
+  color: #8bd2a1;
+}
+
+.my-payroll-status-approved {
+  border: 1px solid #285239;
+  background: #13251a;
+  color: #8bd2a1;
+}
+
+.my-payroll-status-pending {
+  border: 1px solid #5b4726;
+  background: #292016;
+  color: #e2bb72;
+}
+
+.my-payroll-status-rejected {
+  border: 1px solid #5a3030;
+  background: #281616;
+  color: #e79b9b;
+}
+
+.my-payroll-status-default {
+  border: 1px solid #343434;
+  background: #1b1b1b;
+  color: #a3a3a3;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.manager-my-payroll-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid #202020;
+  border-radius: 10px;
+}
+
+.manager-my-payroll-table {
+  width: 100%;
+  min-width: 850px;
+  border-collapse: collapse;
+}
+
+.manager-my-payroll-table th {
+  padding: 13px 14px;
+  border-bottom: 1px solid #252525;
+  background: #151515;
+  color: #737373;
+  text-align: left;
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.manager-my-payroll-table td {
+  padding: 14px;
+  border-bottom: 1px solid #1d1d1d;
+  color: #bdbdbd;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.manager-my-payroll-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.manager-my-payroll-table tbody tr:hover {
+  background: #141414;
+}
+
+.manager-my-payroll-table td:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.manager-my-payroll-table td:first-child strong {
+  color: #ededed;
+  font-size: 12px;
+}
+
+.manager-my-payroll-table td:first-child span {
+  color: #5e5e5e;
+  font-size: 9px;
+}
+
+.manager-my-payroll-table td strong {
+  color: #dddddd;
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.manager-my-payroll-empty {
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 30px;
+  box-sizing: border-box;
+  text-align: center;
+  color: #666666;
+}
+
+.manager-my-payroll-empty strong {
+  color: #aaaaaa;
+  font-size: 13px;
+}
+
+.manager-my-payroll-empty span {
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+  .manager-my-payroll-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .salary-breakdown {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .salary-breakdown > div:nth-child(5n) {
+    border-right: 1px solid #222222;
+  }
+
+  .salary-breakdown > div:nth-child(3n) {
+    border-right: 0;
+  }
+}
+
+@media (max-width: 800px) {
+  .manager-my-payroll-page {
+    padding: 20px;
+  }
+
+  .manager-my-payroll-header {
+    flex-direction: column;
+  }
+
+  .manager-my-payroll-refresh {
+    align-self: flex-start;
+  }
+
+  .salary-breakdown {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .salary-breakdown > div:nth-child(3n) {
+    border-right: 1px solid #222222;
+  }
+
+  .salary-breakdown > div:nth-child(2n) {
+    border-right: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .manager-my-payroll-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .manager-my-payroll-section {
+    padding: 15px;
+  }
+
+  .salary-breakdown {
+    grid-template-columns: 1fr;
+  }
+
+  .salary-breakdown > div {
+    border-right: 0 !important;
+  }
+
+  .manager-my-payroll-payment {
+    grid-template-columns: 1fr;
+  }
+
+  .manager-my-payroll-payment {
+    grid-template-columns: 1fr;
+  }
+}

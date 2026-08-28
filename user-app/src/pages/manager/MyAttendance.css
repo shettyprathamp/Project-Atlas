@@ -1,0 +1,826 @@
+
+/* =========================================================
+   ATLAS MANAGER — MY ATTENDANCE — DARK THEME
+========================================================= */
+
+.manager-my-attendance-page {
+  width: 100%;
+  max-width: none;
+
+  min-height: 100%;
+
+  padding: 38px 42px 60px;
+
+  box-sizing: border-box;
+
+  color: #e5e7eb;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.manager-my-attendance-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 30px;
+
+  margin-bottom: 28px;
+}
+
+.manager-my-attendance-eyebrow {
+  display: inline-block;
+
+  margin-bottom: 8px;
+
+  color: #818cf8;
+
+  font-size: 11px;
+  font-weight: 750;
+
+  letter-spacing: 0.14em;
+
+  text-transform: uppercase;
+}
+
+.manager-my-attendance-header h1 {
+  margin: 0;
+
+  color: #f8fafc;
+
+  font-size: clamp(28px, 3vw, 38px);
+
+  font-weight: 750;
+
+  letter-spacing: -0.035em;
+
+  line-height: 1.1;
+}
+
+.manager-my-attendance-header p {
+  max-width: 650px;
+
+  margin: 10px 0 0;
+
+  color: #94a3b8;
+
+  font-size: 14px;
+
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   REFRESH BUTTON
+========================================================= */
+
+.manager-my-attendance-refresh-btn {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  min-height: 42px;
+
+  padding: 0 16px;
+
+  color: #cbd5e1;
+
+  background: #111827;
+
+  border: 1px solid #273449;
+
+  border-radius: 10px;
+
+  font-family: inherit;
+
+  font-size: 12px;
+  font-weight: 650;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.manager-my-attendance-refresh-btn:hover:not(:disabled) {
+  color: #ffffff;
+
+  background: #172033;
+
+  border-color: #3b4a61;
+
+  transform: translateY(-1px);
+}
+
+.manager-my-attendance-refresh-btn:disabled {
+  opacity: 0.55;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   TODAY CARD
+========================================================= */
+
+.manager-my-attendance-today {
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+
+  margin-bottom: 22px;
+
+  padding: 20px 22px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(30, 41, 59, 0.8),
+      rgba(15, 23, 42, 0.85)
+    );
+
+  border: 1px solid
+    rgba(129, 140, 248, 0.13);
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.14);
+}
+
+.manager-my-attendance-today-icon {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 45px;
+  height: 45px;
+
+  flex-shrink: 0;
+
+  color: #a5b4fc;
+
+  background:
+    rgba(99, 102, 241, 0.1);
+
+  border: 1px solid
+    rgba(99, 102, 241, 0.15);
+
+  border-radius: 11px;
+}
+
+.manager-my-attendance-today-content span {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #818cf8;
+
+  font-size: 9px;
+
+  font-weight: 750;
+
+  letter-spacing: 0.1em;
+}
+
+.manager-my-attendance-today-content strong {
+  display: block;
+
+  color: #f1f5f9;
+
+  font-size: 15px;
+
+  font-weight: 700;
+}
+
+.manager-my-attendance-today-content p {
+  margin: 3px 0 0;
+
+  color: #64748b;
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   STATISTICS
+========================================================= */
+
+.manager-my-attendance-stats {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 15px;
+
+  margin-bottom: 24px;
+}
+
+.manager-my-attendance-stat-card {
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  min-width: 0;
+
+  padding: 18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(17, 24, 39, 0.98),
+      rgba(11, 17, 28, 0.98)
+    );
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.065);
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.13);
+
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.manager-my-attendance-stat-card:hover {
+  transform: translateY(-2px);
+
+  border-color:
+    rgba(129, 140, 248, 0.16);
+}
+
+.manager-my-attendance-stat-icon {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 39px;
+  height: 39px;
+
+  flex-shrink: 0;
+
+  border-radius: 10px;
+}
+
+.manager-my-attendance-stat-icon.total {
+  color: #a5b4fc;
+
+  background:
+    rgba(99, 102, 241, 0.1);
+}
+
+.manager-my-attendance-stat-icon.present {
+  color: #6ee7b7;
+
+  background:
+    rgba(52, 211, 153, 0.08);
+}
+
+.manager-my-attendance-stat-icon.late {
+  color: #fdba74;
+
+  background:
+    rgba(251, 146, 60, 0.08);
+}
+
+.manager-my-attendance-stat-icon.absent {
+  color: #fca5a5;
+
+  background:
+    rgba(239, 68, 68, 0.08);
+}
+
+.manager-my-attendance-stat-card span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #64748b;
+
+  font-size: 10px;
+
+  font-weight: 650;
+}
+
+.manager-my-attendance-stat-card strong {
+  display: block;
+
+  color: #f8fafc;
+
+  font-size: 24px;
+
+  font-weight: 750;
+
+  letter-spacing: -0.03em;
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.manager-my-attendance-error {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 12px;
+
+  margin-bottom: 22px;
+
+  padding: 15px 17px;
+
+  color: #fca5a5;
+
+  background:
+    rgba(239, 68, 68, 0.07);
+
+  border: 1px solid
+    rgba(239, 68, 68, 0.13);
+
+  border-radius: 11px;
+}
+
+.manager-my-attendance-error svg {
+  flex-shrink: 0;
+
+  margin-top: 1px;
+}
+
+.manager-my-attendance-error strong {
+  display: block;
+
+  color: #fca5a5;
+
+  font-size: 12px;
+}
+
+.manager-my-attendance-error p {
+  margin: 4px 0 0;
+
+  color: #a78b8b;
+
+  font-size: 11px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
+.manager-my-attendance-card {
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(17, 24, 39, 0.98),
+      rgba(10, 15, 25, 0.98)
+    );
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.065);
+
+  border-radius: 15px;
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.16);
+}
+
+.manager-my-attendance-card-header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 23px 24px 20px;
+}
+
+.manager-my-attendance-card-header h2 {
+  margin: 0;
+
+  color: #eef2f7;
+
+  font-size: 19px;
+
+  font-weight: 700;
+
+  letter-spacing: -0.02em;
+}
+
+.manager-my-attendance-card-header p {
+  margin: 5px 0 0;
+
+  color: #717b8b;
+
+  font-size: 12px;
+}
+
+.manager-my-attendance-count {
+  display: flex;
+
+  align-items: baseline;
+
+  gap: 5px;
+
+  padding: 7px 11px;
+
+  background: #111827;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.055);
+
+  border-radius: 8px;
+}
+
+.manager-my-attendance-count strong {
+  color: #e2e8f0;
+
+  font-size: 14px;
+}
+
+.manager-my-attendance-count span {
+  color: #64748b;
+
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.manager-my-attendance-table-wrapper {
+  width: 100%;
+
+  overflow-x: auto;
+}
+
+.manager-my-attendance-table {
+  width: 100%;
+
+  min-width: 720px;
+
+  border-collapse: collapse;
+}
+
+.manager-my-attendance-table thead {
+  background: #0f172a;
+}
+
+.manager-my-attendance-table th {
+  padding: 12px 18px;
+
+  color: #64748b;
+
+  border-top: 1px solid
+    rgba(255, 255, 255, 0.05);
+
+  border-bottom: 1px solid #273449;
+
+  font-size: 10px;
+
+  font-weight: 750;
+
+  letter-spacing: 0.06em;
+
+  text-align: left;
+
+  text-transform: uppercase;
+
+  white-space: nowrap;
+}
+
+.manager-my-attendance-table td {
+  padding: 15px 18px;
+
+  color: #94a3b8;
+
+  border-bottom: 1px solid
+    rgba(30, 41, 59, 0.8);
+
+  font-size: 12px;
+
+  vertical-align: middle;
+}
+
+.manager-my-attendance-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.manager-my-attendance-table tbody tr {
+  transition:
+    background 0.15s ease;
+}
+
+.manager-my-attendance-table tbody tr:hover {
+  background:
+    rgba(99, 102, 241, 0.035);
+}
+
+.manager-my-attendance-date {
+  color: #dce3ed;
+
+  font-weight: 650;
+}
+
+.manager-my-attendance-hours {
+  color: #cbd5e1;
+
+  font-weight: 650;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.manager-my-attendance-status {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  min-height: 27px;
+
+  padding: 0 9px;
+
+  border-radius: 7px;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+.manager-my-attendance-status-dot {
+  width: 6px;
+  height: 6px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: currentColor;
+}
+
+.manager-my-attendance-status.present {
+  color: #6ee7b7;
+
+  background:
+    rgba(52, 211, 153, 0.08);
+
+  border: 1px solid
+    rgba(52, 211, 153, 0.12);
+}
+
+.manager-my-attendance-status.absent {
+  color: #fca5a5;
+
+  background:
+    rgba(239, 68, 68, 0.08);
+
+  border: 1px solid
+    rgba(239, 68, 68, 0.12);
+}
+
+.manager-my-attendance-status.late {
+  color: #fdba74;
+
+  background:
+    rgba(251, 146, 60, 0.08);
+
+  border: 1px solid
+    rgba(251, 146, 60, 0.12);
+}
+
+.manager-my-attendance-status.half-day {
+  color: #c4b5fd;
+
+  background:
+    rgba(139, 92, 246, 0.08);
+
+  border: 1px solid
+    rgba(139, 92, 246, 0.12);
+}
+
+.manager-my-attendance-status.unknown {
+  color: #94a3b8;
+
+  background:
+    rgba(148, 163, 184, 0.07);
+
+  border: 1px solid
+    rgba(148, 163, 184, 0.1);
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.manager-my-attendance-loading {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-direction: column;
+
+  min-height: 250px;
+
+  gap: 12px;
+
+  color: #64748b;
+}
+
+.manager-my-attendance-loading p {
+  margin: 0;
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.manager-my-attendance-empty {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-direction: column;
+
+  min-height: 300px;
+
+  padding: 40px 25px;
+
+  text-align: center;
+}
+
+.manager-my-attendance-empty-icon {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 58px;
+  height: 58px;
+
+  margin-bottom: 15px;
+
+  color: #818cf8;
+
+  background:
+    rgba(99, 102, 241, 0.08);
+
+  border: 1px solid
+    rgba(99, 102, 241, 0.11);
+
+  border-radius: 14px;
+}
+
+.manager-my-attendance-empty h3 {
+  margin: 0;
+
+  color: #dce3ed;
+
+  font-size: 14px;
+
+  font-weight: 700;
+}
+
+.manager-my-attendance-empty p {
+  max-width: 420px;
+
+  margin: 7px 0 0;
+
+  color: #64748b;
+
+  font-size: 11px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+.manager-my-attendance-spin {
+  animation:
+    manager-my-attendance-spin 0.9s linear infinite;
+}
+
+@keyframes manager-my-attendance-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1000px) {
+  .manager-my-attendance-stats {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+  .manager-my-attendance-page {
+    padding: 25px 20px 35px;
+  }
+
+  .manager-my-attendance-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    margin-bottom: 22px;
+  }
+
+  .manager-my-attendance-header h1 {
+    font-size: 28px;
+  }
+
+  .manager-my-attendance-header p {
+    font-size: 12px;
+  }
+
+  .manager-my-attendance-refresh-btn {
+    width: 100%;
+  }
+
+  .manager-my-attendance-today {
+    align-items: flex-start;
+
+    padding: 17px;
+  }
+
+  .manager-my-attendance-stats {
+    grid-template-columns: 1fr;
+
+    gap: 10px;
+  }
+
+  .manager-my-attendance-stat-card {
+    padding: 16px;
+  }
+
+  .manager-my-attendance-card-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    padding: 18px;
+  }
+
+  .manager-my-attendance-count {
+    align-self: flex-start;
+  }
+
+  .manager-my-attendance-table th,
+  .manager-my-attendance-table td {
+    padding: 12px 14px;
+  }
+}

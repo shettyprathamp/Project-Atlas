@@ -1,0 +1,346 @@
+/* =========================================================
+   ATLAS — EMPLOYEE HOLIDAYS
+   ========================================================= */
+
+.employee-holidays-page {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 4px 0 48px;
+  color: #172033;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.holidays-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.holidays-eyebrow {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.holidays-header h1 {
+  margin: 0;
+  color: #111827;
+  font-size: clamp(28px, 3vw, 38px);
+  font-weight: 750;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+}
+
+.holidays-header p {
+  margin: 10px 0 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* =========================================================
+   SUMMARY
+   ========================================================= */
+
+.holidays-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.holiday-summary-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 105px;
+  padding: 18px;
+  background: #ffffff;
+  border: 1px solid #e8edf3;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.035);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.holiday-summary-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.07);
+}
+
+.holiday-summary-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  color: #475569;
+  background: #f1f5f9;
+  font-size: 18px;
+}
+
+.holiday-summary-icon.upcoming {
+  color: #7c3aed;
+  background: #f5f3ff;
+}
+
+.holiday-summary-icon.weekend {
+  color: #c2410c;
+  background: #fff7ed;
+}
+
+.holiday-summary-card span {
+  display: block;
+  margin-bottom: 3px;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.holiday-summary-card strong {
+  display: block;
+  color: #111827;
+  font-size: 25px;
+  font-weight: 750;
+  line-height: 1.1;
+}
+
+.holiday-summary-card small {
+  display: block;
+  margin-top: 3px;
+  color: #94a3b8;
+  font-size: 10px;
+}
+
+/* =========================================================
+   HOLIDAY CARD
+   ========================================================= */
+
+.holidays-card {
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e8edf3;
+  border-radius: 15px;
+  box-shadow: 0 2px 9px rgba(15, 23, 42, 0.035);
+}
+
+.holidays-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 23px 24px 20px;
+  border-bottom: 1px solid #eef2f6;
+}
+
+.holidays-card-header h2 {
+  margin: 0;
+  color: #111827;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.holidays-card-header p {
+  margin: 5px 0 0;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.holiday-year {
+  padding: 7px 12px;
+  color: #475569;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* =========================================================
+   HOLIDAY LIST
+   ========================================================= */
+
+.holidays-list {
+  width: 100%;
+}
+
+.holiday-row {
+  display: grid;
+  grid-template-columns: 100px minmax(220px, 1fr) 130px 120px;
+  align-items: center;
+  gap: 20px;
+  min-height: 82px;
+  padding: 12px 24px;
+  border-bottom: 1px solid #f0f2f5;
+  transition: background 0.15s ease;
+}
+
+.holiday-row:last-child {
+  border-bottom: 0;
+}
+
+.holiday-row:hover {
+  background: #fafcff;
+}
+
+/* =========================================================
+   DATE
+   ========================================================= */
+
+.holiday-date {
+  display: flex;
+  flex-direction: column;
+}
+
+.holiday-date strong {
+  color: #1e293b;
+  font-size: 20px;
+  font-weight: 750;
+  line-height: 1;
+}
+
+.holiday-date span {
+  margin-top: 5px;
+  color: #94a3b8;
+  font-size: 10px;
+}
+
+/* =========================================================
+   INFORMATION
+   ========================================================= */
+
+.holiday-info {
+  min-width: 0;
+}
+
+.holiday-info strong {
+  display: block;
+  overflow: hidden;
+  color: #1e293b;
+  font-size: 13px;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.holiday-info span {
+  display: block;
+  margin-top: 4px;
+  color: #94a3b8;
+  font-size: 10px;
+}
+
+/* =========================================================
+   DAY
+   ========================================================= */
+
+.holiday-day {
+  color: #475569;
+  font-size: 12px;
+  font-weight: 550;
+}
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.holiday-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  width: fit-content;
+  min-height: 27px;
+  padding: 0 9px;
+  color: #15803d;
+  background: #f0fdf4;
+  border-radius: 7px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.holiday-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .holidays-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .holiday-row {
+    grid-template-columns: 85px 1fr 100px;
+  }
+
+  .holiday-status {
+    display: none;
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 640px) {
+  .employee-holidays-page {
+    padding-bottom: 28px;
+  }
+
+  .holidays-header {
+    margin-bottom: 20px;
+  }
+
+  .holidays-header h1 {
+    font-size: 27px;
+  }
+
+  .holidays-header p {
+    font-size: 12px;
+  }
+
+  .holiday-summary-card {
+    min-height: 90px;
+  }
+
+  .holidays-card-header {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 18px;
+  }
+
+  .holiday-row {
+    grid-template-columns: 65px 1fr;
+    gap: 12px;
+    min-height: 78px;
+    padding: 14px 18px;
+  }
+
+  .holiday-date strong {
+    font-size: 18px;
+  }
+
+  .holiday-day {
+    grid-column: 2;
+    margin-top: -8px;
+    font-size: 10px;
+    color: #94a3b8;
+  }
+}

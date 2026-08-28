@@ -1,0 +1,1156 @@
+/* =========================================================
+   MANAGER ATTENDANCE
+   ========================================================= */
+
+.manager-attendance-page {
+  width: 100%;
+  min-height: 100%;
+  padding: 32px;
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.manager-attendance-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.manager-attendance-eyebrow {
+  display: block;
+  margin-bottom: 8px;
+
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+
+  color: #777;
+}
+
+.manager-attendance-header h1 {
+  margin: 0;
+
+  font-size: 32px;
+  line-height: 1.15;
+  font-weight: 700;
+
+  color: #fff;
+}
+
+.manager-attendance-header p {
+  margin: 10px 0 0;
+
+  color: #888;
+
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   ADD BUTTON
+   ========================================================= */
+
+.attendance-add-button {
+  border: 0;
+  border-radius: 10px;
+
+  padding: 12px 18px;
+
+  background: #fff;
+  color: #080808;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.attendance-add-button:hover {
+  transform: translateY(-1px);
+  opacity: 0.9;
+}
+
+
+/* =========================================================
+   MESSAGES
+   ========================================================= */
+
+.attendance-message {
+  margin-bottom: 20px;
+
+  padding: 13px 16px;
+
+  border-radius: 9px;
+
+  font-size: 13px;
+}
+
+.attendance-error {
+  background: rgba(220, 70, 70, 0.1);
+
+  border: 1px solid rgba(220, 70, 70, 0.25);
+
+  color: #ff8d8d;
+}
+
+.attendance-success {
+  background: rgba(70, 190, 120, 0.1);
+
+  border: 1px solid rgba(70, 190, 120, 0.25);
+
+  color: #7ee0a5;
+}
+
+
+/* =========================================================
+   ATTENDANCE CALENDAR CARD
+   ========================================================= */
+
+.attendance-calendar-card {
+  width: 100%;
+
+  margin-bottom: 22px;
+
+  border: 1px solid #1d1d1d;
+  border-radius: 13px;
+
+  background: #101010;
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   CALENDAR HEADER
+   ========================================================= */
+
+.attendance-calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 20px 22px;
+
+  border-bottom: 1px solid #1d1d1d;
+}
+
+.attendance-calendar-eyebrow {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #666;
+
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.attendance-calendar-header h2 {
+  margin: 0;
+
+  color: #fff;
+
+  font-size: 18px;
+  font-weight: 650;
+}
+
+
+/* =========================================================
+   CALENDAR SELECTORS
+   ========================================================= */
+
+.attendance-calendar-selectors {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+}
+
+.attendance-calendar-selectors select {
+  height: 38px;
+
+  min-width: 125px;
+
+  padding: 0 11px;
+
+  border: 1px solid #292929;
+  border-radius: 8px;
+
+  background: #171717;
+  color: #eee;
+
+  font-family: inherit;
+  font-size: 12px;
+
+  outline: none;
+
+  cursor: pointer;
+}
+
+.attendance-calendar-selectors select:last-of-type {
+  min-width: 90px;
+}
+
+.attendance-calendar-selectors select:focus {
+  border-color: #444;
+}
+
+.calendar-nav-button {
+  width: 38px;
+  height: 38px;
+
+  border: 1px solid #292929;
+  border-radius: 8px;
+
+  background: #171717;
+  color: #aaa;
+
+  font-size: 22px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.calendar-nav-button:hover {
+  background: #202020;
+  color: #fff;
+}
+
+
+/* =========================================================
+   CALENDAR LEGEND
+   ========================================================= */
+
+.attendance-calendar-legend {
+  display: flex;
+  align-items: center;
+
+  gap: 20px;
+
+  padding: 14px 22px;
+
+  border-bottom: 1px solid #1b1b1b;
+
+  color: #777;
+
+  font-size: 11px;
+}
+
+.attendance-calendar-legend > div {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+}
+
+.legend-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+}
+
+.legend-green {
+  background: #58c981;
+
+  box-shadow:
+    0 0 7px rgba(88, 201, 129, 0.35);
+}
+
+.legend-red {
+  background: #d65f5f;
+
+  box-shadow:
+    0 0 7px rgba(214, 95, 95, 0.25);
+}
+
+
+/* =========================================================
+   CALENDAR
+   ========================================================= */
+
+.attendance-calendar {
+  padding: 18px 22px 22px;
+}
+
+.calendar-weekdays {
+  display: grid;
+
+  grid-template-columns:
+    repeat(7, minmax(0, 1fr));
+
+  gap: 7px;
+
+  margin-bottom: 7px;
+}
+
+.calendar-weekday {
+  padding: 8px 4px;
+
+  color: #555;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  text-align: center;
+  text-transform: uppercase;
+
+  letter-spacing: 0.6px;
+}
+
+.calendar-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(7, minmax(0, 1fr));
+
+  gap: 7px;
+}
+
+.calendar-day {
+  position: relative;
+
+  min-height: 66px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
+  padding: 11px 5px 8px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #1d1d1d;
+  border-radius: 9px;
+
+  background: #0d0d0d;
+
+  color: #aaa;
+
+  cursor: pointer;
+
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.calendar-day:hover {
+  background: #161616;
+
+  border-color: #303030;
+
+  transform: translateY(-1px);
+}
+
+.calendar-day-empty {
+  min-height: 66px;
+
+  border-color: transparent;
+
+  background: transparent;
+
+  cursor: default;
+}
+
+.calendar-day-empty:hover {
+  transform: none;
+
+  border-color: transparent;
+
+  background: transparent;
+}
+
+.calendar-day-number {
+  color: #bbb;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.calendar-day-selected {
+  border-color: #555;
+
+  background: #1b1b1b;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.calendar-day-selected
+  .calendar-day-number {
+  color: #fff;
+}
+
+.calendar-day-today
+  .calendar-day-number {
+  color: #fff;
+}
+
+.calendar-day-today {
+  border-color: #363636;
+}
+
+
+/* =========================================================
+   CALENDAR DOTS
+   ========================================================= */
+
+.calendar-attendance-dot {
+  width: 6px;
+  height: 6px;
+
+  margin-top: 11px;
+
+  border-radius: 50%;
+}
+
+.calendar-dot-green {
+  background: #58c981;
+
+  box-shadow:
+    0 0 8px rgba(88, 201, 129, 0.4);
+}
+
+.calendar-dot-red {
+  background: #d65f5f;
+
+  box-shadow:
+    0 0 7px rgba(214, 95, 95, 0.25);
+}
+
+
+/* =========================================================
+   SELECTED DATE
+   ========================================================= */
+
+.attendance-selected-date {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 14px 22px;
+
+  border-top: 1px solid #1d1d1d;
+
+  background: #0d0d0d;
+}
+
+.attendance-selected-date span {
+  color: #555;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 1.2px;
+}
+
+.attendance-selected-date strong {
+  color: #ddd;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   SUMMARY
+   ========================================================= */
+
+.attendance-summary-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 16px;
+
+  margin-bottom: 22px;
+}
+
+.attendance-summary-card {
+  min-height: 105px;
+
+  padding: 20px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #1d1d1d;
+  border-radius: 12px;
+
+  background: #101010;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.attendance-summary-card span {
+  color: #777;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.attendance-summary-card strong {
+  color: #fff;
+
+  font-size: 28px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   CONTROLS
+   ========================================================= */
+
+.attendance-controls {
+  display: grid;
+
+  grid-template-columns:
+    minmax(220px, 1fr)
+    180px
+    180px;
+
+  gap: 12px;
+
+  margin-bottom: 18px;
+}
+
+.attendance-controls input,
+.attendance-controls select {
+  width: 100%;
+  height: 44px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #222;
+  border-radius: 9px;
+
+  background: #101010;
+  color: #eee;
+
+  padding: 0 13px;
+
+  font-size: 13px;
+
+  outline: none;
+}
+
+.attendance-controls input::placeholder {
+  color: #666;
+}
+
+.attendance-controls input:focus,
+.attendance-controls select:focus {
+  border-color: #444;
+}
+
+
+/* =========================================================
+   TABLE CARD
+   ========================================================= */
+
+.attendance-table-card {
+  overflow: hidden;
+
+  border: 1px solid #1d1d1d;
+  border-radius: 13px;
+
+  background: #101010;
+}
+
+.attendance-table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 20px 22px;
+
+  border-bottom: 1px solid #1d1d1d;
+}
+
+.attendance-table-header h2 {
+  margin: 0 0 5px;
+
+  color: #fff;
+
+  font-size: 16px;
+  font-weight: 650;
+}
+
+.attendance-table-header span {
+  color: #666;
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.attendance-table-wrapper {
+  width: 100%;
+
+  overflow-x: auto;
+}
+
+.attendance-table {
+  width: 100%;
+
+  min-width: 850px;
+
+  border-collapse: collapse;
+}
+
+.attendance-table th {
+  padding: 13px 20px;
+
+  background: #0c0c0c;
+
+  color: #666;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 1px;
+
+  text-align: left;
+
+  text-transform: uppercase;
+}
+
+.attendance-table td {
+  padding: 16px 20px;
+
+  border-top: 1px solid #1a1a1a;
+
+  color: #aaa;
+
+  font-size: 13px;
+
+  white-space: nowrap;
+}
+
+.attendance-table tbody tr {
+  transition:
+    background 0.15s ease;
+}
+
+.attendance-table tbody tr:hover {
+  background: #141414;
+}
+
+
+/* =========================================================
+   EMPLOYEE
+   ========================================================= */
+
+.employee-cell {
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+}
+
+.employee-avatar {
+  width: 34px;
+  height: 34px;
+
+  flex: 0 0 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #1c1c1c;
+
+  border: 1px solid #292929;
+
+  color: #fff;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.employee-cell div:last-child {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.employee-cell strong {
+  color: #eee;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.employee-cell span {
+  color: #666;
+
+  font-size: 10px;
+}
+
+.team-name {
+  color: #aaa;
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.attendance-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 65px;
+
+  padding: 5px 9px;
+
+  border-radius: 999px;
+
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.status-present {
+  background: rgba(70, 190, 120, 0.1);
+
+  color: #79d99e;
+}
+
+.status-absent {
+  background: rgba(220, 70, 70, 0.1);
+
+  color: #ff8585;
+}
+
+.status-late {
+  background: rgba(230, 170, 70, 0.1);
+
+  color: #e8bd72;
+}
+
+.status-other {
+  background: rgba(150, 150, 150, 0.1);
+
+  color: #aaa;
+}
+
+
+/* =========================================================
+   LOADING / EMPTY
+   ========================================================= */
+
+.attendance-state {
+  min-height: 300px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  padding: 40px;
+}
+
+.attendance-state h3 {
+  margin: 12px 0 6px;
+
+  color: #ddd;
+
+  font-size: 15px;
+}
+
+.attendance-state p {
+  margin: 0;
+
+  color: #666;
+
+  font-size: 12px;
+}
+
+.attendance-spinner {
+  width: 25px;
+  height: 25px;
+
+  border: 2px solid #282828;
+
+  border-top-color: #aaa;
+
+  border-radius: 50%;
+
+  animation:
+    attendance-spin 0.8s linear infinite;
+}
+
+@keyframes attendance-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.attendance-empty-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #282828;
+
+  border-radius: 50%;
+
+  color: #555;
+
+  font-size: 18px;
+}
+
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+.attendance-modal-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(0, 0, 0, 0.72);
+
+  backdrop-filter: blur(5px);
+}
+
+.attendance-modal {
+  width: 100%;
+  max-width: 500px;
+
+  max-height: calc(100vh - 40px);
+
+  overflow-y: auto;
+
+  border: 1px solid #292929;
+
+  border-radius: 14px;
+
+  background: #111;
+
+  box-shadow:
+    0 25px 80px rgba(0, 0, 0, 0.55);
+}
+
+.attendance-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  padding: 22px;
+
+  border-bottom: 1px solid #222;
+}
+
+.attendance-modal-header span {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #666;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 1.5px;
+}
+
+.attendance-modal-header h2 {
+  margin: 0;
+
+  color: #fff;
+
+  font-size: 20px;
+}
+
+.attendance-modal-close {
+  width: 32px;
+  height: 32px;
+
+  border: 1px solid #292929;
+
+  border-radius: 8px;
+
+  background: #171717;
+
+  color: #aaa;
+
+  font-size: 20px;
+
+  cursor: pointer;
+}
+
+.attendance-modal form {
+  padding: 22px;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.attendance-form-group {
+  margin-bottom: 18px;
+}
+
+.attendance-form-row {
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    1fr;
+
+  gap: 12px;
+}
+
+.attendance-form-group label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #999;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.attendance-form-group input,
+.attendance-form-group select {
+  width: 100%;
+  height: 43px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #282828;
+
+  border-radius: 8px;
+
+  background: #0b0b0b;
+
+  color: #eee;
+
+  padding: 0 12px;
+
+  font-size: 13px;
+
+  outline: none;
+}
+
+.attendance-form-group input:focus,
+.attendance-form-group select:focus {
+  border-color: #444;
+}
+
+
+/* =========================================================
+   MODAL ACTIONS
+   ========================================================= */
+
+.attendance-modal-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  margin-top: 25px;
+
+  padding-top: 18px;
+
+  border-top: 1px solid #222;
+}
+
+.attendance-cancel-button,
+.attendance-save-button {
+  height: 40px;
+
+  padding: 0 16px;
+
+  border-radius: 8px;
+
+  font-size: 12px;
+  font-weight: 650;
+
+  cursor: pointer;
+}
+
+.attendance-cancel-button {
+  border: 1px solid #292929;
+
+  background: #171717;
+
+  color: #aaa;
+}
+
+.attendance-save-button {
+  border: 0;
+
+  background: #fff;
+
+  color: #080808;
+}
+
+.attendance-save-button:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+  .attendance-summary-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .attendance-controls {
+    grid-template-columns:
+      1fr
+      1fr;
+  }
+
+  .attendance-search {
+    grid-column: 1 / -1;
+  }
+
+  .attendance-calendar-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+}
+
+
+@media (max-width: 700px) {
+
+  .manager-attendance-page {
+    padding: 20px;
+  }
+
+  .manager-attendance-header {
+    flex-direction: column;
+  }
+
+  .attendance-add-button {
+    width: 100%;
+  }
+
+  .attendance-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .attendance-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .attendance-search {
+    grid-column: auto;
+  }
+
+  .attendance-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .attendance-calendar {
+    padding: 14px;
+  }
+
+  .attendance-calendar-header {
+    padding: 18px;
+  }
+
+  .attendance-calendar-selectors {
+    width: 100%;
+  }
+
+  .attendance-calendar-selectors select {
+    flex: 1;
+
+    min-width: 0;
+  }
+
+  .attendance-calendar-selectors select:last-of-type {
+    min-width: 0;
+  }
+
+  .calendar-nav-button {
+    flex: 0 0 38px;
+  }
+
+  .calendar-day {
+    min-height: 52px;
+
+    padding-top: 8px;
+  }
+
+  .calendar-day-empty {
+    min-height: 52px;
+  }
+
+  .calendar-weekday {
+    font-size: 8px;
+  }
+
+  .attendance-calendar-legend {
+    flex-wrap: wrap;
+
+    padding: 12px 18px;
+  }
+
+  .attendance-selected-date {
+    padding: 13px 18px;
+  }
+
+}

@@ -1,0 +1,744 @@
+/* =========================================================
+   ATLAS EMPLOYEE — LEAVE — DARK THEME
+========================================================= */
+
+.employee-leave-page {
+  width: 100%;
+  max-width: none;
+
+  margin: 0;
+
+  padding: 38px 42px 60px 42px;
+
+  box-sizing: border-box;
+
+  color: #e5e7eb;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.employee-leave-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  margin-bottom: 28px;
+}
+
+.employee-leave-eyebrow {
+  display: inline-block;
+
+  margin-bottom: 8px;
+
+  color: #818cf8;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.employee-leave-header h1 {
+  margin: 0;
+
+  color: #f8fafc;
+
+  font-size: clamp(28px, 3vw, 38px);
+  font-weight: 750;
+
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+}
+
+.employee-leave-header p {
+  max-width: 650px;
+
+  margin: 10px 0 0;
+
+  color: #94a3b8;
+
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.employee-leave-primary-btn,
+.employee-leave-secondary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  min-height: 44px;
+
+  padding: 0 17px;
+
+  border-radius: 10px;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 650;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.employee-leave-primary-btn {
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #4f46e5,
+      #6366f1
+    );
+
+  border: 1px solid
+    rgba(129, 140, 248, 0.35);
+
+  box-shadow:
+    0 8px 22px
+      rgba(79, 70, 229, 0.2);
+}
+
+.employee-leave-primary-btn:hover {
+  background:
+    linear-gradient(
+      135deg,
+      #5b54eb,
+      #7174f5
+    );
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 12px 28px
+      rgba(79, 70, 229, 0.28);
+}
+
+.employee-leave-primary-btn span {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.employee-leave-secondary-btn {
+  min-height: 40px;
+
+  color: #cbd5e1;
+
+  background: #111827;
+
+  border: 1px solid #273449;
+}
+
+.employee-leave-secondary-btn:hover {
+  color: #ffffff;
+
+  background: #172033;
+
+  border-color: #3b4a61;
+}
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.employee-leave-section {
+  margin-bottom: 24px;
+}
+
+.employee-leave-section-header {
+  margin-bottom: 14px;
+}
+
+.employee-leave-section-header h2 {
+  margin: 0;
+
+  color: #eef2f7;
+
+  font-size: 18px;
+  font-weight: 700;
+
+  letter-spacing: -0.02em;
+}
+
+.employee-leave-section-header p {
+  margin: 4px 0 0;
+
+  color: #717b8b;
+
+  font-size: 12px;
+}
+
+/* =========================================================
+   BALANCE CARDS
+========================================================= */
+
+.employee-leave-balance-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 16px;
+}
+
+.employee-leave-balance-card {
+  padding: 20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(17, 24, 39, 0.98),
+      rgba(11, 17, 28, 0.98)
+    );
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.065);
+
+  border-radius: 15px;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.15);
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.employee-leave-balance-card:hover {
+  transform: translateY(-2px);
+
+  border-color:
+    rgba(129, 140, 248, 0.16);
+
+  box-shadow:
+    0 14px 35px rgba(0, 0, 0, 0.22);
+}
+
+.employee-leave-balance-top {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  color: #b6bfce;
+
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.employee-leave-balance-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 36px;
+  height: 36px;
+
+  border-radius: 9px;
+
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.employee-leave-balance-card.annual
+  .employee-leave-balance-icon {
+  color: #a5b4fc;
+
+  background:
+    rgba(99, 102, 241, 0.1);
+
+  border: 1px solid
+    rgba(99, 102, 241, 0.14);
+}
+
+.employee-leave-balance-card.sick
+  .employee-leave-balance-icon {
+  color: #fca5a5;
+
+  background:
+    rgba(239, 68, 68, 0.09);
+
+  border: 1px solid
+    rgba(239, 68, 68, 0.12);
+}
+
+.employee-leave-balance-card.casual
+  .employee-leave-balance-icon {
+  color: #c4b5fd;
+
+  background:
+    rgba(139, 92, 246, 0.09);
+
+  border: 1px solid
+    rgba(139, 92, 246, 0.12);
+}
+
+.employee-leave-balance-number {
+  display: flex;
+  align-items: baseline;
+
+  gap: 8px;
+
+  margin-top: 20px;
+}
+
+.employee-leave-balance-number strong {
+  color: #f8fafc;
+
+  font-size: 32px;
+  font-weight: 750;
+
+  letter-spacing: -0.04em;
+}
+
+.employee-leave-balance-number small {
+  color: #64748b;
+
+  font-size: 11px;
+}
+
+.employee-leave-progress {
+  width: 100%;
+  height: 6px;
+
+  margin-top: 16px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background:
+    rgba(255, 255, 255, 0.06);
+}
+
+.employee-leave-progress-fill {
+  height: 100%;
+
+  border-radius: inherit;
+}
+
+.employee-leave-balance-card.annual
+  .employee-leave-progress-fill {
+  background: #6366f1;
+}
+
+.employee-leave-balance-card.sick
+  .employee-leave-progress-fill {
+  background: #ef4444;
+}
+
+.employee-leave-balance-card.casual
+  .employee-leave-progress-fill {
+  background: #8b5cf6;
+}
+
+.employee-leave-balance-footer {
+  display: flex;
+  justify-content: space-between;
+
+  margin-top: 8px;
+
+  color: #64748b;
+
+  font-size: 10px;
+}
+
+/* =========================================================
+   APPLY CARD
+========================================================= */
+
+.employee-leave-apply-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 24px;
+  padding: 20px 22px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(17, 24, 39, 0.8),
+      rgba(11, 17, 28, 0.8)
+    );
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.055);
+
+  border-radius: 14px;
+}
+
+.employee-leave-apply-content {
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+}
+
+.employee-leave-apply-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  border-radius: 10px;
+
+  color: #a5b4fc;
+
+  background:
+    rgba(99, 102, 241, 0.09);
+
+  border: 1px solid
+    rgba(99, 102, 241, 0.12);
+
+  font-size: 21px;
+}
+
+.employee-leave-apply-card h2 {
+  margin: 0;
+
+  color: #e5e7eb;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.employee-leave-apply-card p {
+  margin: 4px 0 0;
+
+  color: #717b8b;
+
+  font-size: 11px;
+}
+
+/* =========================================================
+   REQUESTS
+========================================================= */
+
+.employee-leave-requests-card {
+  overflow: hidden;
+
+  margin-bottom: 24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(17, 24, 39, 0.98),
+      rgba(10, 15, 25, 0.98)
+    );
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.065);
+
+  border-radius: 15px;
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.16);
+}
+
+.employee-leave-requests-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 23px 24px 20px;
+}
+
+.employee-leave-requests-header h2 {
+  margin: 0;
+
+  color: #eef2f7;
+
+  font-size: 19px;
+  font-weight: 700;
+
+  letter-spacing: -0.02em;
+}
+
+.employee-leave-requests-header p {
+  margin: 5px 0 0;
+
+  color: #717b8b;
+
+  font-size: 12px;
+}
+
+.employee-leave-request-count {
+  display: flex;
+  align-items: baseline;
+
+  gap: 5px;
+
+  padding: 7px 11px;
+
+  border-radius: 8px;
+
+  background: #111827;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.055);
+}
+
+.employee-leave-request-count strong {
+  color: #e2e8f0;
+
+  font-size: 14px;
+}
+
+.employee-leave-request-count span {
+  color: #64748b;
+
+  font-size: 11px;
+}
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.employee-leave-table-wrapper {
+  width: 100%;
+
+  overflow-x: auto;
+}
+
+.employee-leave-table {
+  width: 100%;
+
+  min-width: 850px;
+
+  border-collapse: collapse;
+}
+
+.employee-leave-table thead {
+  background: #0f172a;
+}
+
+.employee-leave-table th {
+  padding: 12px 18px;
+
+  color: #64748b;
+
+  border-top: 1px solid
+    rgba(255, 255, 255, 0.05);
+
+  border-bottom: 1px solid #273449;
+
+  font-size: 10px;
+  font-weight: 750;
+
+  letter-spacing: 0.06em;
+
+  text-align: left;
+  text-transform: uppercase;
+
+  white-space: nowrap;
+}
+
+.employee-leave-table td {
+  padding: 15px 18px;
+
+  color: #94a3b8;
+
+  border-bottom: 1px solid
+    rgba(30, 41, 59, 0.8);
+
+  font-size: 12px;
+
+  vertical-align: middle;
+}
+
+.employee-leave-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.employee-leave-table tbody tr {
+  transition:
+    background 0.15s ease;
+}
+
+.employee-leave-table tbody tr:hover {
+  background:
+    rgba(99, 102, 241, 0.035);
+}
+
+.employee-leave-type {
+  color: #dce3ed;
+
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.employee-leave-reason {
+  color: #7f8ba0;
+}
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.employee-leave-status {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 6px;
+
+  min-height: 27px;
+
+  padding: 0 9px;
+
+  border-radius: 7px;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+.employee-leave-status-dot {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: currentColor;
+}
+
+.employee-leave-status.approved {
+  color: #6ee7b7;
+
+  background:
+    rgba(52, 211, 153, 0.08);
+
+  border: 1px solid
+    rgba(52, 211, 153, 0.12);
+}
+
+.employee-leave-status.pending {
+  color: #fdba74;
+
+  background:
+    rgba(251, 146, 60, 0.08);
+
+  border: 1px solid
+    rgba(251, 146, 60, 0.12);
+}
+
+.employee-leave-status.rejected {
+  color: #fca5a5;
+
+  background:
+    rgba(239, 68, 68, 0.08);
+
+  border: 1px solid
+    rgba(239, 68, 68, 0.12);
+}
+
+/* =========================================================
+   RESPONSIVE — TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+  .employee-leave-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .employee-leave-header
+    .employee-leave-primary-btn {
+    align-self: flex-start;
+  }
+
+  .employee-leave-balance-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+========================================================= */
+
+@media (max-width: 640px) {
+  .employee-leave-page {
+    padding-bottom: 28px;
+  }
+
+  .employee-leave-header {
+    margin-bottom: 20px;
+  }
+
+  .employee-leave-header h1 {
+    font-size: 27px;
+  }
+
+  .employee-leave-header p {
+    font-size: 12px;
+  }
+
+  .employee-leave-header
+    .employee-leave-primary-btn {
+    width: 100%;
+  }
+
+  .employee-leave-balance-grid {
+    gap: 10px;
+  }
+
+  .employee-leave-balance-card {
+    padding: 18px;
+  }
+
+  .employee-leave-apply-card {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    padding: 18px;
+  }
+
+  .employee-leave-secondary-btn {
+    width: 100%;
+  }
+
+  .employee-leave-requests-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    padding: 18px;
+  }
+
+  .employee-leave-request-count {
+    align-self: flex-start;
+  }
+
+  .employee-leave-table th,
+  .employee-leave-table td {
+    padding: 12px 14px;
+  }
+}

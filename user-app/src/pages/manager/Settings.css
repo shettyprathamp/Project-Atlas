@@ -1,0 +1,528 @@
+/* =========================================================
+   ATLAS — MANAGER SETTINGS
+   DARK MODE
+   ========================================================= */
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.manager-settings-page {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  color: #f8fafc;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.manager-settings-header {
+  margin-bottom: 26px;
+}
+
+.manager-settings-eyebrow {
+  display: inline-block;
+  margin-bottom: 8px;
+
+  color: #818cf8;
+
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+}
+
+.manager-settings-header h1 {
+  margin: 0;
+
+  color: #f8fafc;
+
+  font-size: 32px;
+  font-weight: 750;
+  letter-spacing: -0.035em;
+}
+
+.manager-settings-header p {
+  margin: 8px 0 0;
+
+  color: #94a3b8;
+
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.manager-settings-card {
+  margin-bottom: 20px;
+
+  overflow: hidden;
+
+  background: #111827;
+
+  border: 1px solid #1f2937;
+  border-radius: 14px;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* =========================================================
+   CARD HEADER
+   ========================================================= */
+
+.manager-settings-card-header {
+  padding: 21px 24px 18px;
+
+  background: #111827;
+
+  border-bottom: 1px solid #1f2937;
+}
+
+.manager-settings-card-header h2 {
+  margin: 0;
+
+  color: #f8fafc;
+
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.manager-settings-card-header p {
+  margin: 5px 0 0;
+
+  color: #94a3b8;
+
+  font-size: 11px;
+}
+
+/* =========================================================
+   SETTING ROW
+   ========================================================= */
+
+.manager-setting-row {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 18px 24px;
+
+  border: 0;
+  border-bottom: 1px solid #1f2937;
+
+  background: #111827;
+
+  color: #f8fafc;
+
+  font-family: inherit;
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+
+.manager-setting-row:last-child {
+  border-bottom: 0;
+}
+
+.manager-setting-row:hover {
+  background: #172033;
+}
+
+.manager-setting-row:active {
+  background: #1e293b;
+}
+
+/* =========================================================
+   ICON
+   ========================================================= */
+
+.manager-setting-icon {
+  width: 38px;
+  height: 38px;
+
+  flex: 0 0 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  background: #1e1b4b;
+
+  border: 1px solid #312e81;
+
+  color: #818cf8;
+}
+
+/* =========================================================
+   CONTENT
+   ========================================================= */
+
+.manager-setting-content {
+  min-width: 0;
+
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.manager-setting-content strong {
+  color: #f8fafc;
+
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.manager-setting-content span {
+  margin-top: 4px;
+
+  color: #94a3b8;
+
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   TOGGLE
+   ========================================================= */
+
+.manager-toggle {
+  width: 42px;
+  height: 23px;
+
+  flex: 0 0 42px;
+
+  position: relative;
+
+  border-radius: 999px;
+
+  background: #374151;
+
+  border: 1px solid #4b5563;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.manager-toggle-knob {
+  position: absolute;
+
+  top: 3px;
+  left: 3px;
+
+  width: 15px;
+  height: 15px;
+
+  border-radius: 50%;
+
+  background: #e5e7eb;
+
+  box-shadow:
+    0 1px 4px rgba(0, 0, 0, 0.4);
+
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease;
+}
+
+.manager-toggle.enabled {
+  background: #4f46e5;
+
+  border-color: #6366f1;
+}
+
+.manager-toggle.enabled .manager-toggle-knob {
+  transform: translateX(19px);
+
+  background: #ffffff;
+}
+
+/* =========================================================
+   DARK MODE PREVIEW
+   ========================================================= */
+
+.manager-settings-light-mode {
+  display: flex;
+  align-items: center;
+
+  gap: 24px;
+
+  padding: 24px;
+
+  background: #111827;
+}
+
+/* =========================================================
+   DARK PREVIEW
+   ========================================================= */
+
+.manager-light-preview {
+  width: 220px;
+  height: 125px;
+
+  flex: 0 0 220px;
+
+  display: flex;
+
+  overflow: hidden;
+
+  background: #0b0f19;
+
+  border: 1px solid #293548;
+
+  border-radius: 9px;
+
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.manager-light-preview-sidebar {
+  width: 45px;
+
+  padding: 12px 7px;
+
+  box-sizing: border-box;
+
+  background: #0f172a;
+
+  border-right: 1px solid #1f2937;
+}
+
+.manager-light-preview-sidebar div {
+  width: 100%;
+  height: 7px;
+
+  margin-bottom: 9px;
+
+  border-radius: 3px;
+
+  background: #334155;
+}
+
+.manager-light-preview-sidebar div:first-child {
+  background: #4f46e5;
+}
+
+.manager-light-preview-content {
+  flex: 1;
+
+  padding: 14px;
+
+  background: #0b0f19;
+}
+
+.manager-light-preview-title {
+  width: 55%;
+  height: 9px;
+
+  margin-bottom: 15px;
+
+  border-radius: 3px;
+
+  background: #475569;
+}
+
+.manager-light-preview-cards {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 6px;
+}
+
+.manager-light-preview-cards div {
+  height: 42px;
+
+  border: 1px solid #263244;
+
+  border-radius: 5px;
+
+  background: #111827;
+}
+
+/* =========================================================
+   DARK DESCRIPTION
+   ========================================================= */
+
+.manager-light-description {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+.manager-light-description strong {
+  color: #f8fafc;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.manager-light-description span {
+  max-width: 430px;
+
+  color: #94a3b8;
+
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.manager-settings-status-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  background: #111827;
+}
+
+.manager-settings-status-item {
+  min-height: 85px;
+
+  padding: 18px 24px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  border-right: 1px solid #1f2937;
+}
+
+.manager-settings-status-item:last-child {
+  border-right: 0;
+}
+
+.manager-settings-status-item span {
+  color: #94a3b8;
+
+  font-size: 10px;
+  font-weight: 650;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.04em;
+}
+
+.manager-settings-status-item strong {
+  color: #f8fafc;
+
+  font-size: 13px;
+}
+
+.manager-settings-status-item svg {
+  color: #22c55e;
+}
+
+/* =========================================================
+   GENERAL DARK MODE OVERRIDES
+   ========================================================= */
+
+.manager-settings-page button {
+  font-family: inherit;
+}
+
+.manager-settings-page svg {
+  flex-shrink: 0;
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+html.atlas-manager-reduced-motion *,
+html.atlas-manager-reduced-motion *::before,
+html.atlas-manager-reduced-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+
+  scroll-behavior: auto !important;
+
+  transition-duration: 0.01ms !important;
+}
+
+/* =========================================================
+   COMPACT MODE
+   ========================================================= */
+
+html.atlas-manager-compact .manager-page {
+  padding-top: 18px;
+  padding-bottom: 24px;
+}
+
+html.atlas-manager-compact .manager-settings-card {
+  margin-bottom: 14px;
+}
+
+html.atlas-manager-compact .manager-setting-row {
+  padding-top: 13px;
+  padding-bottom: 13px;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 700px) {
+  .manager-settings-page {
+    max-width: none;
+  }
+
+  .manager-settings-header h1 {
+    font-size: 28px;
+  }
+
+  .manager-setting-row {
+    padding: 16px 18px;
+  }
+
+  .manager-settings-card-header {
+    padding: 18px;
+  }
+
+  .manager-settings-status-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .manager-settings-status-item {
+    border-right: 0;
+
+    border-bottom: 1px solid #1f2937;
+  }
+
+  .manager-settings-status-item:last-child {
+    border-bottom: 0;
+  }
+
+  .manager-settings-light-mode {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    padding: 18px;
+  }
+
+  .manager-light-preview {
+    width: 100%;
+    max-width: 280px;
+  }
+}

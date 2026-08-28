@@ -1,0 +1,1069 @@
+/* =========================================================
+   ATLAS HR — LEAVE MANAGEMENT
+   ========================================================= */
+
+.leave-command-page {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 8px 4px 40px;
+  color: #f5f7fb;
+}
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.leave-command-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.leave-command-header > div:first-child {
+  min-width: 0;
+}
+
+.leave-command-kicker {
+  margin-bottom: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #8d98aa;
+}
+
+.leave-command-header h1 {
+  margin: 0;
+  font-size: clamp(28px, 3vw, 38px);
+  line-height: 1.1;
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+}
+
+.leave-command-header p {
+  max-width: 680px;
+  margin: 10px 0 0;
+  color: #8f99aa;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.leave-header-date {
+  min-width: 150px;
+  padding: 14px 18px;
+  border: 1px solid #242936;
+  border-radius: 14px;
+  background: #11141a;
+  text-align: right;
+}
+
+.leave-header-date span {
+  display: block;
+  margin-bottom: 4px;
+  color: #737d8e;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.leave-header-date strong {
+  color: #f4f6fa;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.leave-command-error {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+  padding: 13px 16px;
+  border: 1px solid #49272b;
+  border-radius: 12px;
+  background: #1b1215;
+  color: #ff9ca5;
+  font-size: 13px;
+}
+
+.leave-command-error > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 26px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #3b1b20;
+  color: #ff8c97;
+  font-weight: 800;
+}
+
+/* =========================================================
+   METRICS
+   ========================================================= */
+
+.leave-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.leave-metric-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid #242936;
+  border-radius: 16px;
+  background: #11141a;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.leave-metric-card:hover {
+  transform: translateY(-2px);
+  border-color: #343b4a;
+  background: #141820;
+}
+
+.leave-metric-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.pending-icon {
+  background: #292315;
+  color: #e5b85c;
+}
+
+.approved-icon {
+  background: #14271f;
+  color: #65d39a;
+}
+
+.rejected-icon {
+  background: #2a171b;
+  color: #f17b87;
+}
+
+.total-icon {
+  background: #191d2c;
+  color: #9ba8ff;
+}
+
+.leave-metric-card > div:last-child {
+  min-width: 0;
+}
+
+.leave-metric-card span {
+  display: block;
+  margin-bottom: 5px;
+  color: #7f8999;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.leave-metric-card strong {
+  display: block;
+  color: #f6f7fa;
+  font-size: 27px;
+  line-height: 1.1;
+  font-weight: 750;
+}
+
+.leave-metric-card small {
+  display: block;
+  margin-top: 5px;
+  color: #687283;
+  font-size: 11px;
+}
+
+/* =========================================================
+   MAIN WORKSPACE
+   ========================================================= */
+
+.leave-command-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(340px, 0.75fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+/* =========================================================
+   PANELS
+   ========================================================= */
+
+.leave-request-panel,
+.leave-profile-panel {
+  min-width: 0;
+  border: 1px solid #242936;
+  border-radius: 18px;
+  background: #101319;
+  overflow: hidden;
+}
+
+.leave-request-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 650px;
+}
+
+.leave-profile-panel {
+  min-height: 650px;
+}
+
+/* =========================================================
+   PANEL HEADER
+   ========================================================= */
+
+.leave-panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 22px 22px 18px;
+  border-bottom: 1px solid #202530;
+}
+
+.leave-panel-heading span,
+.leave-history-heading span {
+  display: block;
+  margin-bottom: 6px;
+  color: #727d8d;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+}
+
+.leave-panel-heading h2,
+.leave-history-heading h3 {
+  margin: 0;
+  color: #f6f7fa;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.leave-request-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 10px;
+  border: 1px solid #2b3140;
+  border-radius: 10px;
+  background: #171b23;
+  color: #b7c0cf;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+.leave-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 18px 20px 12px;
+  padding: 0 13px;
+  height: 44px;
+  border: 1px solid #282e3a;
+  border-radius: 11px;
+  background: #0c0f14;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.leave-search:focus-within {
+  border-color: #4d5870;
+  box-shadow: 0 0 0 3px rgba(100, 115, 145, 0.08);
+}
+
+.leave-search > span {
+  flex: 0 0 auto;
+  color: #697486;
+  font-size: 20px;
+}
+
+.leave-search input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: #e9edf4;
+  font: inherit;
+  font-size: 13px;
+}
+
+.leave-search input::placeholder {
+  color: #5f6878;
+}
+
+/* =========================================================
+   FILTERS
+   ========================================================= */
+
+.leave-filters {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 20px 16px;
+  border-bottom: 1px solid #202530;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.leave-filters::-webkit-scrollbar {
+  display: none;
+}
+
+.leave-filters button {
+  flex: 0 0 auto;
+  padding: 8px 13px;
+  border: 1px solid #292f3b;
+  border-radius: 9px;
+  background: #151920;
+  color: #7f8999;
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.leave-filters button:hover {
+  border-color: #3a4251;
+  color: #c7ced9;
+}
+
+.leave-filters button.active {
+  border-color: #59657a;
+  background: #222833;
+  color: #f4f6fa;
+}
+
+/* =========================================================
+   REQUEST FEED
+   ========================================================= */
+
+.leave-request-feed {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.leave-feed-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 13px;
+  padding: 16px 20px;
+  border: 0;
+  border-bottom: 1px solid #1d222b;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    padding-left 0.2s ease;
+}
+
+.leave-feed-item:hover {
+  background: #151920;
+}
+
+.leave-feed-item.selected {
+  background: #171c25;
+  box-shadow: inset 3px 0 0 #7784ff;
+}
+
+.leave-feed-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  border: 1px solid #303746;
+  border-radius: 12px;
+  background: #1b202a;
+  color: #b7c0ff;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.leave-feed-content {
+  min-width: 0;
+  flex: 1;
+}
+
+.leave-feed-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.leave-feed-top strong {
+  min-width: 0;
+  overflow: hidden;
+  color: #e8ebf1;
+  font-size: 13px;
+  font-weight: 680;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.leave-feed-type {
+  display: block;
+  margin-top: 4px;
+  color: #9da6b5;
+  font-size: 12px;
+}
+
+.leave-feed-date {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 7px;
+  color: #697384;
+  font-size: 11px;
+}
+
+.leave-feed-arrow {
+  flex: 0 0 auto;
+  color: #596373;
+  font-size: 18px;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.leave-feed-item:hover .leave-feed-arrow {
+  color: #aab4c5;
+  transform: translateX(3px);
+}
+
+/* =========================================================
+   STATUS BADGES
+   ========================================================= */
+
+.leave-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  padding: 5px 8px;
+  border-radius: 7px;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.leave-approved {
+  border: 1px solid #244634;
+  background: #14251d;
+  color: #68d39c;
+}
+
+.leave-rejected {
+  border: 1px solid #4a292e;
+  background: #29171b;
+  color: #f07d88;
+}
+
+.leave-pending {
+  border: 1px solid #4b3d22;
+  background: #282115;
+  color: #dfb961;
+}
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.leave-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 380px;
+  padding: 40px;
+  text-align: center;
+}
+
+.leave-loading-circle {
+  width: 28px;
+  height: 28px;
+  margin-bottom: 16px;
+  border: 2px solid #303746;
+  border-top-color: #8a96ff;
+  border-radius: 50%;
+  animation: leave-spin 0.8s linear infinite;
+}
+
+.leave-loading strong {
+  color: #dce1e9;
+  font-size: 14px;
+}
+
+.leave-loading span {
+  margin-top: 5px;
+  color: #697384;
+  font-size: 12px;
+}
+
+@keyframes leave-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.leave-no-results,
+.leave-profile-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 420px;
+  padding: 40px;
+  text-align: center;
+}
+
+.leave-no-results > div,
+.leave-empty-symbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 16px;
+  border: 1px solid #303746;
+  border-radius: 15px;
+  background: #171b23;
+  color: #72d6a0;
+  font-size: 20px;
+  font-weight: 750;
+}
+
+.leave-no-results h3,
+.leave-profile-empty h3 {
+  margin: 0;
+  color: #dfe3ea;
+  font-size: 15px;
+}
+
+.leave-no-results p,
+.leave-profile-empty p {
+  max-width: 330px;
+  margin: 8px 0 0;
+  color: #697384;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+/* =========================================================
+   PROFILE PANEL
+   ========================================================= */
+
+.leave-profile-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.leave-profile {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 24px 22px;
+  border-bottom: 1px solid #202530;
+}
+
+.leave-profile-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 52px;
+  width: 52px;
+  height: 52px;
+  border: 1px solid #353d4e;
+  border-radius: 15px;
+  background: #1c2130;
+  color: #aeb7ff;
+  font-size: 18px;
+  font-weight: 750;
+}
+
+.leave-profile > div:last-child {
+  min-width: 0;
+}
+
+.leave-profile > div:last-child > span {
+  display: block;
+  margin-bottom: 5px;
+  color: #707b8c;
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: 0.14em;
+}
+
+.leave-profile h2 {
+  margin: 0;
+  overflow: hidden;
+  color: #f1f3f7;
+  font-size: 18px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.leave-profile p {
+  margin: 4px 0 0;
+  color: #737d8d;
+  font-size: 12px;
+}
+
+/* =========================================================
+   PROFILE INFO
+   ========================================================= */
+
+.leave-profile-info {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1px;
+  margin: 18px 20px;
+  border: 1px solid #242a35;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #242a35;
+}
+
+.leave-profile-info > div {
+  padding: 13px 14px;
+  background: #13171e;
+}
+
+.leave-profile-info span {
+  display: block;
+  margin-bottom: 5px;
+  color: #687283;
+  font-size: 10px;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.leave-profile-info strong {
+  display: block;
+  overflow: hidden;
+  color: #d8dde6;
+  font-size: 12px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   HISTORY HEADER
+   ========================================================= */
+
+.leave-history-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 4px 22px 16px;
+}
+
+.leave-history-heading h3 {
+  font-size: 16px;
+}
+
+.leave-history-heading > strong {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  height: 30px;
+  padding: 0 8px;
+  border-radius: 9px;
+  background: #191e27;
+  color: #aeb7c6;
+  font-size: 12px;
+}
+
+/* =========================================================
+   HISTORY FEED
+   ========================================================= */
+
+.leave-history-feed {
+  flex: 1;
+  max-height: 390px;
+  padding: 0 20px 20px;
+  overflow-y: auto;
+}
+
+.leave-history-item {
+  display: flex;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid #1e232c;
+}
+
+.leave-history-item:last-child {
+  border-bottom: 0;
+}
+
+.leave-history-marker {
+  position: relative;
+  flex: 0 0 18px;
+  width: 18px;
+}
+
+.leave-history-marker::before {
+  position: absolute;
+  top: 4px;
+  bottom: -18px;
+  left: 50%;
+  width: 1px;
+  background: #2b313c;
+  content: "";
+}
+
+.leave-history-item:last-child .leave-history-marker::before {
+  display: none;
+}
+
+.leave-history-marker span {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 8px;
+  height: 8px;
+  margin: 5px auto 0;
+  border: 2px solid #6572e8;
+  border-radius: 50%;
+  background: #11141a;
+}
+
+.leave-history-body {
+  min-width: 0;
+  flex: 1;
+}
+
+.leave-history-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.leave-history-top > div {
+  min-width: 0;
+}
+
+.leave-history-top strong {
+  display: block;
+  color: #dfe3ea;
+  font-size: 12px;
+  font-weight: 680;
+}
+
+.leave-history-top > div > span {
+  display: block;
+  margin-top: 4px;
+  color: #687384;
+  font-size: 10px;
+}
+
+.leave-history-body > p {
+  margin: 10px 0 0;
+  padding: 9px 10px;
+  border-radius: 8px;
+  background: #151920;
+  color: #818b9b;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+/* =========================================================
+   HISTORY ACTIONS
+   ========================================================= */
+
+.leave-history-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 11px;
+}
+
+.leave-history-actions button {
+  border-radius: 7px;
+  padding: 7px 10px;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.leave-history-actions button:hover {
+  transform: translateY(-1px);
+}
+
+.leave-approve {
+  border: 1px solid #28503a;
+  background: #15271e;
+  color: #69d59d;
+}
+
+.leave-approve:hover {
+  background: #1a3225;
+}
+
+.leave-reject {
+  border: 1px solid #502b31;
+  background: #2a181c;
+  color: #f1838d;
+}
+
+.leave-reject:hover {
+  background: #351c21;
+}
+
+.leave-remove {
+  border: 1px solid #303641;
+  background: #171b22;
+  color: #7e8999;
+}
+
+.leave-remove:hover {
+  border-color: #4a5261;
+  background: #20252e;
+  color: #c0c7d2;
+}
+
+/* =========================================================
+   SCROLLBARS
+   ========================================================= */
+
+.leave-request-feed,
+.leave-history-feed {
+  scrollbar-width: thin;
+  scrollbar-color: #303744 transparent;
+}
+
+.leave-request-feed::-webkit-scrollbar,
+.leave-history-feed::-webkit-scrollbar {
+  width: 6px;
+}
+
+.leave-request-feed::-webkit-scrollbar-track,
+.leave-history-feed::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.leave-request-feed::-webkit-scrollbar-thumb,
+.leave-history-feed::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: #303744;
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+  .leave-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .leave-command-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .leave-request-panel,
+  .leave-profile-panel {
+    min-height: auto;
+  }
+
+  .leave-profile-panel {
+    min-height: 500px;
+  }
+
+  .leave-history-feed {
+    max-height: 500px;
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+  .leave-command-page {
+    padding: 4px 0 30px;
+  }
+
+  .leave-command-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .leave-header-date {
+    width: 100%;
+    text-align: left;
+  }
+
+  .leave-command-header h1 {
+    font-size: 28px;
+  }
+
+  .leave-command-header p {
+    font-size: 13px;
+  }
+
+  .leave-metrics {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .leave-metric-card {
+    padding: 16px;
+  }
+
+  .leave-command-workspace {
+    gap: 12px;
+  }
+
+  .leave-request-panel,
+  .leave-profile-panel {
+    border-radius: 14px;
+  }
+
+  .leave-panel-heading {
+    padding: 18px 16px 15px;
+  }
+
+  .leave-search {
+    margin-left: 14px;
+    margin-right: 14px;
+  }
+
+  .leave-filters {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .leave-feed-item {
+    padding: 14px;
+  }
+
+  .leave-feed-top {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .leave-feed-arrow {
+    display: none;
+  }
+
+  .leave-profile {
+    padding: 20px 16px;
+  }
+
+  .leave-profile-info {
+    margin-left: 14px;
+    margin-right: 14px;
+  }
+
+  .leave-history-heading {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .leave-history-feed {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .leave-history-top {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .leave-history-actions {
+    gap: 6px;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 420px) {
+  .leave-command-header h1 {
+    font-size: 25px;
+  }
+
+  .leave-metric-card strong {
+    font-size: 24px;
+  }
+
+  .leave-feed-avatar {
+    flex-basis: 38px;
+    width: 38px;
+    height: 38px;
+  }
+
+  .leave-feed-item {
+    gap: 10px;
+  }
+
+  .leave-feed-date {
+    flex-wrap: wrap;
+  }
+
+  .leave-profile-avatar {
+    flex-basis: 46px;
+    width: 46px;
+    height: 46px;
+  }
+}

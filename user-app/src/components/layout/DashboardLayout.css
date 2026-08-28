@@ -1,0 +1,183 @@
+/* =========================================================
+   ATLAS — GLOBAL DASHBOARD LAYOUT
+========================================================= */
+
+.atlas-layout {
+  --sidebar-width: 268px;
+
+  width: 100%;
+  min-height: 100vh;
+
+  margin: 0;
+  padding: 0;
+
+  background: #080b12;
+  color: #f4f6fa;
+
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+
+/* =========================================================
+   MAIN AREA
+========================================================= */
+
+.atlas-main {
+  width: calc(100% - var(--sidebar-width));
+  min-width: 0;
+  min-height: 100vh;
+
+  margin-left: var(--sidebar-width);
+  padding: 0;
+
+  box-sizing: border-box;
+
+  background:
+    radial-gradient(
+      circle at 85% -10%,
+      rgba(99, 102, 241, 0.055),
+      transparent 30%
+    ),
+    #080b12;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.atlas-content {
+  width: 100%;
+  min-width: 0;
+  min-height: calc(100vh - 82px);
+
+  margin: 0;
+  padding: 22px 26px 36px;
+
+  box-sizing: border-box;
+
+  overflow-x: auto;
+}
+
+
+/* =========================================================
+   DIRECT CHILDREN
+   Content should use the complete available width.
+========================================================= */
+
+.atlas-content > * {
+  width: 100%;
+  max-width: none;
+
+  margin: 0;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+
+  .atlas-layout {
+    --sidebar-width: 230px;
+  }
+
+  .atlas-main {
+    width: calc(100% - var(--sidebar-width));
+    margin-left: var(--sidebar-width);
+  }
+
+  .atlas-content {
+    padding: 20px 20px 32px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   Sidebar becomes an overlay.
+   Main content uses the full screen width.
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .atlas-layout {
+    --sidebar-width: 0px;
+  }
+
+  .atlas-main {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .atlas-content {
+    width: 100%;
+    min-height: calc(100vh - 74px);
+
+    padding: 18px 16px 28px;
+
+    overflow-x: hidden;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+  .atlas-content {
+    padding: 16px 12px 24px;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL DEVICES
+========================================================= */
+
+@media (max-width: 400px) {
+
+  .atlas-content {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+
+/* =========================================================
+   SELECTION
+========================================================= */
+
+.atlas-layout ::selection {
+  background: rgba(99, 102, 241, 0.3);
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+.atlas-layout ::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+.atlas-layout ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.atlas-layout ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+}
+
+.atlas-layout ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.17);
+}

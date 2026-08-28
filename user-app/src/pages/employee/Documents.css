@@ -1,0 +1,340 @@
+/* =========================================================
+   ATLAS — EMPLOYEE DOCUMENTS
+   ========================================================= */
+
+.employee-documents-page {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 4px 0 48px;
+  color: #172033;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.documents-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.documents-eyebrow {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.documents-header h1 {
+  margin: 0;
+  color: #111827;
+  font-size: clamp(28px, 3vw, 38px);
+  font-weight: 750;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+}
+
+.documents-header p {
+  margin: 10px 0 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* =========================================================
+   SUMMARY
+   ========================================================= */
+
+.documents-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.document-summary-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 105px;
+  padding: 18px;
+  background: #ffffff;
+  border: 1px solid #e8edf3;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.035);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.document-summary-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.07);
+}
+
+.document-summary-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  color: #475569;
+  background: #f1f5f9;
+  font-size: 18px;
+  font-weight: 750;
+}
+
+.document-summary-icon.pdf {
+  color: #dc2626;
+  background: #fef2f2;
+  font-size: 10px;
+}
+
+.document-summary-icon.secure {
+  color: #15803d;
+  background: #f0fdf4;
+}
+
+.document-summary-card span {
+  display: block;
+  margin-bottom: 3px;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.document-summary-card strong {
+  display: block;
+  color: #111827;
+  font-size: 21px;
+  font-weight: 750;
+  line-height: 1.1;
+}
+
+.document-summary-card small {
+  display: block;
+  margin-top: 3px;
+  color: #94a3b8;
+  font-size: 10px;
+}
+
+/* =========================================================
+   DOCUMENT CARD
+   ========================================================= */
+
+.documents-card {
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e8edf3;
+  border-radius: 15px;
+  box-shadow: 0 2px 9px rgba(15, 23, 42, 0.035);
+}
+
+.documents-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 23px 24px 20px;
+  border-bottom: 1px solid #eef2f6;
+}
+
+.documents-card-header h2 {
+  margin: 0;
+  color: #111827;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.documents-card-header p {
+  margin: 5px 0 0;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.documents-count {
+  padding: 7px 11px;
+  color: #475569;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 650;
+}
+
+/* =========================================================
+   DOCUMENT LIST
+   ========================================================= */
+
+.documents-list {
+  width: 100%;
+}
+
+.document-row {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 15px;
+  min-height: 82px;
+  padding: 13px 24px;
+  border-bottom: 1px solid #f0f2f5;
+  transition: background 0.15s ease;
+}
+
+.document-row:last-child {
+  border-bottom: 0;
+}
+
+.document-row:hover {
+  background: #fafcff;
+}
+
+/* =========================================================
+   FILE ICON
+   ========================================================= */
+
+.document-file-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 46px;
+  border-radius: 9px;
+  color: #dc2626;
+  background: #fef2f2;
+  border: 1px solid #fee2e2;
+}
+
+.document-file-icon span {
+  font-size: 9px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   INFORMATION
+   ========================================================= */
+
+.document-info {
+  min-width: 0;
+}
+
+.document-info strong {
+  display: block;
+  overflow: hidden;
+  color: #1e293b;
+  font-size: 13px;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.document-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 5px;
+  color: #94a3b8;
+  font-size: 10px;
+}
+
+.document-meta span {
+  white-space: nowrap;
+}
+
+/* =========================================================
+   VIEW BUTTON
+   ========================================================= */
+
+.document-view-button {
+  min-height: 34px;
+  padding: 0 13px;
+  color: #475569;
+  background: #ffffff;
+  border: 1px solid #dbe2ea;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 650;
+  cursor: pointer;
+  transition:
+    color 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.document-view-button:hover {
+  color: #111827;
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .documents-summary {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 640px) {
+  .employee-documents-page {
+    padding-bottom: 28px;
+  }
+
+  .documents-header {
+    margin-bottom: 20px;
+  }
+
+  .documents-header h1 {
+    font-size: 27px;
+  }
+
+  .documents-header p {
+    font-size: 12px;
+  }
+
+  .document-summary-card {
+    min-height: 90px;
+  }
+
+  .documents-card-header {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 18px;
+  }
+
+  .document-row {
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 12px;
+    padding: 14px 18px;
+  }
+
+  .document-file-icon {
+    width: 38px;
+    height: 42px;
+  }
+
+  .document-meta {
+    flex-wrap: wrap;
+  }
+
+  .document-view-button {
+    grid-column: 2;
+    width: fit-content;
+  }
+}

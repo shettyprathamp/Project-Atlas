@@ -1,0 +1,570 @@
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+} from "react-router-dom";
+
+import { AuthProvider } from "./context/AuthContext";
+
+import Login from "./pages/Login";
+
+import ProtectedRoute from "./routes/ProtectedRoute";
+import RoleRoute from "./routes/RoleRoute";
+
+import DashboardLayout from "./components/layout/DashboardLayout";
+import EmployeeSidebar from "./components/employee/EmployeeSidebar";
+
+// =========================================================
+// HR PAGES
+// =========================================================
+
+import HRDashboard from "./pages/hr/HRDashboard";
+import Employees from "./pages/hr/Employees";
+import Attendance from "./pages/hr/Attendance";
+import Leave from "./pages/hr/Leave";
+import Recruitment from "./pages/hr/Recruitment";
+import Payroll from "./pages/hr/Payroll";
+import Reports from "./pages/hr/Reports";
+
+// =========================================================
+// EMPLOYEE PAGES
+// =========================================================
+
+import EmployeeDashboard from "./pages/employee/EmployeeDashboard";
+import EmployeeAttendance from "./pages/employee/Attendance";
+import EmployeeLeave from "./pages/employee/Leave";
+import EmployeePayroll from "./pages/employee/Payroll";
+import EmployeeProfile from "./pages/employee/Profile";
+import EmployeeSettings from "./pages/employee/Settings";
+
+// =========================================================
+// GLOBAL STYLES
+// =========================================================
+
+import "./App.css";
+
+// =========================================================
+// PLACEHOLDER
+// =========================================================
+
+function Workspace({ title }) {
+  return (
+    <div className="atlas-workspace">
+      <div className="atlas-workspace-inner">
+        <h1>{title}</h1>
+
+        <p>
+          Project Atlas workspace
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// =========================================================
+// UNAUTHORIZED
+// =========================================================
+
+function Unauthorized() {
+  return (
+    <div className="atlas-unauthorized">
+      <div>
+        <h1>
+          Access Denied
+        </h1>
+
+        <p>
+          You do not have permission to access this workspace.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// =========================================================
+// HR / MANAGER / BILLING SHELL
+// =========================================================
+
+function ProtectedLayout({ children }) {
+  return (
+    <DashboardLayout>
+      {children}
+    </DashboardLayout>
+  );
+}
+
+// =========================================================
+// EMPLOYEE SHELL
+//
+// EmployeeDashboard has its own sidebar.
+// All other employee pages use this shell.
+// =========================================================
+
+function EmployeeShell({ children }) {
+  return (
+    <div className="employee-dashboard-root">
+
+      {/* SIDEBAR */}
+      <EmployeeSidebar />
+
+      {/* MAIN */}
+      <main className="employee-main">
+        <div className="employee-page">
+          {children}
+        </div>
+      </main>
+
+    </div>
+  );
+}
+
+// =========================================================
+// APP
+// =========================================================
+
+function App() {
+  return (
+    <BrowserRouter>
+
+      <AuthProvider>
+
+        <Routes>
+
+          {/* =====================================================
+              PUBLIC
+          ===================================================== */}
+
+          <Route
+            path="/"
+            element={
+              <Navigate
+                to="/login"
+                replace
+              />
+            }
+          />
+
+          <Route
+            path="/login"
+            element={
+              <Login />
+            }
+          />
+
+          <Route
+            path="/unauthorized"
+            element={
+              <Unauthorized />
+            }
+          />
+
+          {/* =====================================================
+              PROTECTED
+          ===================================================== */}
+
+          <Route
+            element={
+              <ProtectedRoute />
+            }
+          >
+
+            {/* =================================================
+                MANAGER
+            ================================================= */}
+
+            <Route
+              element={
+                <RoleRoute
+                  allowedRoles={[
+                    "manager",
+                  ]}
+                />
+              }
+            >
+
+              <Route
+                path="/manager"
+                element={
+                  <ProtectedLayout>
+                    <Workspace
+                      title="Manager Dashboard"
+                    />
+                  </ProtectedLayout>
+                }
+              />
+
+              <Route
+                path="/manager/employees"
+                element={
+                  <ProtectedLayout>
+                    <Workspace
+                      title="Manager Employees"
+                    />
+                  </ProtectedLayout>
+                }
+              />
+
+              <Route
+                path="/manager/projects"
+                element={
+                  <ProtectedLayout>
+                    <Workspace
+                      title="Manager Projects"
+                    />
+                  </ProtectedLayout>
+                }
+              />
+
+              <Route
+                path="/manager/attendance"
+                element={
+                  <ProtectedLayout>
+                    <Workspace
+                      title="Manager Attendance"
+                    />
+                  </ProtectedLayout>
+                }
+              />
+
+              <Route
+                path="/manager/leave"
+                element={
+                  <ProtectedLayout>
+                    <Workspace
+                      title="Manager Leave"
+                    />
+                  </ProtectedLayout>
+                }
+              />
+
+              <Route
+                path="/manager/billing"
+                element={
+                  <ProtectedLayout>
+                    <Workspace
+                      title="Manager Billing"
+                    />
+                  </ProtectedLayout>
+                }
+              />
+
+              <Route
+                path="/manager/reports"
+                element={
+                  <ProtectedLayout>
+                    <Workspace
+                      title="Manager Reports"
+                    />
+                  </ProtectedLayout>
+                }
+              />
+
+            </Route>
+
+            {/* =================================================
+                BILLING
+            ================================================= */}
+
+            <Route
+              element={
+                <RoleRoute
+                  allowedRoles={[
+                    "billing",
+                  ]}
+                />
+              }
+            >
+
+              <Route
+                path="/billing"
+                element={
+                  <ProtectedLayout>
+                    <Workspace
+                      title="Billing Software"
+                    />
+                  </ProtectedLayout>
+                }
+              />
+
+              <Route
+                path="/billing/invoices"
+                element={
+                  <ProtectedLayout>
+                    <Workspace
+                      title="Invoices"
+                    />
+                  </ProtectedLayout>
+                }
+              />
+
+              <Route
+                path="/billing/customers"
+                element={
+                  <ProtectedLayout>
+                    <Workspace
+                      title="Customers"
+                    />
+                  </ProtectedLayout>
+                }
+              />
+
+              <Route
+                path="/billing/payments"
+                element={
+                  <ProtectedLayout>
+                    <Workspace
+                      title="Payments"
+                    />
+                  </ProtectedLayout>
+                }
+              />
+
+              <Route
+                path="/billing/expenses"
+                element={
+                  <ProtectedLayout>
+                    <Workspace
+                      title="Expenses"
+                    />
+                  </ProtectedLayout>
+                }
+              />
+
+              <Route
+                path="/billing/reports"
+                element={
+                  <ProtectedLayout>
+                    <Workspace
+                      title="Billing Reports"
+                    />
+                  </ProtectedLayout>
+                }
+              />
+
+            </Route>
+
+            {/* =================================================
+                HR
+            ================================================= */}
+
+            <Route
+              element={
+                <RoleRoute
+                  allowedRoles={[
+                    "hr",
+                  ]}
+                />
+              }
+            >
+
+              <Route
+                path="/hr"
+                element={
+                  <ProtectedLayout>
+                    <HRDashboard />
+                  </ProtectedLayout>
+                }
+              />
+
+              <Route
+                path="/hr/employees"
+                element={
+                  <ProtectedLayout>
+                    <Employees />
+                  </ProtectedLayout>
+                }
+              />
+
+              <Route
+                path="/hr/attendance"
+                element={
+                  <ProtectedLayout>
+                    <Attendance />
+                  </ProtectedLayout>
+                }
+              />
+
+              <Route
+                path="/hr/leave"
+                element={
+                  <ProtectedLayout>
+                    <Leave />
+                  </ProtectedLayout>
+                }
+              />
+
+              <Route
+                path="/hr/recruitment"
+                element={
+                  <ProtectedLayout>
+                    <Recruitment />
+                  </ProtectedLayout>
+                }
+              />
+
+              <Route
+                path="/hr/payroll"
+                element={
+                  <ProtectedLayout>
+                    <Payroll />
+                  </ProtectedLayout>
+                }
+              />
+
+              <Route
+                path="/hr/reports"
+                element={
+                  <ProtectedLayout>
+                    <Reports />
+                  </ProtectedLayout>
+                }
+              />
+
+            </Route>
+
+            {/* =================================================
+                EMPLOYEE
+            ================================================= */}
+
+            <Route
+              element={
+                <RoleRoute
+                  allowedRoles={[
+                    "employee",
+                  ]}
+                />
+              }
+            >
+
+              {/* =================================================
+                  EMPLOYEE DASHBOARD
+              ================================================= */}
+
+              <Route
+                path="/employee"
+                element={
+                  <EmployeeDashboard />
+                }
+              />
+
+              {/* =================================================
+                  ATTENDANCE
+              ================================================= */}
+
+              <Route
+                path="/employee/attendance"
+                element={
+                  <EmployeeShell>
+                    <EmployeeAttendance />
+                  </EmployeeShell>
+                }
+              />
+
+              {/* =================================================
+                  LEAVE
+              ================================================= */}
+
+              <Route
+                path="/employee/leave"
+                element={
+                  <EmployeeShell>
+                    <EmployeeLeave />
+                  </EmployeeShell>
+                }
+              />
+
+              {/* =================================================
+                  TASKS
+              ================================================= */}
+
+              <Route
+                path="/employee/tasks"
+                element={
+                  <EmployeeShell>
+                    <Workspace
+                      title="Employee Tasks"
+                    />
+                  </EmployeeShell>
+                }
+              />
+
+              {/* =================================================
+                  PAYSLIPS
+              ================================================= */}
+
+              <Route
+                path="/employee/payslips"
+                element={
+                  <EmployeeShell>
+                    <EmployeePayroll />
+                  </EmployeeShell>
+                }
+              />
+
+              {/* =================================================
+                  PAYROLL
+              ================================================= */}
+
+              <Route
+                path="/employee/payroll"
+                element={
+                  <EmployeeShell>
+                    <EmployeePayroll />
+                  </EmployeeShell>
+                }
+              />
+
+              {/* =================================================
+                  PROFILE
+              ================================================= */}
+
+              <Route
+                path="/employee/profile"
+                element={
+                  <EmployeeShell>
+                    <EmployeeProfile />
+                  </EmployeeShell>
+                }
+              />
+
+              {/* =================================================
+                  SETTINGS
+              ================================================= */}
+
+              <Route
+                path="/employee/settings"
+                element={
+                  <EmployeeShell>
+                    <EmployeeSettings />
+                  </EmployeeShell>
+                }
+              />
+
+            </Route>
+
+          </Route>
+
+          {/* =====================================================
+              UNKNOWN ROUTES
+          ===================================================== */}
+
+          <Route
+            path="*"
+            element={
+              <Navigate
+                to="/login"
+                replace
+              />
+            }
+          />
+
+        </Routes>
+
+      </AuthProvider>
+
+    </BrowserRouter>
+  );
+}
+
+export default App;

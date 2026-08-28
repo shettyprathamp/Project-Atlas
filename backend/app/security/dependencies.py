@@ -1,19 +1,21 @@
 from fastapi import Depends, HTTPException
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
 
 from app.database.database import get_db
 from app.models.admin import Admin
 from app.security.auth import decode_access_token
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+security = HTTPBearer()
 
 
 def get_current_admin(
-    token: str = Depends(oauth2_scheme),
+    credentials: HTTPAuthorizationCredentials = Depends(security),
     db: Session = Depends(get_db),
 ):
-    payload = decode_access_token(token)
+    payload = decode_access_token(
+        credentials.credentials
+    )
 
     if payload is None:
         raise HTTPException(
@@ -26,12 +28,14 @@ def get_current_admin(
     if admin_id is None:
         raise HTTPException(
             status_code=401,
-            detail="Invalid token",
+            detail="Invalid admin token",
         )
 
-    admin = db.query(Admin).filter(
-        Admin.id == admin_id
-    ).first()
+    admin = (
+        db.query(Admin)
+        .filter(Admin.id == admin_id)
+        .first()
+    )
 
     if admin is None:
         raise HTTPException(

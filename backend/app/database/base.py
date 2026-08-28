@@ -1,9 +1,3 @@
-from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.orm import declarative_base
 
-
-class Base(DeclarativeBase):
-    pass
-
-
-# Import models here
-from app.models.admin import Admin
+Base = declarative_base()
