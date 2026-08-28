@@ -1,12 +1,54 @@
+
+import os
+
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.orm import sessionmaker
 
-DATABASE_URL = "sqlite:///./project_atlas.db"
 
-engine = create_engine(
-    DATABASE_URL,
-    connect_args={"check_same_thread": False}
+# =========================================================
+# DATABASE CONFIGURATION
+# =========================================================
+
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "sqlite:///./project_atlas.db"
 )
+
+
+# Render may provide postgres://.
+# SQLAlchemy requires postgresql://.
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace(
+        "postgres://",
+        "postgresql://",
+        1
+    )
+
+
+# =========================================================
+# ENGINE
+# =========================================================
+
+if DATABASE_URL.startswith("sqlite"):
+
+    engine = create_engine(
+        DATABASE_URL,
+        connect_args={
+            "check_same_thread": False
+        }
+    )
+
+else:
+
+    engine = create_engine(
+        DATABASE_URL,
+        pool_pre_ping=True
+    )
+
+
+# =========================================================
+# SESSION
+# =========================================================
 
 SessionLocal = sessionmaker(
     autocommit=False,
@@ -15,9 +57,15 @@ SessionLocal = sessionmaker(
 )
 
 
+# =========================================================
+# DATABASE DEPENDENCY
+# =========================================================
+
 def get_db():
     db = SessionLocal()
+
     try:
         yield db
+
     finally:
         db.close()
