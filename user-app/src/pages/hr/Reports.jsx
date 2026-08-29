@@ -1,4 +1,4 @@
-import "./reports.css";
+import "./Reports.css";
 import { useEffect, useMemo, useState } from "react";
 import api from "../../services/api";
 
