@@ -4,9 +4,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.database.base import Base
 from app.database.database import engine
 
-
 # =========================================================
+
 # MODELS
+
 # =========================================================
 
 from app.models.admin import Admin
@@ -19,9 +20,10 @@ from app.models.recruitment import Recruitment
 from app.models.payroll import Payroll
 from app.models.payroll_change_request import PayrollChangeRequest
 
-
 # =========================================================
+
 # ROUTERS
+
 # =========================================================
 
 from app.routers import setup
@@ -42,64 +44,63 @@ from app.routers import manager_leave
 from app.routers import leave
 from app.routers import payroll_change_request
 
-
 # =========================================================
+
 # DATABASE
+
 # =========================================================
 
 Base.metadata.create_all(bind=engine)
 
-
 # =========================================================
+
 # FASTAPI APP
+
 # =========================================================
 
 app = FastAPI(
-    title="Project Atlas API",
-    version="1.0.0",
+title="Project Atlas API",
+version="1.0.0",
 )
 
+# =========================================================
 
-# =========================================================
 # CORS
-# =========================================================
-#
-# Atlas runs in different environments:
-#
-# Browser development:
-#   http://localhost:5173
-#   http://127.0.0.1:5173
-#
-# Electron production:
-#   http://127.0.0.1:<random-port>
-#
-# The Electron port is intentionally random, so we use
-# allow_origin_regex for localhost/127.0.0.1 with any port.
-#
+
 # =========================================================
 
 app.add_middleware(
-    CORSMiddleware,
+CORSMiddleware,
 
-    allow_origins=[
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-        "http://localhost",
-        "http://127.0.0.1",
-    ],
 
-    allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$",
+allow_origins=[
+    # Local Vite development
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
 
-    allow_credentials=True,
+    # Electron
+    "http://localhost",
+    "http://127.0.0.1",
 
-    allow_methods=["*"],
+    # Render production frontend
+    "https://project-atlas-frontend-r3ce.onrender.com",
+],
 
-    allow_headers=["*"],
+# Allow localhost / 127.0.0.1 with any port
+# for Electron and local development.
+allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$",
+
+allow_credentials=True,
+allow_methods=["*"],
+allow_headers=["*"],
+
+
 )
 
-
 # =========================================================
+
 # ROUTERS
+
 # =========================================================
 
 app.include_router(setup.router)
@@ -120,13 +121,15 @@ app.include_router(manager_leave.router)
 app.include_router(leave.router)
 
 # Payroll change requests
+
 app.include_router(
-    payroll_change_request.router
+payroll_change_request.router
 )
 
-
 # =========================================================
+
 # DEFAULT ROUTE
+
 # =========================================================
 
 @app.get("/")
