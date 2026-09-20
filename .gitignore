@@ -63,3 +63,7 @@ user-app/.cache/
 
 .vscode/
 .idea/
+
+# Android release signing keys
+*.jks
+*.keystore
