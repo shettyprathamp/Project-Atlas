@@ -1,3 +1,4 @@
+
 import {
   BrowserRouter,
   Navigate,
@@ -5,7 +6,10 @@ import {
   Routes,
 } from "react-router-dom";
 
+import { useEffect } from "react";
+
 import { AuthProvider } from "./context/AuthContext";
+import { checkForUpdate } from "./services/updateChecker";
 
 import Login from "./pages/Login";
 
@@ -138,6 +142,14 @@ function EmployeeShell({ children }) {
 // =========================================================
 
 function App() {
+  useEffect(() => {
+    checkForUpdate().then((update) => {
+      if (update) {
+        console.log("Atlas update available:", update);
+      }
+    });
+  }, []);
+
   return (
     <BrowserRouter>
       <AuthProvider>
