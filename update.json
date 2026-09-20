@@ -1,6 +1,6 @@
 {
-  "version": "1.1.1",
-  "versionCode": 3,
-  "apkUrl": "https://github.com/shettyprathams/Project-Atlas/releases/download/v1.1.1/Project-Atlas-v1.1.1.apk",
-  "releaseNotes": "Latest Project Atlas Android release."
+  "version": "1.2.0",
+  "versionCode": 4,
+  "apkUrl": "https://github.com/shettyprathams/Project-Atlas/releases/download/v1.2.0/Project-Atlas-v1.2.0.apk",
+  "releaseNotes": "Project Atlas v1.2.0 is now available with improved update notifications."
 }
