@@ -67,3 +67,4 @@ user-app/.cache/
 # Android release signing keys
 *.jks
 *.keystore
+keystore.properties
