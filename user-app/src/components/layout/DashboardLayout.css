@@ -1,11 +1,13 @@
 /* =========================================================
    ATLAS — GLOBAL DASHBOARD LAYOUT
+   Responsive Desktop / Tablet / Mobile
 ========================================================= */
 
 .atlas-layout {
   --sidebar-width: 268px;
 
   width: 100%;
+  min-width: 0;
   min-height: 100vh;
 
   margin: 0;
@@ -40,6 +42,10 @@
       transparent 30%
     ),
     #080b12;
+
+  transition:
+    margin-left 180ms ease,
+    width 180ms ease;
 }
 
 
@@ -50,25 +56,25 @@
 .atlas-content {
   width: 100%;
   min-width: 0;
-  min-height: calc(100vh - 82px);
+  min-height: 100vh;
 
   margin: 0;
   padding: 22px 26px 36px;
 
   box-sizing: border-box;
 
-  overflow-x: auto;
+  overflow-x: hidden;
 }
 
 
 /* =========================================================
    DIRECT CHILDREN
-   Content should use the complete available width.
 ========================================================= */
 
 .atlas-content > * {
   width: 100%;
   max-width: none;
+  min-width: 0;
 
   margin: 0;
 
@@ -81,7 +87,6 @@
 ========================================================= */
 
 @media (max-width: 1100px) {
-
   .atlas-layout {
     --sidebar-width: 230px;
   }
@@ -98,13 +103,12 @@
 
 
 /* =========================================================
-   MOBILE
+   MOBILE / PHONE
    Sidebar becomes an overlay.
-   Main content uses the full screen width.
+   Main content gets the COMPLETE screen width.
 ========================================================= */
 
 @media (max-width: 900px) {
-
   .atlas-layout {
     --sidebar-width: 0px;
   }
@@ -116,7 +120,8 @@
 
   .atlas-content {
     width: 100%;
-    min-height: calc(100vh - 74px);
+    min-width: 0;
+    min-height: 100vh;
 
     padding: 18px 16px 28px;
 
@@ -126,26 +131,38 @@
 
 
 /* =========================================================
-   SMALL MOBILE
+   SMALL PHONE
 ========================================================= */
 
-@media (max-width: 480px) {
-
+@media (max-width: 600px) {
   .atlas-content {
-    padding: 16px 12px 24px;
+    padding: 16px 13px 26px;
+  }
+
+  .atlas-content > * {
+    max-width: 100%;
   }
 }
 
 
 /* =========================================================
-   VERY SMALL DEVICES
+   VERY SMALL PHONE
 ========================================================= */
 
 @media (max-width: 400px) {
-
   .atlas-content {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding: 14px 10px 22px;
+  }
+}
+
+
+/* =========================================================
+   TOUCH DEVICE SAFETY
+========================================================= */
+
+@media (hover: none) and (pointer: coarse) {
+  .atlas-content {
+    -webkit-overflow-scrolling: touch;
   }
 }
 

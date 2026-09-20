@@ -1,7 +1,7 @@
-
 /* =========================================================
    ATLAS SIDEBAR
-   ========================================================= */
+   Desktop + Tablet + Mobile Overlay
+========================================================= */
 
 .atlas-sidebar {
   position: fixed;
@@ -11,6 +11,7 @@
 
   width: 268px;
   height: 100vh;
+  height: 100dvh;
 
   z-index: 9999;
 
@@ -40,7 +41,7 @@
 
 /* =========================================================
    BRAND
-   ========================================================= */
+========================================================= */
 
 .sidebar-brand {
   min-height: 86px;
@@ -56,6 +57,8 @@
 
   border-bottom: 1px solid
     rgba(255, 255, 255, 0.06);
+
+  flex-shrink: 0;
 }
 
 .atlas-logo {
@@ -124,12 +127,14 @@
 
 /* =========================================================
    WORKSPACE
-   ========================================================= */
+========================================================= */
 
 .sidebar-workspace {
   padding: 20px 17px 10px;
 
   box-sizing: border-box;
+
+  flex-shrink: 0;
 }
 
 .workspace-label,
@@ -191,7 +196,7 @@
 
 /* =========================================================
    NAVIGATION
-   ========================================================= */
+========================================================= */
 
 .sidebar-nav {
   flex: 1;
@@ -204,6 +209,8 @@
 
   overflow-y: auto;
   overflow-x: hidden;
+
+  -webkit-overflow-scrolling: touch;
 }
 
 .sidebar-nav::-webkit-scrollbar {
@@ -216,7 +223,6 @@
 
 .sidebar-nav::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.08);
-
   border-radius: 999px;
 }
 
@@ -227,7 +233,7 @@
 
 /* =========================================================
    NAV LINK
-   ========================================================= */
+========================================================= */
 
 .sidebar-link {
   position: relative;
@@ -286,8 +292,11 @@
 
 .sidebar-link-label {
   flex: 1;
+  min-width: 0;
 
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .sidebar-link-arrow {
@@ -306,14 +315,13 @@
 
 .sidebar-link:hover .sidebar-link-arrow {
   opacity: 0.7;
-
   transform: translateX(0);
 }
 
 
 /* =========================================================
    ACTIVE LINK
-   ========================================================= */
+========================================================= */
 
 .sidebar-link-active {
   color: #ffffff;
@@ -331,7 +339,6 @@
 
 .sidebar-link-active:hover {
   transform: none;
-
   color: #ffffff;
 }
 
@@ -370,7 +377,7 @@
 
 /* =========================================================
    BOTTOM
-   ========================================================= */
+========================================================= */
 
 .sidebar-bottom {
   flex-shrink: 0;
@@ -389,7 +396,7 @@
 
 /* =========================================================
    USER
-   ========================================================= */
+========================================================= */
 
 .sidebar-user {
   min-width: 0;
@@ -484,7 +491,7 @@
 
 /* =========================================================
    LOGOUT
-   ========================================================= */
+========================================================= */
 
 .logout-button {
   width: 100%;
@@ -511,6 +518,8 @@
 
   font-size: 12px;
   font-weight: 600;
+
+  touch-action: manipulation;
 }
 
 .logout-button:hover {
@@ -528,17 +537,17 @@
 
 
 /* =========================================================
-   OVERLAY
-   ========================================================= */
+   MOBILE OVERLAY
+========================================================= */
 
 .sidebar-overlay {
-  display: none !important;
+  display: none;
 }
 
 
 /* =========================================================
-   RESPONSIVE
-   ========================================================= */
+   TABLET
+========================================================= */
 
 @media (max-width: 1100px) {
   .atlas-sidebar {
@@ -546,21 +555,57 @@
   }
 }
 
+
+/* =========================================================
+   MOBILE
+   Sidebar is an overlay and DOES NOT consume content width.
+========================================================= */
+
 @media (max-width: 900px) {
   .atlas-sidebar {
-    width: 230px;
+    width: min(280px, 82vw);
 
-    transform: none !important;
+    max-width: 280px;
+
+    height: 100vh;
+    height: 100dvh;
+
+    transform: translateX(-100%) !important;
 
     box-shadow:
       10px 0 35px
-        rgba(0, 0, 0, 0.25);
-  }
-}
+        rgba(0, 0, 0, 0.35);
 
-@media (max-width: 480px) {
-  .atlas-sidebar {
-    width: 220px;
+    transition:
+      transform 220ms ease;
+  }
+
+  /*
+     Support common open-state class names.
+     If the JSX already provides one of these,
+     the sidebar can slide into view.
+  */
+
+  .atlas-sidebar.open,
+  .atlas-sidebar.active,
+  .atlas-sidebar.sidebar-open,
+  .atlas-sidebar.is-open {
+    transform: translateX(0) !important;
+  }
+
+  .sidebar-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 9998;
+
+    display: block;
+
+    background: rgba(0, 0, 0, 0.5);
+
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
   }
 
   .sidebar-brand {
@@ -572,5 +617,73 @@
   .sidebar-nav {
     padding-left: 10px;
     padding-right: 10px;
+  }
+}
+
+
+/* =========================================================
+   PHONE
+========================================================= */
+
+@media (max-width: 600px) {
+  .atlas-sidebar {
+    width: min(285px, 86vw);
+    max-width: 285px;
+  }
+
+  .sidebar-link {
+    min-height: 48px;
+    font-size: 13px;
+  }
+
+  .workspace-role {
+    min-height: 44px;
+  }
+
+  .sidebar-bottom {
+    padding: 12px;
+  }
+
+  .logout-button {
+    min-height: 44px;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONE
+========================================================= */
+
+@media (max-width: 380px) {
+  .atlas-sidebar {
+    width: min(270px, 88vw);
+    max-width: 270px;
+  }
+
+  .sidebar-brand {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .sidebar-link {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+
+/* =========================================================
+   TOUCH DEVICES
+========================================================= */
+
+@media (hover: none) and (pointer: coarse) {
+  .sidebar-link:hover {
+    transform: none;
+  }
+
+  .logout-button:hover {
+    background: transparent;
+    border-color: rgba(255, 255, 255, 0.06);
+    color: #858ea0;
   }
 }

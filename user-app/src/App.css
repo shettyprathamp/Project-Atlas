@@ -1,11 +1,18 @@
+
+/* =========================================================
+   PROJECT ATLAS
+   GLOBAL APP STYLES
+   ========================================================= */
+
 /* =========================================================
    GLOBAL RESET
-========================================================= */
+   ========================================================= */
 
 html,
 body,
 #root {
   width: 100%;
+  min-width: 0;
   min-height: 100%;
   margin: 0;
   padding: 0;
@@ -17,10 +24,22 @@ body,
   box-sizing: border-box;
 }
 
+html {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
 
 /* =========================================================
    ATLAS WORKSPACE
-========================================================= */
+   Used by temporary / placeholder pages
+   ========================================================= */
 
 .atlas-workspace {
   width: 100%;
@@ -43,7 +62,9 @@ body,
 .atlas-workspace-inner h1 {
   margin: 0 0 10px;
 
+  color: #ffffff;
   font-size: 30px;
+  font-weight: 700;
 }
 
 .atlas-workspace-inner p {
@@ -55,7 +76,7 @@ body,
 
 /* =========================================================
    UNAUTHORIZED
-========================================================= */
+   ========================================================= */
 
 .atlas-unauthorized {
   width: 100%;
@@ -65,29 +86,56 @@ body,
   align-items: center;
   justify-content: center;
 
+  margin: 0;
+  padding: 40px;
+
   background: #0b0f19;
   color: #ffffff;
 
   text-align: center;
 }
 
+.atlas-unauthorized h1 {
+  margin: 0 0 10px;
+}
+
+.atlas-unauthorized p {
+  margin: 0;
+
+  color: #94a3b8;
+}
+
 
 /* =========================================================
    EMPLOYEE SHELL
+   =========================================================
+
    Used by:
-   Attendance
-   Leave
-   Tasks
-   Payroll
-   Payslips
-   Profile
-   Settings
-========================================================= */
+
+   /employee/attendance
+   /employee/leave
+   /employee/tasks
+   /employee/payslips
+   /employee/payroll
+   /employee/profile
+   /employee/settings
+
+   IMPORTANT:
+
+   EmployeeDashboard DOES NOT use this shell.
+
+   EmployeeDashboard has its own complete sidebar and
+   main-content layout inside EmployeeDashboard.jsx.
+
+   Therefore App.css must NOT apply any generic sidebar
+   offsets to EmployeeDashboard.
+   ========================================================= */
 
 .employee-shell {
   position: relative;
 
   width: 100%;
+  min-width: 0;
   min-height: 100vh;
 
   margin: 0;
@@ -101,48 +149,18 @@ body,
 
 
 /* =========================================================
-   EMPLOYEE SIDEBAR
-========================================================= */
-
-/*
-   The sidebar is fixed to the LEFT edge.
-
-   This applies to every employee page,
-   not only EmployeeDashboard.
-*/
-
-.employee-shell > .employee-sidebar {
-  position: fixed !important;
-
-  top: 0 !important;
-  left: 0 !important;
-  bottom: 0 !important;
-
-  width: 250px !important;
-  height: 100vh !important;
-
-  margin: 0 !important;
-
-  z-index: 10000 !important;
-
-  display: flex;
-
-  flex-direction: column;
-}
-
-
-/* =========================================================
-   EMPLOYEE MAIN
-========================================================= */
+   EMPLOYEE SHELL MAIN
+   ========================================================= */
 
 .employee-shell-main {
-  width: calc(100% - 250px);
+  position: relative;
 
+  width: calc(100% - 250px);
+  min-width: 0;
   min-height: 100vh;
 
-  margin: 0 0 0 250px !important;
-
-  padding: 0 !important;
+  margin: 0 0 0 250px;
+  padding: 0;
 
   background:
     radial-gradient(
@@ -156,14 +174,13 @@ body,
 }
 
 
-/*
-   Make the actual page occupy all available space.
-*/
+/* =========================================================
+   EMPLOYEE SHELL CHILD
+   ========================================================= */
 
 .employee-shell-main > * {
   width: 100%;
-
-  min-height: 100vh;
+  min-width: 0;
 
   margin: 0;
 }
@@ -171,67 +188,71 @@ body,
 
 /* =========================================================
    MOBILE EMPLOYEE SHELL
-========================================================= */
+   ========================================================= */
 
 @media (max-width: 800px) {
 
   .employee-shell {
     display: block;
 
+    width: 100%;
     min-height: 100vh;
-  }
-
-  .employee-shell > .employee-sidebar {
-    width: 250px !important;
-
-    transform: translateX(-100%);
-
-    transition: transform 0.25s ease;
-  }
-
-  .employee-shell > .employee-sidebar.employee-sidebar-open {
-    transform: translateX(0);
   }
 
   .employee-shell-main {
     width: 100%;
-
-    margin-left: 0 !important;
-
     min-height: 100vh;
+
+    margin: 0;
+    padding: 0;
+
+    overflow-x: hidden;
   }
 }
 
 
 /* =========================================================
-   OLD EMPLOYEE SHELL SUPPORT
-========================================================= */
+   IMPORTANT DASHBOARD ISOLATION
+   =========================================================
 
-/*
-   These classes are kept so existing employee components
-   do not break if any of them still use the old structure.
-*/
+   These rules intentionally do NOT set:
 
-.employee-shell-main {
-  background-color: #080b12;
-}
+   margin-left
+   width: calc(...)
+   padding-left
 
-.employee-shell > .employee-sidebar {
-  background-color: #080b12;
+   on .employee-dashboard-root.
+
+   EmployeeDashboard.css owns that layout completely.
+   ========================================================= */
+
+.employee-dashboard-root {
+  margin: 0;
+  padding: 0;
 }
 
 
 /* =========================================================
    DESKTOP SAFETY
-========================================================= */
+   ========================================================= */
 
 @media (min-width: 801px) {
 
-  .employee-shell > .employee-sidebar {
-    transform: none !important;
+  .employee-shell {
+    width: 100%;
+    min-height: 100vh;
   }
 
   .employee-shell-main {
-    padding-left: 0 !important;
+    width: calc(100% - 250px);
+
+    margin-left: 250px;
+    padding-left: 0;
+  }
+
+  .employee-dashboard-root {
+    width: 100%;
+    margin: 0;
+    padding: 0;
   }
 }

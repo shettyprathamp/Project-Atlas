@@ -1,11 +1,8 @@
+
 /* =========================================================
    PROJECT ATLAS
    HR PORTAL
-   PROFESSIONAL DASHBOARD
-   ========================================================= */
-
-/* =========================================================
-   GLOBAL
+   RESPONSIVE DASHBOARD
    ========================================================= */
 
 .hr-dashboard,
@@ -23,7 +20,7 @@
 }
 
 /* =========================================================
-   PAGE HEADER
+   HEADER
    ========================================================= */
 
 .hr-dashboard-header {
@@ -34,7 +31,6 @@
   justify-content: space-between;
 
   gap: 40px;
-
   margin-bottom: 34px;
 }
 
@@ -44,14 +40,12 @@
 
 .hr-dashboard-eyebrow {
   display: block;
-
   margin-bottom: 9px;
 
   color: #818cf8;
 
   font-size: 10px;
   font-weight: 600;
-
   letter-spacing: 1.8px;
   line-height: 1.4;
 }
@@ -63,9 +57,7 @@
 
   font-size: clamp(30px, 3vw, 38px);
   line-height: 1.15;
-
   font-weight: 650;
-
   letter-spacing: -0.9px;
 }
 
@@ -75,26 +67,23 @@
   margin: 11px 0 0;
 
   color: #7f899f;
-
   font-size: 13px;
   line-height: 1.7;
 }
 
 .hr-dashboard-header p strong {
   color: #b8c0cf;
-
   font-weight: 550;
 }
 
 /* =========================================================
-   PRIMARY BUTTON
+   BUTTON
    ========================================================= */
 
 .hr-primary-button {
   flex-shrink: 0;
 
   min-height: 42px;
-
   padding: 0 17px;
 
   display: inline-flex;
@@ -107,7 +96,6 @@
   border-radius: 9px;
 
   background: #6366f1;
-
   color: #ffffff;
 
   font-family: inherit;
@@ -152,7 +140,6 @@
 
   display: flex;
   align-items: center;
-
   gap: 12px;
 
   margin-bottom: 24px;
@@ -177,7 +164,6 @@
   border-radius: 50%;
 
   background: rgba(248, 113, 113, 0.1);
-
   color: #f87171;
 
   font-size: 12px;
@@ -211,13 +197,11 @@
   padding: 5px 7px;
 
   border: 0;
-
   background: transparent;
 
   color: #fca5a5;
 
   font-family: inherit;
-
   font-size: 11px;
   font-weight: 600;
 
@@ -241,7 +225,6 @@
     repeat(4, minmax(0, 1fr));
 
   gap: 14px;
-
   margin-bottom: 22px;
 }
 
@@ -266,7 +249,6 @@
 
 .hr-stat-card:hover {
   border-color: rgba(129, 140, 248, 0.2);
-
   transform: translateY(-2px);
 }
 
@@ -294,7 +276,6 @@
 
   font-size: 9px;
   font-weight: 600;
-
   letter-spacing: 1.3px;
 }
 
@@ -310,7 +291,6 @@
   border-radius: 8px;
 
   background: rgba(99, 102, 241, 0.07);
-
   color: #a5b4fc;
 
   font-size: 13px;
@@ -318,25 +298,19 @@
 
 .hr-stat-icon.green {
   border-color: rgba(52, 211, 153, 0.12);
-
   background: rgba(52, 211, 153, 0.06);
-
   color: #6ee7b7;
 }
 
 .hr-stat-icon.muted {
   border-color: rgba(148, 163, 184, 0.1);
-
   background: rgba(148, 163, 184, 0.04);
-
   color: #94a3b8;
 }
 
 .hr-stat-icon.purple {
   border-color: rgba(192, 132, 252, 0.12);
-
   background: rgba(192, 132, 252, 0.06);
-
   color: #d8b4fe;
 }
 
@@ -349,9 +323,7 @@
 
   font-size: 27px;
   line-height: 1;
-
   font-weight: 650;
-
   letter-spacing: -0.5px;
 }
 
@@ -359,7 +331,6 @@
   margin: 9px 0 0;
 
   color: #69738a;
-
   font-size: 10px;
   line-height: 1.5;
 }
@@ -367,19 +338,16 @@
 .hr-stat-meta {
   display: flex;
   align-items: center;
-
   gap: 6px;
 
   margin-top: 8px;
 
   color: #69738a;
-
   font-size: 10px;
 }
 
 .hr-positive {
   color: #6ee7b7;
-
   font-weight: 600;
 }
 
@@ -449,7 +417,6 @@
 
   font-size: 9px;
   font-weight: 600;
-
   letter-spacing: 1.4px;
 }
 
@@ -460,9 +427,7 @@
 
   font-size: 16px;
   line-height: 1.3;
-
   font-weight: 600;
-
   letter-spacing: -0.15px;
 }
 
@@ -470,7 +435,6 @@
   margin: 5px 0 0;
 
   color: #68738a;
-
   font-size: 10px;
   line-height: 1.5;
 }
@@ -481,19 +445,15 @@
   padding: 5px 0;
 
   border: 0;
-
   background: transparent;
 
   color: #818cf8;
 
   font-family: inherit;
-
   font-size: 11px;
   font-weight: 600;
 
   cursor: pointer;
-
-  transition: color 0.2s ease;
 }
 
 .hr-panel-action:hover {
@@ -502,9 +462,7 @@
 
 .hr-panel-action span {
   margin-left: 4px;
-
   font-size: 13px;
-
   font-weight: 400;
 }
 
@@ -533,7 +491,8 @@
 
   gap: 18px;
 
-  border-bottom: 1px solid rgba(255, 255, 255, 0.045);
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.045);
 
   transition: background 0.2s ease;
 }
@@ -551,7 +510,6 @@
 
   display: flex;
   align-items: center;
-
   gap: 12px;
 }
 
@@ -569,7 +527,6 @@
   border-radius: 10px;
 
   background: rgba(99, 102, 241, 0.08);
-
   color: #a5b4fc;
 
   font-size: 12px;
@@ -589,7 +546,6 @@
 
   font-size: 12px;
   line-height: 1.4;
-
   font-weight: 550;
 
   text-overflow: ellipsis;
@@ -604,7 +560,6 @@
   margin-top: 3px;
 
   color: #68738a;
-
   font-size: 10px;
 
   text-overflow: ellipsis;
@@ -633,7 +588,6 @@
   margin-bottom: 3px;
 
   color: #aeb7c7;
-
   font-weight: 550;
 }
 
@@ -651,7 +605,6 @@
   border-radius: 999px;
 
   background: rgba(148, 163, 184, 0.06);
-
   color: #7e899d;
 
   font-size: 9px;
@@ -665,13 +618,11 @@
   height: 5px;
 
   border-radius: 50%;
-
   background: #64748b;
 }
 
 .hr-status.active {
   background: rgba(52, 211, 153, 0.06);
-
   color: #6ee7b7;
 }
 
@@ -705,11 +656,9 @@
   border-radius: 9px;
 
   background: transparent;
-
   color: inherit;
 
   text-align: left;
-
   cursor: pointer;
 
   transition:
@@ -719,7 +668,6 @@
 
 .hr-action-card:hover {
   border-color: rgba(129, 140, 248, 0.1);
-
   background: rgba(99, 102, 241, 0.045);
 }
 
@@ -737,18 +685,15 @@
   border-radius: 8px;
 
   background: rgba(255, 255, 255, 0.025);
-
   color: #68738a;
 
   font-size: 8px;
   font-weight: 600;
-
   letter-spacing: 0.4px;
 }
 
 .hr-action-content {
   min-width: 0;
-
   flex: 1;
 }
 
@@ -759,7 +704,6 @@
 
   font-size: 11px;
   line-height: 1.4;
-
   font-weight: 550;
 }
 
@@ -783,11 +727,8 @@
   flex-shrink: 0;
 
   color: #596478;
-
   font-size: 14px;
   font-weight: 400;
-
-  transition: color 0.2s ease;
 }
 
 .hr-action-card:hover .hr-action-arrow {
@@ -810,7 +751,8 @@
 
   gap: 12px;
 
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.04);
 }
 
 .hr-skeleton-avatar {
@@ -823,7 +765,8 @@
 
   background: rgba(255, 255, 255, 0.05);
 
-  animation: hrPulse 1.5s ease-in-out infinite;
+  animation:
+    hrPulse 1.5s ease-in-out infinite;
 }
 
 .hr-skeleton-content {
@@ -838,7 +781,8 @@
 
   background: rgba(255, 255, 255, 0.06);
 
-  animation: hrPulse 1.5s ease-in-out infinite;
+  animation:
+    hrPulse 1.5s ease-in-out infinite;
 }
 
 .hr-skeleton-content span {
@@ -853,7 +797,8 @@
 
   background: rgba(255, 255, 255, 0.04);
 
-  animation: hrPulse 1.5s ease-in-out infinite;
+  animation:
+    hrPulse 1.5s ease-in-out infinite;
 }
 
 @keyframes hrPulse {
@@ -868,7 +813,7 @@
 }
 
 /* =========================================================
-   EMPTY STATE
+   EMPTY
    ========================================================= */
 
 .hr-empty-state {
@@ -936,19 +881,14 @@
   color: #a5b4fc;
 
   font-family: inherit;
-
   font-size: 10px;
   font-weight: 600;
 
   cursor: pointer;
 }
 
-.hr-empty-state button:hover {
-  background: rgba(99, 102, 241, 0.1);
-}
-
 /* =========================================================
-   HR MODULES
+   MODULES
    ========================================================= */
 
 .hr-module-section {
@@ -969,7 +909,6 @@
   justify-content: space-between;
 
   gap: 30px;
-
   margin-bottom: 18px;
 }
 
@@ -978,7 +917,6 @@
 
   font-size: 9px;
   font-weight: 600;
-
   letter-spacing: 1.4px;
 }
 
@@ -989,10 +927,7 @@
 
   font-size: 16px;
   line-height: 1.3;
-
   font-weight: 600;
-
-  letter-spacing: -0.15px;
 }
 
 .hr-module-heading p {
@@ -1008,10 +943,6 @@
   text-align: right;
 }
 
-/* =========================================================
-   MODULE GRID
-   ========================================================= */
-
 .hr-module-grid {
   width: 100%;
 
@@ -1025,7 +956,6 @@
 
 .hr-module-grid button {
   min-width: 0;
-
   min-height: 125px;
 
   padding: 15px;
@@ -1040,7 +970,6 @@
   background: rgba(255, 255, 255, 0.018);
 
   color: inherit;
-
   text-align: left;
 
   cursor: pointer;
@@ -1053,9 +982,7 @@
 
 .hr-module-grid button:hover {
   border-color: rgba(129, 140, 248, 0.18);
-
   background: rgba(99, 102, 241, 0.045);
-
   transform: translateY(-2px);
 }
 
@@ -1073,7 +1000,6 @@
   border-radius: 8px;
 
   background: rgba(99, 102, 241, 0.055);
-
   color: #9da7ff;
 
   font-size: 13px;
@@ -1084,7 +1010,6 @@
 
   font-size: 11px;
   line-height: 1.4;
-
   font-weight: 550;
 }
 
@@ -1098,7 +1023,7 @@
 }
 
 /* =========================================================
-   RESPONSIVE
+   RESPONSIVE — 1200
    ========================================================= */
 
 @media (max-width: 1200px) {
@@ -1117,17 +1042,13 @@
   }
 }
 
-@media (max-width: 800px) {
+/* =========================================================
+   RESPONSIVE — 900
+   ========================================================= */
+
+@media (max-width: 900px) {
   .hr-dashboard-header {
-    flex-direction: column;
-
-    align-items: flex-start;
-
-    gap: 20px;
-  }
-
-  .hr-primary-button {
-    width: 100%;
+    gap: 24px;
   }
 
   .hr-employee-row {
@@ -1140,32 +1061,33 @@
     display: none;
   }
 
-  .hr-module-heading {
-    align-items: flex-start;
-
-    flex-direction: column;
-
-    gap: 10px;
-  }
-
-  .hr-module-heading p {
-    max-width: none;
-
-    text-align: left;
-  }
-
   .hr-module-grid {
     grid-template-columns:
       repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 560px) {
+/* =========================================================
+   RESPONSIVE — 650
+   ========================================================= */
+
+@media (max-width: 650px) {
+  .hr-dashboard-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 18px;
+  }
+
+  .hr-primary-button {
+    width: 100%;
+  }
+
   .hr-overview-grid {
     grid-template-columns: 1fr;
   }
 
   .hr-panel-header {
+    min-height: auto;
     padding: 17px;
   }
 
@@ -1181,7 +1103,45 @@
     padding: 17px;
   }
 
+  .hr-module-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .hr-module-heading p {
+    max-width: none;
+    text-align: left;
+  }
+
   .hr-module-grid {
     grid-template-columns: 1fr;
+  }
+
+  .hr-error {
+    align-items: flex-start;
+  }
+}
+
+/* =========================================================
+   VERY SMALL PHONE
+   ========================================================= */
+
+@media (max-width: 400px) {
+  .hr-dashboard-header h1 {
+    font-size: 27px;
+  }
+
+  .hr-stat-card {
+    padding: 17px;
+  }
+
+  .hr-module-section {
+    padding: 14px;
+  }
+
+  .hr-action-card {
+    padding-left: 8px;
+    padding-right: 8px;
   }
 }

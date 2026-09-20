@@ -1,414 +1,212 @@
-
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-
-import api from "../../services/api";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import api from "../../services/api";
 
 import "./EmployeeDashboard.css";
+/* =========================================================
+   HELPERS
+========================================================= */
+
+const getArray = (value) => {
+  if (Array.isArray(value)) return value;
+  if (Array.isArray(value?.data)) return value.data;
+  if (Array.isArray(value?.items)) return value.items;
+  if (Array.isArray(value?.results)) return value.results;
+  return [];
+};
+
+const getObject = (value) => {
+  if (!value) return {};
+
+  if (value?.data && typeof value.data === "object") {
+    return value.data;
+  }
+
+  return value;
+};
+
+const getName = (profile, user) =>
+  profile?.name ||
+  profile?.full_name ||
+  profile?.employee_name ||
+  user?.name ||
+  user?.full_name ||
+  user?.employee_name ||
+  user?.email?.split("@")[0] ||
+  "Employee";
+
+const getInitials = (name) =>
+  name
+    .split(" ")
+    .filter(Boolean)
+    .map((word) => word[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase() || "E";
+
+const formatDate = (value) => {
+  if (!value) return "—";
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return String(value);
+  }
+
+  return date.toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+};
+
+const formatTime = (value) => {
+  if (!value) return "—";
+
+  const text = String(value).trim();
+
+  /*
+   * Handle plain SQL time values such as:
+   * 15:30
+   * 15:30:32
+   * 15:30:32.1987
+   *
+   * This is important because new Date("15:30:32")
+   * is not reliably parsed by browsers.
+   */
+
+  const timeMatch = text.match(
+    /^(\d{1,2}):(\d{2})(?::(\d{2})(?:\.\d+)?)?$/
+  );
+
+  if (timeMatch) {
+    let hour = Number(timeMatch[1]);
+    const minute = timeMatch[2];
+
+    const suffix = hour >= 12 ? "PM" : "AM";
+
+    hour = hour % 12 || 12;
+
+    return `${hour}:${minute} ${suffix}`;
+  }
+
+  const date = new Date(value);
+
+  if (!Number.isNaN(date.getTime())) {
+    return date.toLocaleTimeString("en-IN", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+  }
+
+  return text;
+};
+
+const formatCurrency = (value) => {
+  if (
+    value === null ||
+    value === undefined ||
+    value === "" ||
+    Number.isNaN(Number(value))
+  ) {
+    return "₹0";
+  }
+
+  return Number(value).toLocaleString("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0,
+  });
+};
+
+const getAttendanceDate = (record) =>
+  record?.date ||
+  record?.attendance_date ||
+  record?.work_date ||
+  record?.created_at ||
+  record?.check_in;
+
+const getAttendanceCheckIn = (record) =>
+  record?.check_in ||
+  record?.check_in_time ||
+  record?.clock_in ||
+  record?.start_time;
+
+const getAttendanceCheckOut = (record) =>
+  record?.check_out ||
+  record?.check_out_time ||
+  record?.clock_out ||
+  record?.end_time;
+
+const getAttendanceStatus = (record) =>
+  record?.status ||
+  (getAttendanceCheckIn(record) ? "Present" : "Absent");
+
+const getLeaveStatus = (leave) =>
+  leave?.status ||
+  leave?.leave_status ||
+  leave?.approval_status ||
+  "Pending";
+
+const getLeaveDays = (leave) => {
+  const direct =
+    leave?.days ??
+    leave?.total_days ??
+    leave?.number_of_days;
+
+  if (direct !== undefined && direct !== null) {
+    return Number(direct) || 0;
+  }
+
+  if (leave?.start_date && leave?.end_date) {
+    const start = new Date(leave.start_date);
+    const end = new Date(leave.end_date);
+
+    if (
+      !Number.isNaN(start.getTime()) &&
+      !Number.isNaN(end.getTime())
+    ) {
+      return (
+        Math.floor(
+          (end.getTime() - start.getTime()) /
+            (1000 * 60 * 60 * 24)
+        ) + 1
+      );
+    }
+  }
+
+  return 0;
+};
+
+/* =========================================================
+   COMPONENT
+========================================================= */
 
 export default function EmployeeDashboard() {
   const navigate = useNavigate();
-  const location = useLocation();
   const { user } = useAuth();
 
-  const [profile, setProfile] = useState(null);
-  const [attendance, setAttendance] = useState(null);
-  const [attendanceHistory, setAttendanceHistory] = useState([]);
-  const [leaves, setLeaves] = useState([]);
-  const [payroll, setPayroll] = useState([]);
-
-  const [loading, setLoading] = useState(true);
-  const [actionLoading, setActionLoading] = useState(false);
-  const [error, setError] = useState("");
+  /* =======================================================
+     SIDEBAR
+  ======================================================= */
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const today = new Date();
-
-  const formattedDate = today.toLocaleDateString("en-IN", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-
-  /* =========================================================
-     LOAD DASHBOARD
-  ========================================================= */
-
-  const loadDashboard = async () => {
-    try {
-      setLoading(true);
-      setError("");
-
-      const [
-        profileResponse,
-        attendanceTodayResponse,
-        attendanceHistoryResponse,
-        leaveResponse,
-        payrollResponse,
-      ] = await Promise.all([
-        api.get("/employee/profile"),
-        api.get("/employee/attendance/today"),
-        api.get("/employee/attendance"),
-        api.get("/employee/leave"),
-        api.get("/employee/payroll"),
-      ]);
-
-      setProfile(profileResponse.data || null);
-
-      setAttendance(
-        attendanceTodayResponse.data || null
-      );
-
-      setAttendanceHistory(
-        Array.isArray(attendanceHistoryResponse.data)
-          ? attendanceHistoryResponse.data
-          : []
-      );
-
-      setLeaves(
-        Array.isArray(leaveResponse.data)
-          ? leaveResponse.data
-          : []
-      );
-
-      setPayroll(
-        Array.isArray(payrollResponse.data)
-          ? payrollResponse.data
-          : []
-      );
-    } catch (err) {
-      console.error(
-        "Employee dashboard loading failed:",
-        err
-      );
-
-      if (err.response?.status === 401) {
-        navigate("/login");
-        return;
-      }
-
-      setError(
-        err.response?.data?.detail ||
-          "Unable to load employee data."
-      );
-    } finally {
-      setLoading(false);
-    }
+  const closeSidebar = () => {
+    setSidebarOpen(false);
   };
 
-  useEffect(() => {
-    loadDashboard();
-  }, []);
-
-  /* =========================================================
-     CHECK IN
-  ========================================================= */
-
-  const handleCheckIn = async () => {
-    try {
-      setActionLoading(true);
-      setError("");
-
-      const response = await api.post(
-        "/employee/attendance/check-in"
-      );
-
-      setAttendance(response.data);
-
-      const historyResponse = await api.get(
-        "/employee/attendance"
-      );
-
-      setAttendanceHistory(
-        Array.isArray(historyResponse.data)
-          ? historyResponse.data
-          : []
-      );
-    } catch (err) {
-      console.error("Check-in failed:", err);
-
-      setError(
-        err.response?.data?.detail ||
-          "Unable to check in."
-      );
-    } finally {
-      setActionLoading(false);
-    }
+  const toggleSidebar = () => {
+    setSidebarOpen((current) => !current);
   };
-
-  /* =========================================================
-     CHECK OUT
-  ========================================================= */
-
-  const handleCheckOut = async () => {
-    try {
-      setActionLoading(true);
-      setError("");
-
-      const response = await api.post(
-        "/employee/attendance/check-out"
-      );
-
-      setAttendance(response.data);
-
-      const historyResponse = await api.get(
-        "/employee/attendance"
-      );
-
-      setAttendanceHistory(
-        Array.isArray(historyResponse.data)
-          ? historyResponse.data
-          : []
-      );
-    } catch (err) {
-      console.error("Check-out failed:", err);
-
-      setError(
-        err.response?.data?.detail ||
-          "Unable to check out."
-      );
-    } finally {
-      setActionLoading(false);
-    }
-  };
-
-  /* =========================================================
-     WORKED TIME
-  ========================================================= */
-
-  const calculateWorkedTime = () => {
-    if (!attendance?.check_in) {
-      return "0h 00m";
-    }
-
-    const parseTime = (value) => {
-      if (!value) return null;
-
-      const parts = String(value)
-        .split(":")
-        .map(Number);
-
-      if (parts.length < 2) {
-        return null;
-      }
-
-      const date = new Date();
-
-      date.setHours(
-        parts[0] || 0,
-        parts[1] || 0,
-        parts[2] || 0,
-        0
-      );
-
-      return date;
-    };
-
-    const checkIn = parseTime(
-      attendance.check_in
-    );
-
-    if (!checkIn) {
-      return "0h 00m";
-    }
-
-    const checkOut = attendance.check_out
-      ? parseTime(attendance.check_out)
-      : new Date();
-
-    if (!checkOut) {
-      return "0h 00m";
-    }
-
-    const difference = Math.max(
-      0,
-      checkOut.getTime() -
-        checkIn.getTime()
-    );
-
-    const totalMinutes = Math.floor(
-      difference / 60000
-    );
-
-    const hours = Math.floor(
-      totalMinutes / 60
-    );
-
-    const minutes = totalMinutes % 60;
-
-    return `${hours}h ${String(
-      minutes
-    ).padStart(2, "0")}m`;
-  };
-
-  /* =========================================================
-     EMPLOYEE INFORMATION
-  ========================================================= */
-
-  const employeeName =
-    profile?.name ||
-    user?.name ||
-    user?.email?.split("@")[0] ||
-    "Employee";
-
-  const initials =
-    employeeName
-      .split(" ")
-      .filter(Boolean)
-      .map((word) => word[0])
-      .join("")
-      .slice(0, 2)
-      .toUpperCase() || "E";
-
-  const isCheckedIn =
-    Boolean(attendance?.check_in);
-
-  const isCheckedOut =
-    Boolean(attendance?.check_out);
-
-  /* =========================================================
-     MONTHLY ATTENDANCE
-  ========================================================= */
-
-  const currentMonth =
-    today.getMonth() + 1;
-
-  const currentYear =
-    today.getFullYear();
-
-  const daysPresentThisMonth =
-    attendanceHistory.filter((record) => {
-      if (!record?.date) {
-        return false;
-      }
-
-      const recordDate = new Date(
-        `${record.date}T00:00:00`
-      );
-
-      return (
-        recordDate.getMonth() + 1 ===
-          currentMonth &&
-        recordDate.getFullYear() ===
-          currentYear &&
-        String(record.status || "")
-          .toLowerCase() === "present"
-      );
-    }).length;
-
-  /* =========================================================
-     LEAVE
-  ========================================================= */
-
-  const pendingLeaves =
-    leaves.filter(
-      (leave) =>
-        String(leave.status || "")
-          .toLowerCase() === "pending"
-    ).length;
-
-  const approvedLeaves =
-    leaves.filter(
-      (leave) =>
-        String(leave.status || "")
-          .toLowerCase() === "approved"
-    );
-
-  const usedLeaveDays =
-    approvedLeaves.reduce(
-      (total, leave) => {
-        if (
-          !leave.start_date ||
-          !leave.end_date
-        ) {
-          return total;
-        }
-
-        const start = new Date(
-          `${leave.start_date}T00:00:00`
-        );
-
-        const end = new Date(
-          `${leave.end_date}T00:00:00`
-        );
-
-        const difference =
-          end.getTime() -
-          start.getTime();
-
-        const days =
-          Math.floor(
-            difference /
-              (1000 * 60 * 60 * 24)
-          ) + 1;
-
-        return total + Math.max(0, days);
-      },
-      0
-    );
-
-  const leaveBalance = "—";
-
-  /* =========================================================
-     PAYROLL
-  ========================================================= */
-
-  const latestPayroll =
-    payroll.length > 0
-      ? payroll[0]
-      : null;
-
-  const getPayrollMonth = (record) => {
-    if (!record) {
-      return "—";
-    }
-
-    const monthNames = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-
-    return `${monthNames[
-      Number(record.month) - 1
-    ] || "Unknown"} ${record.year || ""}`;
-  };
-
-  const getSalary = (record) => {
-    if (!record) {
-      return "—";
-    }
-
-    const salary = Number(
-      record.net_salary ?? 0
-    );
-
-    return `₹${salary.toLocaleString(
-      "en-IN"
-    )}`;
-  };
-
-  /* =========================================================
-     NAVIGATION
-  ========================================================= */
 
   const employeeNavigation = [
     {
       label: "Dashboard",
       path: "/employee",
-      icon: "⌂",
+      icon: "▦",
     },
     {
       label: "Attendance",
@@ -419,11 +217,6 @@ export default function EmployeeDashboard() {
       label: "Leave",
       path: "/employee/leave",
       icon: "▣",
-    },
-    {
-      label: "Tasks",
-      path: "/employee/tasks",
-      icon: "✓",
     },
     {
       label: "Payslips",
@@ -437,210 +230,742 @@ export default function EmployeeDashboard() {
     },
   ];
 
-  const handleNavigation = (path) => {
-    navigate(path);
-    setSidebarOpen(false);
+  /* =======================================================
+     DATA
+  ======================================================= */
+
+  const [profile, setProfile] = useState(null);
+  const [todayAttendance, setTodayAttendance] = useState(null);
+  const [attendanceHistory, setAttendanceHistory] = useState([]);
+  const [leaveRecords, setLeaveRecords] = useState([]);
+  const [payrollRecords, setPayrollRecords] = useState([]);
+
+  const [loading, setLoading] = useState(true);
+  const [attendanceLoading, setAttendanceLoading] =
+    useState(false);
+  const [error, setError] = useState("");
+
+  /* =======================================================
+     LOAD DASHBOARD DATA
+  ======================================================= */
+
+  const loadDashboard = useCallback(async () => {
+    setLoading(true);
+    setError("");
+
+    try {
+      const [
+        profileResponse,
+        todayResponse,
+        attendanceResponse,
+        leaveResponse,
+        payrollResponse,
+      ] = await Promise.allSettled([
+        api.get("/employee/profile"),
+        api.get("/employee/attendance/today"),
+        api.get("/employee/attendance"),
+        api.get("/employee/leave"),
+        api.get("/employee/payroll"),
+      ]);
+
+      let successfulRequests = 0;
+
+      if (profileResponse.status === "fulfilled") {
+        setProfile(
+          getObject(profileResponse.value?.data)
+        );
+
+        successfulRequests += 1;
+      }
+
+      if (todayResponse.status === "fulfilled") {
+        const todayData = getObject(
+          todayResponse.value?.data
+        );
+
+        setTodayAttendance(
+          todayData?.attendance ||
+            todayData?.record ||
+            todayData ||
+            null
+        );
+
+        successfulRequests += 1;
+      }
+
+      if (attendanceResponse.status === "fulfilled") {
+        setAttendanceHistory(
+          getArray(attendanceResponse.value?.data)
+        );
+
+        successfulRequests += 1;
+      }
+
+      if (leaveResponse.status === "fulfilled") {
+        setLeaveRecords(
+          getArray(leaveResponse.value?.data)
+        );
+
+        successfulRequests += 1;
+      }
+
+      if (payrollResponse.status === "fulfilled") {
+        setPayrollRecords(
+          getArray(payrollResponse.value?.data)
+        );
+
+        successfulRequests += 1;
+      }
+
+      if (successfulRequests === 0) {
+        throw new Error(
+          "Unable to load employee dashboard."
+        );
+      }
+    } catch (err) {
+      console.error(
+        "Employee dashboard error:",
+        err
+      );
+
+      setError(
+        err?.response?.data?.detail ||
+          err?.message ||
+          "Unable to load dashboard data."
+      );
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadDashboard();
+  }, [loadDashboard]);
+
+  /* =======================================================
+     TODAY ATTENDANCE
+  ======================================================= */
+
+  const todayCheckIn = useMemo(
+    () => getAttendanceCheckIn(todayAttendance),
+    [todayAttendance]
+  );
+
+  const todayCheckOut = useMemo(
+    () => getAttendanceCheckOut(todayAttendance),
+    [todayAttendance]
+  );
+
+  const attendanceCompleted = Boolean(
+    todayCheckIn && todayCheckOut
+  );
+
+  const canCheckIn = !todayCheckIn;
+
+  const canCheckOut =
+    Boolean(todayCheckIn) && !todayCheckOut;
+
+  /* =======================================================
+     CHECK IN
+  ======================================================= */
+
+  const handleCheckIn = async () => {
+    if (!canCheckIn || attendanceLoading) {
+      return;
+    }
+
+    setAttendanceLoading(true);
+    setError("");
+
+    try {
+      const response = await api.post(
+        "/employee/attendance/check-in"
+      );
+
+      const data = getObject(response?.data);
+
+      setTodayAttendance(
+        data?.attendance ||
+          data?.record ||
+          data
+      );
+
+      await loadDashboard();
+    } catch (err) {
+      console.error("Check-in error:", err);
+
+      setError(
+        err?.response?.data?.detail ||
+          err?.message ||
+          "Unable to check in."
+      );
+    } finally {
+      setAttendanceLoading(false);
+    }
   };
 
-  /* =========================================================
+  /* =======================================================
+     CHECK OUT
+  ======================================================= */
+
+  const handleCheckOut = async () => {
+    if (!canCheckOut || attendanceLoading) {
+      return;
+    }
+
+    setAttendanceLoading(true);
+    setError("");
+
+    try {
+      const response = await api.post(
+        "/employee/attendance/check-out"
+      );
+
+      const data = getObject(response?.data);
+
+      setTodayAttendance(
+        data?.attendance ||
+          data?.record ||
+          data
+      );
+
+      await loadDashboard();
+    } catch (err) {
+      console.error("Check-out error:", err);
+
+      setError(
+        err?.response?.data?.detail ||
+          err?.message ||
+          "Unable to check out."
+      );
+    } finally {
+      setAttendanceLoading(false);
+    }
+  };
+
+  /* =======================================================
+     LOGOUT
+  ======================================================= */
+
+  const handleLogout = () => {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("atlas_token");
+    localStorage.removeItem("token");
+    localStorage.removeItem("atlas_user");
+
+    navigate("/login", {
+      replace: true,
+    });
+  };
+
+  /* =======================================================
+     EMPLOYEE INFORMATION
+  ======================================================= */
+
+  const employeeName = getName(
+    profile,
+    user
+  );
+
+  const initials = getInitials(
+    employeeName
+  );
+
+  const employeeEmail =
+    profile?.email ||
+    user?.email ||
+    "Employee";
+
+  const employeeRole =
+    profile?.designation ||
+    profile?.role ||
+    profile?.job_title ||
+    user?.role ||
+    "Employee";
+
+  /* =======================================================
+     ATTENDANCE KPI
+  ======================================================= */
+
+  const presentDays = useMemo(() => {
+    return attendanceHistory.filter((record) => {
+      const status = String(
+        getAttendanceStatus(record)
+      ).toLowerCase();
+
+      return (
+        status === "present" ||
+        status === "late" ||
+        status === "half day" ||
+        status === "half_day"
+      );
+    }).length;
+  }, [attendanceHistory]);
+
+  const currentMonthAttendance = useMemo(() => {
+    const now = new Date();
+
+    const currentMonth =
+      now.getMonth();
+
+    const currentYear =
+      now.getFullYear();
+
+    return attendanceHistory.filter(
+      (record) => {
+        const dateValue =
+          getAttendanceDate(record);
+
+        if (!dateValue) {
+          return false;
+        }
+
+        const date =
+          new Date(dateValue);
+
+        if (
+          Number.isNaN(
+            date.getTime()
+          )
+        ) {
+          return false;
+        }
+
+        return (
+          date.getMonth() ===
+            currentMonth &&
+          date.getFullYear() ===
+            currentYear
+        );
+      }
+    );
+  }, [attendanceHistory]);
+
+  const currentMonthPresent =
+    useMemo(() => {
+      return currentMonthAttendance.filter(
+        (record) => {
+          const status = String(
+            getAttendanceStatus(record)
+          ).toLowerCase();
+
+          return (
+            status === "present" ||
+            status === "late" ||
+            status === "half day" ||
+            status === "half_day"
+          );
+        }
+      ).length;
+    }, [currentMonthAttendance]);
+
+  /* =======================================================
+     LEAVE KPI
+  ======================================================= */
+
+  const approvedLeaves = useMemo(
+    () =>
+      leaveRecords.filter(
+        (leave) =>
+          String(
+            getLeaveStatus(leave)
+          ).toLowerCase() ===
+          "approved"
+      ),
+    [leaveRecords]
+  );
+
+  const pendingLeaves = useMemo(
+    () =>
+      leaveRecords.filter(
+        (leave) =>
+          String(
+            getLeaveStatus(leave)
+          ).toLowerCase() ===
+          "pending"
+      ),
+    [leaveRecords]
+  );
+
+  const totalLeaveDays = useMemo(
+    () =>
+      approvedLeaves.reduce(
+        (total, leave) =>
+          total +
+          getLeaveDays(leave),
+        0
+      ),
+    [approvedLeaves]
+  );
+
+  /* =======================================================
+     PAYROLL
+  ======================================================= */
+
+  const latestPayroll =
+    payrollRecords.length
+      ? payrollRecords[0]
+      : null;
+
+  const latestSalary =
+    latestPayroll?.net_salary ??
+    latestPayroll?.net_pay ??
+    latestPayroll?.salary ??
+    latestPayroll?.amount ??
+    latestPayroll?.total_salary ??
+    0;
+
+  /* =======================================================
+     RECENT ATTENDANCE
+  ======================================================= */
+
+  const recentAttendance =
+    useMemo(() => {
+      return [...attendanceHistory]
+        .sort((a, b) => {
+          const dateA = new Date(
+            getAttendanceDate(a) || 0
+          ).getTime();
+
+          const dateB = new Date(
+            getAttendanceDate(b) || 0
+          ).getTime();
+
+          return dateB - dateA;
+        })
+        .slice(0, 5);
+    }, [attendanceHistory]);
+
+  /* =======================================================
+     RECENT ACTIVITY
+  ======================================================= */
+
+  const activities = useMemo(() => {
+    const items = [];
+
+    if (todayCheckIn) {
+      items.push({
+        icon: "✓",
+        title: "Checked in",
+        description: `Attendance marked at ${formatTime(
+          todayCheckIn
+        )}`,
+        time: todayCheckIn,
+        sortTime:
+          new Date(
+            todayCheckIn
+          ).getTime() || 0,
+      });
+    }
+
+    if (todayCheckOut) {
+      items.push({
+        icon: "↪",
+        title: "Checked out",
+        description: `Attendance completed at ${formatTime(
+          todayCheckOut
+        )}`,
+        time: todayCheckOut,
+        sortTime:
+          new Date(
+            todayCheckOut
+          ).getTime() || 0,
+      });
+    }
+
+    pendingLeaves
+      .slice(0, 2)
+      .forEach((leave) => {
+        items.push({
+          icon: "▣",
+          title: "Leave request",
+          description: `${getLeaveDays(
+            leave
+          )} day${
+            getLeaveDays(leave) === 1
+              ? ""
+              : "s"
+          } — ${getLeaveStatus(
+            leave
+          )}`,
+          time:
+            leave?.created_at ||
+            leave?.applied_on ||
+            leave?.start_date,
+          sortTime: new Date(
+            leave?.created_at ||
+              leave?.applied_on ||
+              leave?.start_date ||
+              0
+          ).getTime(),
+        });
+      });
+
+    if (latestPayroll) {
+      items.push({
+        icon: "₹",
+        title: "Latest payslip",
+        description: `Net pay ${formatCurrency(
+          latestSalary
+        )}`,
+        time:
+          latestPayroll?.pay_date ||
+          latestPayroll?.payment_date ||
+          latestPayroll?.created_at,
+        sortTime: new Date(
+          latestPayroll?.pay_date ||
+            latestPayroll?.payment_date ||
+            latestPayroll?.created_at ||
+            0
+        ).getTime(),
+      });
+    }
+
+    return items
+      .sort(
+        (a, b) =>
+          b.sortTime - a.sortTime
+      )
+      .slice(0, 5);
+  }, [
+    todayCheckIn,
+    todayCheckOut,
+    pendingLeaves,
+    latestPayroll,
+    latestSalary,
+  ]);
+
+  /* =======================================================
      LOADING
-  ========================================================= */
+  ======================================================= */
 
   if (loading) {
     return (
-      <div className="employee-dashboard-root">
-        <div className="employee-loading-screen">
-          <div className="employee-loading-spinner" />
+      <div className="employee-loading-screen">
+        <div className="employee-loading-spinner" />
 
-          <h2>
-            Loading your workspace
-          </h2>
+        <h2>
+          Loading Dashboard
+        </h2>
 
-          <p>
-            Preparing your Atlas employee portal...
-          </p>
-        </div>
+        <p>
+          Please wait while your
+          employee information is
+          loaded.
+        </p>
       </div>
     );
   }
 
-  /* =========================================================
-     ERROR
-  ========================================================= */
-
-  if (error && !profile) {
-    return (
-      <div className="employee-dashboard-root">
-        <div className="employee-error-screen">
-          <div className="employee-error-icon">
-            !
-          </div>
-
-          <h2>
-            Unable to load dashboard
-          </h2>
-
-          <p>{error}</p>
-
-          <button
-            type="button"
-            className="employee-primary-button"
-            onClick={loadDashboard}
-          >
-            Try Again
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  /* =========================================================
-     RENDER
-  ========================================================= */
+  /* =======================================================
+     DASHBOARD
+  ======================================================= */
 
   return (
     <div className="employee-dashboard-root">
 
-      {/* MOBILE OVERLAY */}
+      {/* ===================================================
+          MOBILE OVERLAY
+      =================================================== */}
 
       {sidebarOpen && (
         <div
-          className="employee-sidebar-overlay"
-          onClick={() =>
-            setSidebarOpen(false)
-          }
+          className="employee-dashboard-sidebar-overlay"
+          onClick={closeSidebar}
+          aria-hidden="true"
         />
       )}
 
-      {/* =====================================================
+      {/* ===================================================
           SIDEBAR
-          IMPORTANT: NO DashboardLayout HERE
-      ===================================================== */}
+      =================================================== */}
 
       <aside
-        className={`employee-sidebar ${
+        className={`employee-dashboard-sidebar ${
           sidebarOpen
-            ? "employee-sidebar-open"
+            ? "employee-dashboard-sidebar-open"
             : ""
         }`}
       >
 
-        <div className="employee-sidebar-logo">
-          <div className="employee-logo-title">
-            ATLAS
+        {/* ===============================================
+            BRAND
+        =============================================== */}
+
+        <div className="employee-dashboard-sidebar-brand">
+          <div className="employee-dashboard-brand-mark">
+            A
           </div>
 
-          <div className="employee-logo-subtitle">
-            EMPLOYEE PORTAL
-          </div>
-        </div>
-
-        <div className="employee-sidebar-profile">
-
-          <div className="employee-sidebar-avatar">
-            {initials}
-          </div>
-
-          <div className="employee-sidebar-profile-text">
+          <div>
             <strong>
-              {employeeName}
+              ATLAS
             </strong>
 
             <span>
-              {profile?.department ||
-                "Employee"}
+              Employee Portal
             </span>
           </div>
-
         </div>
 
-        <nav className="employee-navigation">
+        {/* ===============================================
+            NAVIGATION
+        =============================================== */}
 
-          <div className="employee-navigation-title">
+        <nav className="employee-dashboard-navigation">
+
+          <div className="employee-dashboard-navigation-title">
             WORKSPACE
           </div>
 
           {employeeNavigation.map(
-            (item) => {
-              const isActive =
-                location.pathname ===
-                item.path;
-
-              return (
-                <button
-                  key={item.path}
-                  type="button"
-                  className={`employee-nav-item ${
+            (item) => (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                end={
+                  item.path ===
+                  "/employee"
+                }
+                onClick={
+                  closeSidebar
+                }
+                className={({
+                  isActive,
+                }) =>
+                  `employee-dashboard-nav-item ${
                     isActive
-                      ? "employee-nav-active"
+                      ? "employee-dashboard-nav-active"
                       : ""
-                  }`}
-                  onClick={() =>
-                    handleNavigation(
-                      item.path
-                    )
-                  }
-                >
-                  <span className="employee-nav-icon">
-                    {item.icon}
-                  </span>
+                  }`
+                }
+              >
+                <span className="employee-dashboard-nav-icon">
+                  {item.icon}
+                </span>
 
-                  <span>
-                    {item.label}
-                  </span>
-                </button>
-              );
-            }
+                <span>
+                  {item.label}
+                </span>
+
+                <span className="employee-dashboard-nav-chevron">
+                  ›
+                </span>
+              </NavLink>
+            )
           )}
 
         </nav>
 
-        <div className="employee-sidebar-footer">
-          <span>
-            PROJECT ATLAS
-          </span>
+        {/* ===============================================
+            ACCOUNT
+        =============================================== */}
 
-          <small>
-            Employee workspace
-          </small>
+        <div className="employee-dashboard-sidebar-footer">
+
+          <div className="employee-dashboard-navigation-title">
+            ACCOUNT
+          </div>
+
+          <button
+            type="button"
+            className="employee-dashboard-nav-item"
+            onClick={() => {
+              closeSidebar();
+              navigate(
+                "/employee/settings"
+              );
+            }}
+          >
+            <span className="employee-dashboard-nav-icon">
+              ⚙
+            </span>
+
+            <span>
+              Settings
+            </span>
+
+            <span className="employee-dashboard-nav-chevron">
+              ›
+            </span>
+          </button>
+
+          <button
+            type="button"
+            className="employee-dashboard-nav-item employee-dashboard-logout"
+            onClick={
+              handleLogout
+            }
+          >
+            <span className="employee-dashboard-nav-icon">
+              ↪
+            </span>
+
+            <span>
+              Logout
+            </span>
+          </button>
+
+          {/* =============================================
+              USER
+          ============================================= */}
+
+          <div className="employee-dashboard-sidebar-user">
+
+            <div className="employee-dashboard-sidebar-avatar">
+              {initials}
+            </div>
+
+            <div>
+              <strong
+                title={employeeName}
+              >
+                {employeeName}
+              </strong>
+
+              <span>
+                Employee
+              </span>
+            </div>
+
+          </div>
+
         </div>
 
       </aside>
 
-      {/* =====================================================
-          MAIN CONTENT
+      {/* =================================================
+          MOBILE HEADER
+      ================================================= */}
 
-          This starts DIRECTLY after the 250px sidebar.
-          No DashboardLayout.
-      ===================================================== */}
+      <header className="employee-dashboard-mobile-header">
+
+        <button
+          type="button"
+          onClick={toggleSidebar}
+          aria-label="Open employee menu"
+        >
+          ☰
+        </button>
+
+        <strong>
+          ATLAS
+        </strong>
+
+        <div />
+      </header>
+
+      {/* =================================================
+          MAIN
+      ================================================= */}
 
       <main className="employee-main">
 
-        {/* MOBILE HEADER */}
-
-        <header className="employee-mobile-header">
-
-          <button
-            type="button"
-            className="employee-menu-button"
-            onClick={() =>
-              setSidebarOpen(true)
-            }
-          >
-            ☰
-          </button>
-
-          <strong>
-            ATLAS
-          </strong>
-
-          <div className="employee-mobile-spacer" />
-
-        </header>
-
         <div className="employee-page">
 
-          {/* HEADER */}
+          {/* ===============================================
+              HEADER
+          =============================================== */}
 
           <header className="employee-header">
 
@@ -650,41 +975,66 @@ export default function EmployeeDashboard() {
               </span>
 
               <h1>
-                Good morning,{" "}
-                {employeeName}
+                Welcome back,{" "}
+                {
+                  employeeName.split(
+                    " "
+                  )[0]
+                }
               </h1>
 
               <p>
-                Here’s your personal workspace
-                for attendance, leave, payroll
-                and company updates.
+                Here's your work
+                overview for today.
               </p>
             </div>
 
             <div className="employee-date">
+
               <span>
                 Today
               </span>
 
               <strong>
-                {formattedDate}
+                {new Date().toLocaleDateString(
+                  "en-IN",
+                  {
+                    weekday:
+                      "long",
+                    day: "2-digit",
+                    month:
+                      "long",
+                    year:
+                      "numeric",
+                  }
+                )}
               </strong>
+
             </div>
 
           </header>
 
-          {/* ERROR */}
+          {/* ===============================================
+              ERROR
+          =============================================== */}
 
           {error && (
             <div className="employee-inline-error">
-              <span>!</span>
-              <p>{error}</p>
+
+              <span>
+                !
+              </span>
+
+              <p>
+                {error}
+              </p>
+
             </div>
           )}
 
-          {/* =================================================
+          {/* ===============================================
               ATTENDANCE
-          ================================================= */}
+          =============================================== */}
 
           <section className="employee-attendance-card">
 
@@ -692,14 +1042,12 @@ export default function EmployeeDashboard() {
 
               <div
                 className={`employee-card-icon ${
-                  isCheckedIn
+                  todayCheckIn
                     ? "attendance-active"
                     : ""
                 }`}
               >
-                {isCheckedIn
-                  ? "✓"
-                  : "○"}
+                ◷
               </div>
 
               <div>
@@ -709,19 +1057,25 @@ export default function EmployeeDashboard() {
                 </span>
 
                 <h2>
-                  {!attendance
-                    ? "Not Checked In"
-                    : isCheckedOut
-                    ? "Day Completed"
-                    : "Checked In"}
+                  {attendanceCompleted
+                    ? "Attendance completed"
+                    : todayCheckIn
+                    ? "You're currently working"
+                    : "You haven't checked in yet"}
                 </h2>
 
                 <p>
-                  {!attendance
-                    ? "Your working day has not started yet."
-                    : isCheckedOut
-                    ? `Checked in at ${attendance.check_in} and checked out at ${attendance.check_out}.`
-                    : `Checked in at ${attendance.check_in}.`}
+                  {todayCheckIn
+                    ? `Check-in: ${formatTime(
+                        todayCheckIn
+                      )}${
+                        todayCheckOut
+                          ? ` • Check-out: ${formatTime(
+                              todayCheckOut
+                            )}`
+                          : ""
+                      }`
+                    : "Mark your attendance when you start your workday."}
                 </p>
 
               </div>
@@ -730,118 +1084,121 @@ export default function EmployeeDashboard() {
 
             <div className="employee-attendance-actions">
 
-              {!isCheckedIn && (
+              {attendanceCompleted ? (
+                <div className="employee-completed-badge">
+                  ✓ Day Completed
+                </div>
+              ) : canCheckIn ? (
                 <button
                   type="button"
                   className="employee-primary-button"
-                  onClick={handleCheckIn}
-                  disabled={actionLoading}
+                  onClick={
+                    handleCheckIn
+                  }
+                  disabled={
+                    attendanceLoading
+                  }
                 >
-                  {actionLoading
+                  {attendanceLoading
                     ? "Checking in..."
                     : "Check In"}
                 </button>
-              )}
-
-              {isCheckedIn &&
-                !isCheckedOut && (
-                  <button
-                    type="button"
-                    className="employee-primary-button"
-                    onClick={handleCheckOut}
-                    disabled={actionLoading}
-                  >
-                    {actionLoading
-                      ? "Checking out..."
-                      : "Check Out"}
-                  </button>
-                )}
-
-              {isCheckedOut && (
-                <span className="employee-completed-badge">
-                  ✓ Completed
-                </span>
+              ) : (
+                <button
+                  type="button"
+                  className="employee-primary-button"
+                  onClick={
+                    handleCheckOut
+                  }
+                  disabled={
+                    attendanceLoading
+                  }
+                >
+                  {attendanceLoading
+                    ? "Checking out..."
+                    : "Check Out"}
+                </button>
               )}
 
             </div>
 
           </section>
 
-          {/* =================================================
+          {/* ===============================================
               KPI
-          ================================================= */}
+          =============================================== */}
 
           <section className="employee-kpis">
 
             <div className="employee-kpi-card">
               <span className="employee-kpi-label">
-                WORKED TODAY
+                PRESENT DAYS
               </span>
 
               <strong>
-                {calculateWorkedTime()}
+                {currentMonthPresent}
               </strong>
 
               <small>
-                Current working hours
+                This month
               </small>
             </div>
 
             <div className="employee-kpi-card">
               <span className="employee-kpi-label">
-                THIS MONTH
+                ATTENDANCE RECORDS
               </span>
 
               <strong>
-                {daysPresentThisMonth}
+                {presentDays}
               </strong>
 
               <small>
-                Days present
+                Total recorded
               </small>
             </div>
 
             <div className="employee-kpi-card">
               <span className="employee-kpi-label">
-                LEAVE BALANCE
+                LEAVE DAYS
               </span>
 
               <strong>
-                {leaveBalance}
+                {totalLeaveDays}
               </strong>
 
               <small>
-                Available leave
+                Approved leave
               </small>
             </div>
 
             <div className="employee-kpi-card">
               <span className="employee-kpi-label">
-                LATEST PAYROLL
+                LATEST PAY
               </span>
 
               <strong>
-                {getSalary(latestPayroll)}
+                {formatCurrency(
+                  latestSalary
+                )}
               </strong>
 
               <small>
-                {latestPayroll
-                  ? getPayrollMonth(
-                      latestPayroll
-                    )
-                  : "No payroll available"}
+                Latest payroll
               </small>
             </div>
 
           </section>
 
-          {/* =================================================
-              DASHBOARD GRID
-          ================================================= */}
+          {/* ===============================================
+              MAIN GRID
+          =============================================== */}
 
           <section className="employee-dashboard-grid">
 
-            {/* ATTENDANCE */}
+            {/* =============================================
+                ATTENDANCE
+            ============================================= */}
 
             <div className="employee-panel">
 
@@ -853,7 +1210,7 @@ export default function EmployeeDashboard() {
                   </span>
 
                   <h2>
-                    Today
+                    Recent Attendance
                   </h2>
                 </div>
 
@@ -866,78 +1223,129 @@ export default function EmployeeDashboard() {
                     )
                   }
                 >
-                  View Attendance
+                  View all →
                 </button>
 
               </div>
 
               <div className="employee-timeline">
 
-                <div className="employee-timeline-item">
+                {recentAttendance.length ===
+                0 ? (
+                  <p
+                    style={{
+                      margin: 0,
+                      color:
+                        "#68738a",
+                      fontSize:
+                        "12px",
+                    }}
+                  >
+                    No attendance
+                    records
+                    available.
+                  </p>
+                ) : (
+                  recentAttendance.map(
+                    (
+                      record,
+                      index
+                    ) => {
 
-                  <div
-                    className={`employee-timeline-dot ${
-                      attendance?.check_in
-                        ? ""
-                        : "pending"
-                    }`}
-                  />
+                      const date =
+                        getAttendanceDate(
+                          record
+                        );
 
-                  <div>
-                    <strong>
-                      Check In
-                    </strong>
+                      const checkIn =
+                        getAttendanceCheckIn(
+                          record
+                        );
 
-                    <span>
-                      {attendance?.check_in
-                        ? "Recorded"
-                        : "Not recorded"}
-                    </span>
-                  </div>
+                      const checkOut =
+                        getAttendanceCheckOut(
+                          record
+                        );
 
-                  <time>
-                    {attendance?.check_in ||
-                      "--:--"}
-                  </time>
+                      const status =
+                        getAttendanceStatus(
+                          record
+                        );
 
-                </div>
+                      const isPresent =
+                        String(
+                          status
+                        ).toLowerCase() !==
+                        "absent";
 
-                <div className="employee-timeline-line" />
+                      return (
+                        <div
+                          key={
+                            record?.id ||
+                            record?.attendance_id ||
+                            `${date}-${index}`
+                          }
+                        >
 
-                <div className="employee-timeline-item">
+                          <div className="employee-timeline-item">
 
-                  <div
-                    className={`employee-timeline-dot ${
-                      attendance?.check_out
-                        ? ""
-                        : "pending"
-                    }`}
-                  />
+                            <span
+                              className={`employee-timeline-dot ${
+                                isPresent
+                                  ? ""
+                                  : "pending"
+                              }`}
+                            />
 
-                  <div>
-                    <strong>
-                      Check Out
-                    </strong>
+                            <div>
 
-                    <span>
-                      {attendance?.check_out
-                        ? "Recorded"
-                        : "Not recorded"}
-                    </span>
-                  </div>
+                              <strong>
+                                {formatDate(
+                                  date
+                                )}
+                              </strong>
 
-                  <time>
-                    {attendance?.check_out ||
-                      "--:--"}
-                  </time>
+                              <span>
+                                {status}
+                              </span>
 
-                </div>
+                            </div>
+
+                            <time>
+                              {checkIn
+                                ? formatTime(
+                                    checkIn
+                                  )
+                                : "—"}
+
+                              {checkOut
+                                ? ` — ${formatTime(
+                                    checkOut
+                                  )}`
+                                : ""}
+                            </time>
+
+                          </div>
+
+                          {index <
+                            recentAttendance.length -
+                              1 && (
+                            <div className="employee-timeline-line" />
+                          )}
+
+                        </div>
+                      );
+                    }
+                  )
+                )}
 
               </div>
 
             </div>
 
-            {/* LEAVE */}
+            {/* =============================================
+                LEAVE
+            ============================================= */}
 
             <div className="employee-panel">
 
@@ -949,7 +1357,7 @@ export default function EmployeeDashboard() {
                   </span>
 
                   <h2>
-                    My Leave
+                    Leave Overview
                   </h2>
                 </div>
 
@@ -962,7 +1370,7 @@ export default function EmployeeDashboard() {
                     )
                   }
                 >
-                  View All
+                  View all →
                 </button>
 
               </div>
@@ -971,21 +1379,25 @@ export default function EmployeeDashboard() {
 
                 <div>
                   <span>
-                    Available
+                    Requests
                   </span>
 
                   <strong>
-                    {leaveBalance}
+                    {
+                      leaveRecords.length
+                    }
                   </strong>
                 </div>
 
                 <div>
                   <span>
-                    Used
+                    Approved
                   </span>
 
                   <strong>
-                    {usedLeaveDays}
+                    {
+                      approvedLeaves.length
+                    }
                   </strong>
                 </div>
 
@@ -995,11 +1407,61 @@ export default function EmployeeDashboard() {
                   </span>
 
                   <strong>
-                    {pendingLeaves}
+                    {
+                      pendingLeaves.length
+                    }
                   </strong>
                 </div>
 
               </div>
+
+              {pendingLeaves.length >
+              0 ? (
+                <div
+                  style={{
+                    marginBottom:
+                      "16px",
+                    color:
+                      "#8b95aa",
+                    fontSize:
+                      "12px",
+                    lineHeight:
+                      1.6,
+                  }}
+                >
+                  You have{" "}
+                  <strong
+                    style={{
+                      color:
+                        "#ffffff",
+                    }}
+                  >
+                    {
+                      pendingLeaves.length
+                    }
+                  </strong>{" "}
+                  pending leave
+                  request
+                  {pendingLeaves.length ===
+                  1
+                    ? ""
+                    : "s"}.
+                </div>
+              ) : (
+                <div
+                  style={{
+                    marginBottom:
+                      "16px",
+                    color:
+                      "#68738a",
+                    fontSize:
+                      "12px",
+                  }}
+                >
+                  No pending leave
+                  requests.
+                </div>
+              )}
 
               <button
                 type="button"
@@ -1010,12 +1472,14 @@ export default function EmployeeDashboard() {
                   )
                 }
               >
-                Apply for Leave
+                Manage Leave
               </button>
 
             </div>
 
-            {/* PAYROLL */}
+            {/* =============================================
+                PAYROLL
+            ============================================= */}
 
             <div className="employee-panel">
 
@@ -1040,51 +1504,85 @@ export default function EmployeeDashboard() {
                     )
                   }
                 >
-                  View Payroll
+                  View all →
                 </button>
 
               </div>
 
-              <div className="employee-payslip">
+              {latestPayroll ? (
+                <>
+                  <div className="employee-payslip">
 
+                    <div>
+                      <span>
+                        Net Pay
+                      </span>
+
+                      <strong>
+                        {formatCurrency(
+                          latestSalary
+                        )}
+                      </strong>
+                    </div>
+
+                    <div className="employee-payslip-status">
+                      {latestPayroll?.status ||
+                        latestPayroll?.payment_status ||
+                        "Processed"}
+                    </div>
+
+                  </div>
+
+                  <button
+                    type="button"
+                    className="employee-secondary-button"
+                    onClick={() =>
+                      navigate(
+                        "/employee/payslips"
+                      )
+                    }
+                  >
+                    View Payslips
+                  </button>
+                </>
+              ) : (
                 <div>
-                  <span>
-                    {latestPayroll
-                      ? getPayrollMonth(
-                          latestPayroll
-                        )
-                      : "Payroll"}
-                  </span>
 
-                  <strong>
-                    {getSalary(
-                      latestPayroll
-                    )}
-                  </strong>
+                  <p
+                    style={{
+                      margin:
+                        "0 0 16px",
+                      color:
+                        "#68738a",
+                      fontSize:
+                        "12px",
+                    }}
+                  >
+                    No payroll
+                    records are
+                    available yet.
+                  </p>
+
+                  <button
+                    type="button"
+                    className="employee-secondary-button"
+                    onClick={() =>
+                      navigate(
+                        "/employee/payslips"
+                      )
+                    }
+                  >
+                    Open Payslips
+                  </button>
+
                 </div>
-
-                <div className="employee-payslip-status">
-                  {latestPayroll?.status ||
-                    "—"}
-                </div>
-
-              </div>
-
-              <button
-                type="button"
-                className="employee-secondary-button"
-                onClick={() =>
-                  navigate(
-                    "/employee/payslips"
-                  )
-                }
-              >
-                View Payslip
-              </button>
+              )}
 
             </div>
 
-            {/* PROFILE */}
+            {/* =============================================
+                PROFILE
+            ============================================= */}
 
             <div className="employee-panel">
 
@@ -1092,11 +1590,11 @@ export default function EmployeeDashboard() {
 
                 <div>
                   <span className="employee-section-label">
-                    MY PROFILE
+                    PROFILE
                   </span>
 
                   <h2>
-                    Employee Information
+                    My Profile
                   </h2>
                 </div>
 
@@ -1109,7 +1607,7 @@ export default function EmployeeDashboard() {
                     )
                   }
                 >
-                  View
+                  Edit →
                 </button>
 
               </div>
@@ -1123,27 +1621,15 @@ export default function EmployeeDashboard() {
                 <div>
 
                   <strong>
-                    {profile?.name ||
-                      employeeName}
+                    {employeeName}
                   </strong>
 
                   <span>
-                    Employee ID:{" "}
-                    {profile?.id ??
-                      user?.employee_id ??
-                      "—"}
+                    {employeeRole}
                   </span>
 
                   <span>
-                    Department:{" "}
-                    {profile?.department ||
-                      "Not assigned"}
-                  </span>
-
-                  <span>
-                    {profile?.email ||
-                      user?.email ||
-                      "—"}
+                    {employeeEmail}
                   </span>
 
                 </div>
@@ -1154,9 +1640,9 @@ export default function EmployeeDashboard() {
 
           </section>
 
-          {/* =================================================
+          {/* ===============================================
               QUICK ACCESS
-          ================================================= */}
+          =============================================== */}
 
           <section className="employee-panel">
 
@@ -1164,11 +1650,11 @@ export default function EmployeeDashboard() {
 
               <div>
                 <span className="employee-section-label">
-                  QUICK ACCESS
+                  WORKSPACE
                 </span>
 
                 <h2>
-                  Employee Services
+                  Quick Access
                 </h2>
               </div>
 
@@ -1185,7 +1671,7 @@ export default function EmployeeDashboard() {
                   )
                 }
               >
-                Attendance
+                ◷ &nbsp; Attendance
               </button>
 
               <button
@@ -1197,7 +1683,7 @@ export default function EmployeeDashboard() {
                   )
                 }
               >
-                Apply Leave
+                ▣ &nbsp; Leave
               </button>
 
               <button
@@ -1209,7 +1695,7 @@ export default function EmployeeDashboard() {
                   )
                 }
               >
-                Payslips
+                ₹ &nbsp; Payslips
               </button>
 
               <button
@@ -1221,18 +1707,23 @@ export default function EmployeeDashboard() {
                   )
                 }
               >
-                My Profile
+                ● &nbsp; My Profile
               </button>
 
             </div>
 
           </section>
 
-          {/* =================================================
+          {/* ===============================================
               RECENT ACTIVITY
-          ================================================= */}
+          =============================================== */}
 
-          <section className="employee-panel employee-activity-panel">
+          <section
+            className="employee-panel employee-activity-panel"
+            style={{
+              marginTop: "18px",
+            }}
+          >
 
             <div className="employee-panel-header">
 
@@ -1250,137 +1741,64 @@ export default function EmployeeDashboard() {
 
             <div className="employee-activity-list">
 
-              {attendance?.check_out && (
-                <div className="employee-activity-item">
+              {activities.length ===
+              0 ? (
+                <p
+                  style={{
+                    margin: 0,
+                    color:
+                      "#68738a",
+                    fontSize:
+                      "12px",
+                  }}
+                >
+                  No recent
+                  activity.
+                </p>
+              ) : (
+                activities.map(
+                  (
+                    activity,
+                    index
+                  ) => (
+                    <div
+                      className="employee-activity-item"
+                      key={`${activity.title}-${index}`}
+                    >
 
-                  <div className="employee-activity-icon">
-                    ✓
-                  </div>
+                      <div className="employee-activity-icon">
+                        {
+                          activity.icon
+                        }
+                      </div>
 
-                  <div>
-                    <strong>
-                      Attendance completed
-                    </strong>
+                      <div>
 
-                    <span>
-                      Your check-in and check-out
-                      have been recorded.
-                    </span>
-                  </div>
+                        <strong>
+                          {
+                            activity.title
+                          }
+                        </strong>
 
-                  <time>
-                    Today
-                  </time>
+                        <span>
+                          {
+                            activity.description
+                          }
+                        </span>
 
-                </div>
-              )}
+                      </div>
 
-              {attendance?.check_in &&
-                !attendance?.check_out && (
-                  <div className="employee-activity-item">
+                      <time>
+                        {activity.time
+                          ? formatTime(
+                              activity.time
+                            )
+                          : "—"}
+                      </time>
 
-                    <div className="employee-activity-icon">
-                      ✓
                     </div>
-
-                    <div>
-                      <strong>
-                        Attendance recorded
-                      </strong>
-
-                      <span>
-                        You checked in at{" "}
-                        {attendance.check_in}.
-                      </span>
-                    </div>
-
-                    <time>
-                      Today
-                    </time>
-
-                  </div>
-                )}
-
-              {!attendance && (
-                <div className="employee-activity-item">
-
-                  <div className="employee-activity-icon">
-                    —
-                  </div>
-
-                  <div>
-                    <strong>
-                      No attendance recorded
-                    </strong>
-
-                    <span>
-                      Your attendance has not been
-                      recorded today.
-                    </span>
-                  </div>
-
-                  <time>
-                    Today
-                  </time>
-
-                </div>
-              )}
-
-              {pendingLeaves > 0 && (
-                <div className="employee-activity-item">
-
-                  <div className="employee-activity-icon">
-                    !
-                  </div>
-
-                  <div>
-                    <strong>
-                      Leave request pending
-                    </strong>
-
-                    <span>
-                      You have{" "}
-                      {pendingLeaves} pending
-                      leave request
-                      {pendingLeaves > 1
-                        ? "s"
-                        : ""}.
-                    </span>
-                  </div>
-
-                  <time>
-                    Pending
-                  </time>
-
-                </div>
-              )}
-
-              {latestPayroll && (
-                <div className="employee-activity-item">
-
-                  <div className="employee-activity-icon">
-                    ₹
-                  </div>
-
-                  <div>
-                    <strong>
-                      Latest payroll available
-                    </strong>
-
-                    <span>
-                      {getPayrollMonth(
-                        latestPayroll
-                      )}{" "}
-                      payroll is available.
-                    </span>
-                  </div>
-
-                  <time>
-                    {latestPayroll.status ||
-                      "Available"}
-                  </time>
-
-                </div>
+                  )
+                )
               )}
 
             </div>
@@ -1388,7 +1806,9 @@ export default function EmployeeDashboard() {
           </section>
 
         </div>
+
       </main>
+
     </div>
   );
 }

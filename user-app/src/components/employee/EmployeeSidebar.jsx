@@ -3,26 +3,25 @@ import { useAuth } from "../../context/AuthContext";
 
 import "./EmployeeSidebar.css";
 
-export default function EmployeeSidebar() {
+export default function EmployeeSidebar({
+  sidebarOpen = false,
+  onNavigate = () => {},
+}) {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  // =========================================================
-  // LOGOUT
-  // =========================================================
-
   const handleLogout = () => {
+    localStorage.removeItem("access_token");
     localStorage.removeItem("atlas_token");
     localStorage.removeItem("token");
+    localStorage.removeItem("atlas_user");
+
+    onNavigate();
 
     navigate("/login", {
       replace: true,
     });
   };
-
-  // =========================================================
-  // NAVIGATION
-  // =========================================================
 
   const navigation = [
     {
@@ -52,10 +51,6 @@ export default function EmployeeSidebar() {
     },
   ];
 
-  // =========================================================
-  // USER
-  // =========================================================
-
   const employeeName =
     user?.name ||
     user?.full_name ||
@@ -71,41 +66,27 @@ export default function EmployeeSidebar() {
       .slice(0, 2)
       .toUpperCase() || "E";
 
-  // =========================================================
-  // RENDER
-  // =========================================================
+  const handleNavigation = (path) => {
+    onNavigate();
+    navigate(path);
+  };
 
   return (
-    <aside className="employee-sidebar">
-
-      {/* =====================================================
-          BRAND
-      ===================================================== */}
-
+    <aside
+      className={`employee-sidebar ${
+        sidebarOpen ? "employee-sidebar-open" : ""
+      }`}
+    >
       <div className="employee-sidebar-brand">
-
-        <div className="employee-brand-mark">
-          A
-        </div>
+        <div className="employee-brand-mark">A</div>
 
         <div className="employee-brand-text">
-          <strong>
-            ATLAS
-          </strong>
-
-          <span>
-            Employee Portal
-          </span>
+          <strong>ATLAS</strong>
+          <span>Employee Portal</span>
         </div>
-
       </div>
 
-      {/* =====================================================
-          NAVIGATION
-      ===================================================== */}
-
       <nav className="employee-sidebar-nav">
-
         <div className="employee-sidebar-section-title">
           WORKSPACE
         </div>
@@ -115,6 +96,7 @@ export default function EmployeeSidebar() {
             key={item.path}
             to={item.path}
             end={item.path === "/employee"}
+            onClick={onNavigate}
             className={({ isActive }) =>
               `employee-sidebar-link ${
                 isActive
@@ -123,92 +105,64 @@ export default function EmployeeSidebar() {
               }`
             }
           >
-
             <span className="employee-sidebar-icon">
               {item.icon}
             </span>
 
-            <span>
+            <span className="employee-sidebar-label">
               {item.label}
             </span>
 
             <span className="employee-sidebar-chevron">
               ›
             </span>
-
           </NavLink>
         ))}
-
       </nav>
 
-      {/* =====================================================
-          BOTTOM
-      ===================================================== */}
-
       <div className="employee-sidebar-bottom">
-
         <div className="employee-sidebar-section-title">
           ACCOUNT
         </div>
 
-        {/* ===================================================
-            SETTINGS
-        =================================================== */}
-
         <button
           type="button"
           className="employee-sidebar-link employee-sidebar-button"
-          onClick={() =>
-            navigate("/employee/settings")
-          }
+          onClick={() => handleNavigation("/employee/settings")}
         >
-
           <span className="employee-sidebar-icon">
             ⚙
           </span>
 
-          <span>
+          <span className="employee-sidebar-label">
             Settings
           </span>
 
           <span className="employee-sidebar-chevron">
             ›
           </span>
-
         </button>
-
-        {/* ===================================================
-            LOGOUT
-        =================================================== */}
 
         <button
           type="button"
           className="employee-sidebar-link employee-sidebar-button employee-sidebar-logout"
           onClick={handleLogout}
         >
-
           <span className="employee-sidebar-icon">
             ↪
           </span>
 
-          <span>
+          <span className="employee-sidebar-label">
             Logout
           </span>
-
         </button>
 
-        {/* ===================================================
-            USER CARD
-        =================================================== */}
-
         <div className="employee-sidebar-user">
-
           <div className="employee-sidebar-avatar">
             {initials}
           </div>
 
           <div className="employee-sidebar-user-info">
-
             <strong title={employeeName}>
               {employeeName}
             </strong>
@@ -216,13 +170,9 @@ export default function EmployeeSidebar() {
             <span>
               Employee
             </span>
-
           </div>
-
         </div>
-
       </div>
-
     </aside>
   );
 }

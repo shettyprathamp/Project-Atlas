@@ -1,7 +1,17 @@
 /* =========================================================
-   MANAGER DASHBOARD
    PROJECT ATLAS
-========================================================= */
+   MANAGER DASHBOARD
+   RESPONSIVE ENTERPRISE INTERFACE
+   ========================================================= */
+
+/* =========================================================
+   GLOBAL SAFETY
+   ========================================================= */
+
+.manager-shell,
+.manager-shell * {
+  box-sizing: border-box;
+}
 
 .manager-shell {
   width: 100%;
@@ -9,17 +19,24 @@
 
   display: flex;
 
+  margin: 0;
+  padding: 0;
+
   background: #08090b;
   color: #f2f3f5;
-}
 
+  overflow-x: hidden;
+}
 
 /* =========================================================
    MAIN CONTENT
-========================================================= */
+   ========================================================= */
 
 .manager-main {
+  position: relative;
+
   width: calc(100% - 238px);
+  min-width: 0;
   min-height: 100vh;
 
   margin-left: 238px;
@@ -29,12 +46,12 @@
   box-sizing: border-box;
 
   overflow-x: hidden;
+  overflow-y: auto;
 }
-
 
 /* =========================================================
    HEADER
-========================================================= */
+   ========================================================= */
 
 .manager-header {
   width: 100%;
@@ -48,11 +65,10 @@
   margin-bottom: 30px;
 }
 
-
 .manager-header-content {
   min-width: 0;
+  flex: 1;
 }
-
 
 .manager-header-label {
   margin-bottom: 8px;
@@ -65,7 +81,6 @@
   color: #626974;
 }
 
-
 .manager-header h1 {
   margin: 0;
 
@@ -77,8 +92,9 @@
   color: #f4f5f6;
 }
 
-
 .manager-header p {
+  max-width: 650px;
+
   margin: 9px 0 0;
 
   font-size: 12px;
@@ -87,10 +103,9 @@
   color: #747b85;
 }
 
-
 /* =========================================================
    HEADER USER
-========================================================= */
+   ========================================================= */
 
 .manager-header-user {
   display: flex;
@@ -103,10 +118,11 @@
   flex-shrink: 0;
 }
 
-
 .manager-header-avatar {
   width: 38px;
   height: 38px;
+
+  min-width: 38px;
 
   display: flex;
   align-items: center;
@@ -120,22 +136,28 @@
   color: #9aa1aa;
 }
 
-
 .manager-header-user div:last-child {
+  min-width: 0;
+
   display: flex;
   flex-direction: column;
 
   gap: 3px;
 }
 
-
 .manager-header-user strong {
+  max-width: 160px;
+
+  overflow: hidden;
+
   font-size: 11px;
   font-weight: 600;
 
   color: #e3e5e8;
-}
 
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 
 .manager-header-user span {
   font-size: 9px;
@@ -143,13 +165,13 @@
   color: #656c76;
 }
 
-
 /* =========================================================
    KPI GRID
-========================================================= */
+   ========================================================= */
 
 .manager-kpi-grid {
   width: 100%;
+  min-width: 0;
 
   display: grid;
 
@@ -161,14 +183,12 @@
   margin-bottom: 22px;
 }
 
-
 /* =========================================================
    KPI CARD
-========================================================= */
+   ========================================================= */
 
 .manager-kpi-card {
   min-width: 0;
-
   min-height: 100px;
 
   display: flex;
@@ -178,21 +198,22 @@
 
   padding: 20px;
 
-  box-sizing: border-box;
-
   background: #0e1013;
 
   border: 1px solid #1d2025;
 
   border-radius: 10px;
-}
 
+  box-sizing: border-box;
+
+  overflow: hidden;
+}
 
 .manager-kpi-icon {
   width: 42px;
   height: 42px;
 
-  flex-shrink: 0;
+  min-width: 42px;
 
   display: flex;
   align-items: center;
@@ -205,9 +226,9 @@
   color: #858d98;
 }
 
-
 .manager-kpi-content {
   min-width: 0;
+  flex: 1;
 
   display: flex;
   flex-direction: column;
@@ -215,8 +236,9 @@
   gap: 7px;
 }
 
-
 .manager-kpi-content span {
+  max-width: 100%;
+
   overflow: hidden;
 
   font-size: 10px;
@@ -227,7 +249,6 @@
   text-overflow: ellipsis;
 }
 
-
 .manager-kpi-content strong {
   font-size: 23px;
   line-height: 1;
@@ -237,13 +258,13 @@
   color: #f0f1f2;
 }
 
-
 /* =========================================================
    DASHBOARD GRID
-========================================================= */
+   ========================================================= */
 
 .manager-dashboard-grid {
   width: 100%;
+  min-width: 0;
 
   display: grid;
 
@@ -256,10 +277,9 @@
   align-items: stretch;
 }
 
-
 /* =========================================================
    PANEL
-========================================================= */
+   ========================================================= */
 
 .manager-panel {
   min-width: 0;
@@ -277,16 +297,15 @@
   overflow: hidden;
 }
 
-
 .manager-panel-large {
   grid-row: span 2;
+
   min-height: 616px;
 }
 
-
 /* =========================================================
    PANEL HEADER
-========================================================= */
+   ========================================================= */
 
 .manager-panel-header {
   min-height: 76px;
@@ -304,11 +323,10 @@
   border-bottom: 1px solid #1d2025;
 }
 
-
 .manager-panel-header > div {
   min-width: 0;
+  flex: 1;
 }
-
 
 .manager-panel-header h2 {
   margin: 0;
@@ -319,7 +337,6 @@
   color: #e9eaec;
 }
 
-
 .manager-panel-header p {
   margin: 5px 0 0;
 
@@ -327,7 +344,6 @@
 
   color: #656c76;
 }
-
 
 .manager-panel-header button {
   flex-shrink: 0;
@@ -345,18 +361,18 @@
   font-size: 10px;
 
   cursor: pointer;
-}
 
+  white-space: nowrap;
+}
 
 .manager-panel-header button:hover {
   background: #1b1e23;
   color: #e2e4e7;
 }
 
-
 /* =========================================================
    EMPTY STATE
-========================================================= */
+   ========================================================= */
 
 .manager-empty-state {
   flex: 1;
@@ -378,11 +394,11 @@
   color: #555c66;
 }
 
-
 .manager-empty-state svg {
   margin-bottom: 14px;
-}
 
+  flex-shrink: 0;
+}
 
 .manager-empty-state h3 {
   margin: 0 0 7px;
@@ -392,7 +408,6 @@
 
   color: #777e88;
 }
-
 
 .manager-empty-state p {
   max-width: 300px;
@@ -405,84 +420,23 @@
   color: #555c66;
 }
 
-
 .manager-empty-state.small {
   min-height: 220px;
 }
-
 
 .manager-empty-state.small p {
   margin-top: 3px;
 }
 
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media (max-width: 1150px) {
-
-  .manager-main {
-    padding: 28px 24px 36px;
-  }
-
-  .manager-kpi-grid {
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
-  }
-
-}
-
-
-@media (max-width: 850px) {
-
-  .manager-main {
-    width: calc(100% - 210px);
-    margin-left: 210px;
-
-    padding: 24px 18px 30px;
-  }
-
-  .manager-dashboard-grid {
-    grid-template-columns:
-      minmax(0, 1fr);
-  }
-
-  .manager-panel-large {
-    grid-row: auto;
-    min-height: 400px;
-  }
-
-}
-
-
-@media (max-width: 650px) {
-
-  .manager-main {
-    width: calc(100% - 190px);
-    margin-left: 190px;
-
-    padding: 20px 14px 26px;
-  }
-
-  .manager-header-user {
-    display: none;
-  }
-
-  .manager-kpi-grid {
-    grid-template-columns:
-      minmax(0, 1fr);
-  }
-
-}
 /* =========================================================
    DASHBOARD ERROR
-========================================================= */
+   ========================================================= */
 
 .manager-dashboard-error {
   width: 100%;
 
   margin-bottom: 20px;
+
   padding: 12px 14px;
 
   box-sizing: border-box;
@@ -490,27 +444,33 @@
   background: #151719;
 
   border: 1px solid #2a2d31;
+
   border-radius: 8px;
 
   color: #aeb4bc;
 
   font-size: 11px;
+
   line-height: 1.5;
+
+  overflow-wrap: anywhere;
 }
+
 /* =========================================================
    DASHBOARD DATA LISTS
-========================================================= */
+   ========================================================= */
 
 .manager-dashboard-list {
   flex: 1;
   min-height: 0;
-  overflow-y: auto;
-}
 
+  overflow-y: auto;
+  overflow-x: hidden;
+}
 
 /* =========================================================
    LOADING
-========================================================= */
+   ========================================================= */
 
 .manager-dashboard-loading {
   min-height: 220px;
@@ -526,17 +486,18 @@
   color: #666d77;
 
   font-size: 10px;
-}
 
+  text-align: center;
+}
 
 /* =========================================================
    TEAM LIST
-========================================================= */
+   ========================================================= */
 
 .manager-team-list {
   width: 100%;
+  min-width: 0;
 }
-
 
 .manager-team-row {
   min-height: 78px;
@@ -553,15 +514,15 @@
   border-bottom: 1px solid #191c21;
 }
 
-
 .manager-team-row:last-child {
   border-bottom: none;
 }
 
-
 .manager-team-icon {
   width: 34px;
   height: 34px;
+
+  min-width: 34px;
 
   flex-shrink: 0;
 
@@ -576,7 +537,6 @@
   color: #858d98;
 }
 
-
 .manager-team-info {
   min-width: 0;
 
@@ -588,8 +548,9 @@
   gap: 4px;
 }
 
-
 .manager-team-info strong {
+  max-width: 100%;
+
   overflow: hidden;
 
   font-size: 11px;
@@ -601,8 +562,9 @@
   text-overflow: ellipsis;
 }
 
-
 .manager-team-info span {
+  max-width: 100%;
+
   overflow: hidden;
 
   font-size: 9px;
@@ -613,7 +575,6 @@
   text-overflow: ellipsis;
 }
 
-
 .manager-team-count {
   min-width: 72px;
 
@@ -623,9 +584,10 @@
 
   gap: 5px;
 
+  flex-shrink: 0;
+
   color: #858d98;
 }
-
 
 .manager-team-count span {
   font-size: 12px;
@@ -634,22 +596,20 @@
   color: #d7dade;
 }
 
-
 .manager-team-count small {
   font-size: 8px;
 
   color: #5f6670;
 }
 
-
 /* =========================================================
    LEAVE LIST
-========================================================= */
+   ========================================================= */
 
 .manager-leave-list {
   width: 100%;
+  min-width: 0;
 }
-
 
 .manager-leave-row {
   min-height: 82px;
@@ -666,11 +626,9 @@
   border-bottom: 1px solid #191c21;
 }
 
-
 .manager-leave-row:last-child {
   border-bottom: none;
 }
-
 
 .manager-leave-info {
   min-width: 0;
@@ -683,8 +641,9 @@
   gap: 4px;
 }
 
-
 .manager-leave-info strong {
+  max-width: 100%;
+
   overflow: hidden;
 
   font-size: 10px;
@@ -696,20 +655,17 @@
   text-overflow: ellipsis;
 }
 
-
 .manager-leave-info span {
   font-size: 9px;
 
   color: #858c96;
 }
 
-
 .manager-leave-info small {
   font-size: 8px;
 
   color: #5f6670;
 }
-
 
 .manager-status-pending {
   flex-shrink: 0;
@@ -726,17 +682,18 @@
 
   font-size: 8px;
   font-weight: 600;
-}
 
+  white-space: nowrap;
+}
 
 /* =========================================================
    ATTENDANCE LIST
-========================================================= */
+   ========================================================= */
 
 .manager-attendance-list {
   width: 100%;
+  min-width: 0;
 }
-
 
 .manager-attendance-row {
   min-height: 68px;
@@ -753,11 +710,9 @@
   border-bottom: 1px solid #191c21;
 }
 
-
 .manager-attendance-row:last-child {
   border-bottom: none;
 }
-
 
 .manager-attendance-info {
   min-width: 0;
@@ -770,8 +725,9 @@
   gap: 4px;
 }
 
-
 .manager-attendance-info strong {
+  max-width: 100%;
+
   overflow: hidden;
 
   font-size: 10px;
@@ -783,8 +739,9 @@
   text-overflow: ellipsis;
 }
 
-
 .manager-attendance-info span {
+  max-width: 100%;
+
   overflow: hidden;
 
   font-size: 8px;
@@ -794,7 +751,6 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-
 
 .manager-attendance-time {
   flex-shrink: 0;
@@ -807,20 +763,17 @@
   gap: 3px;
 }
 
-
 .manager-attendance-time span {
   font-size: 9px;
 
   color: #a1a7af;
 }
 
-
 .manager-attendance-time small {
   font-size: 8px;
 
   color: #5f6670;
 }
-
 
 .manager-attendance-status {
   flex-shrink: 0;
@@ -843,29 +796,466 @@
   text-overflow: ellipsis;
 }
 
+/* =========================================================
+   LARGE DESKTOP
+   ========================================================= */
+
+@media (min-width: 1500px) {
+  .manager-main {
+    padding: 38px 42px 48px;
+  }
+
+  .manager-header {
+    margin-bottom: 34px;
+  }
+
+  .manager-kpi-grid {
+    gap: 18px;
+  }
+
+  .manager-dashboard-grid {
+    gap: 18px;
+  }
+}
 
 /* =========================================================
-   DASHBOARD ERROR
-========================================================= */
+   LAPTOP
+   ========================================================= */
 
-.manager-dashboard-error {
-  width: 100%;
+@media (max-width: 1150px) {
+  .manager-main {
+    padding: 28px 24px 36px;
+  }
 
-  margin-bottom: 20px;
+  .manager-kpi-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
 
-  padding: 12px 14px;
+  .manager-dashboard-grid {
+    grid-template-columns:
+      minmax(0, 1.5fr)
+      minmax(250px, 1fr);
+  }
+}
 
-  box-sizing: border-box;
+/* =========================================================
+   TABLET
+   ========================================================= */
 
-  background: #151719;
+@media (max-width: 950px) {
+  .manager-main {
+    width: calc(100% - 210px);
 
-  border: 1px solid #2a2d31;
+    margin-left: 210px;
 
-  border-radius: 8px;
+    padding: 26px 20px 34px;
+  }
 
-  color: #aeb4bc;
+  .manager-header {
+    gap: 20px;
+  }
 
-  font-size: 11px;
+  .manager-header h1 {
+    font-size: 27px;
+  }
 
-  line-height: 1.5;
+  .manager-dashboard-grid {
+    grid-template-columns:
+      minmax(0, 1fr);
+  }
+
+  .manager-panel-large {
+    grid-row: auto;
+
+    min-height: 420px;
+  }
+}
+
+/* =========================================================
+   SMALL TABLET
+   ========================================================= */
+
+@media (max-width: 800px) {
+  .manager-main {
+    width: calc(100% - 190px);
+
+    margin-left: 190px;
+
+    padding: 24px 18px 30px;
+  }
+
+  .manager-header {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 18px;
+  }
+
+  .manager-header-user {
+    width: 100%;
+
+    padding: 0;
+  }
+
+  .manager-header-user strong {
+    max-width: 220px;
+  }
+
+  .manager-kpi-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+  }
+
+  .manager-kpi-card {
+    padding: 17px;
+  }
+
+  .manager-kpi-icon {
+    width: 38px;
+    height: 38px;
+
+    min-width: 38px;
+  }
+
+  .manager-panel-header {
+    padding: 16px 18px;
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 650px) {
+  .manager-shell {
+    display: block;
+
+    min-height: 100vh;
+  }
+
+  /*
+   * The sidebar is handled by ManagerShell.
+   * Main content becomes full width on phones.
+   */
+
+  .manager-main {
+    width: 100%;
+
+    min-height: 100vh;
+
+    margin-left: 0;
+
+    padding: 20px 14px 28px;
+  }
+
+  .manager-header {
+    margin-bottom: 22px;
+  }
+
+  .manager-header-label {
+    margin-bottom: 7px;
+
+    font-size: 8px;
+  }
+
+  .manager-header h1 {
+    font-size: 25px;
+
+    letter-spacing: -0.4px;
+  }
+
+  .manager-header p {
+    margin-top: 8px;
+
+    font-size: 11px;
+
+    line-height: 1.6;
+  }
+
+  .manager-header-user {
+    display: none;
+  }
+
+  .manager-kpi-grid {
+    grid-template-columns: 1fr;
+
+    gap: 10px;
+
+    margin-bottom: 16px;
+  }
+
+  .manager-kpi-card {
+    min-height: 82px;
+
+    padding: 15px 16px;
+  }
+
+  .manager-kpi-icon {
+    width: 36px;
+    height: 36px;
+
+    min-width: 36px;
+  }
+
+  .manager-kpi-content {
+    gap: 6px;
+  }
+
+  .manager-kpi-content span {
+    font-size: 9px;
+  }
+
+  .manager-kpi-content strong {
+    font-size: 21px;
+  }
+
+  .manager-dashboard-grid {
+    grid-template-columns: 1fr;
+
+    gap: 12px;
+  }
+
+  .manager-panel {
+    width: 100%;
+
+    min-height: 260px;
+  }
+
+  .manager-panel-large {
+    min-height: 380px;
+  }
+
+  .manager-panel-header {
+    min-height: 68px;
+
+    padding: 15px;
+
+    gap: 12px;
+  }
+
+  .manager-panel-header h2 {
+    font-size: 12px;
+  }
+
+  .manager-panel-header p {
+    font-size: 9px;
+  }
+
+  .manager-panel-header button {
+    padding: 6px 9px;
+
+    font-size: 9px;
+  }
+
+  .manager-empty-state {
+    padding: 24px 18px;
+  }
+
+  .manager-empty-state.small {
+    min-height: 190px;
+  }
+
+  .manager-dashboard-loading {
+    min-height: 190px;
+
+    padding: 24px 18px;
+  }
+
+  .manager-team-row {
+    min-height: 70px;
+
+    padding: 12px 14px;
+
+    gap: 10px;
+  }
+
+  .manager-team-icon {
+    width: 32px;
+    height: 32px;
+
+    min-width: 32px;
+  }
+
+  .manager-team-count {
+    min-width: auto;
+
+    flex-direction: column;
+
+    align-items: flex-end;
+
+    gap: 1px;
+  }
+
+  .manager-team-count span {
+    font-size: 11px;
+  }
+
+  .manager-team-count small {
+    font-size: 7px;
+  }
+
+  .manager-leave-row {
+    min-height: 74px;
+
+    padding: 11px 13px;
+
+    gap: 8px;
+  }
+
+  .manager-leave-info strong {
+    font-size: 9px;
+  }
+
+  .manager-leave-info span {
+    font-size: 8px;
+  }
+
+  .manager-leave-info small {
+    font-size: 7px;
+  }
+
+  .manager-status-pending {
+    padding: 4px 6px;
+
+    font-size: 7px;
+  }
+
+  .manager-attendance-row {
+    min-height: 64px;
+
+    padding: 10px 13px;
+
+    gap: 8px;
+  }
+
+  .manager-attendance-info strong {
+    font-size: 9px;
+  }
+
+  .manager-attendance-info span {
+    font-size: 7px;
+  }
+
+  .manager-attendance-time span {
+    font-size: 8px;
+  }
+
+  .manager-attendance-time small {
+    font-size: 7px;
+  }
+
+  .manager-attendance-status {
+    display: none;
+  }
+
+  .manager-dashboard-error {
+    margin-bottom: 14px;
+
+    padding: 11px 12px;
+
+    font-size: 10px;
+  }
+}
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 420px) {
+  .manager-main {
+    padding: 18px 11px 24px;
+  }
+
+  .manager-header h1 {
+    font-size: 23px;
+  }
+
+  .manager-header p {
+    font-size: 10px;
+  }
+
+  .manager-kpi-card {
+    padding: 14px;
+  }
+
+  .manager-kpi-icon {
+    width: 34px;
+    height: 34px;
+
+    min-width: 34px;
+  }
+
+  .manager-kpi-content strong {
+    font-size: 20px;
+  }
+
+  .manager-panel-header {
+    padding: 14px 13px;
+  }
+
+  .manager-panel-header button {
+    padding: 5px 7px;
+
+    font-size: 8px;
+  }
+
+  .manager-team-row {
+    padding: 11px 12px;
+  }
+
+  .manager-team-info strong {
+    font-size: 10px;
+  }
+
+  .manager-team-info span {
+    font-size: 8px;
+  }
+
+  .manager-team-count {
+    min-width: 34px;
+  }
+
+  .manager-leave-row,
+  .manager-attendance-row {
+    padding-left: 11px;
+    padding-right: 11px;
+  }
+}
+
+/* =========================================================
+   ACCESSIBILITY / SAFETY
+   ========================================================= */
+
+.manager-shell button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.manager-shell button:focus-visible {
+  outline: 2px solid #6f75e8;
+  outline-offset: 2px;
+}
+
+/* Prevent long unbroken content from breaking the layout */
+
+.manager-shell strong,
+.manager-shell span,
+.manager-shell p,
+.manager-shell small {
+  overflow-wrap: anywhere;
+}
+
+/* Keep normal labels from wrapping where ellipsis is intended */
+
+.manager-kpi-content span,
+.manager-team-info strong,
+.manager-team-info span,
+.manager-leave-info strong,
+.manager-attendance-info strong,
+.manager-attendance-info span,
+.manager-attendance-status {
+  overflow-wrap: normal;
 }

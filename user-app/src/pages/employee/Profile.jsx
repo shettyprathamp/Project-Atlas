@@ -1,30 +1,247 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import api from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
 
 import "./Profile.css";
 
+/* =========================================================
+   EMPLOYEE SIDEBAR
+========================================================= */
+
+function EmployeeProfileSidebar({
+  open,
+  onClose,
+  user,
+  onLogout,
+}) {
+  const navigation = [
+    {
+      label: "Dashboard",
+      path: "/employee",
+      icon: "▦",
+      end: true,
+    },
+    {
+      label: "Attendance",
+      path: "/employee/attendance",
+      icon: "◷",
+    },
+    {
+      label: "Leave",
+      path: "/employee/leave",
+      icon: "▣",
+    },
+    {
+      label: "Payslips",
+      path: "/employee/payslips",
+      icon: "₹",
+    },
+    {
+      label: "My Profile",
+      path: "/employee/profile",
+      icon: "●",
+    },
+  ];
+
+  const displayName =
+    user?.full_name ||
+    user?.name ||
+    user?.employee_name ||
+    user?.username ||
+    "Employee";
+
+  const getInitials = (name) => {
+    if (!name) {
+      return "E";
+    }
+
+    const parts = String(name)
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+
+    if (parts.length === 1) {
+      return parts[0]
+        .charAt(0)
+        .toUpperCase();
+    }
+
+    return (
+      parts[0].charAt(0) +
+      parts[parts.length - 1].charAt(0)
+    ).toUpperCase();
+  };
+
+  return (
+    <>
+      <aside
+        className={`employee-profile-sidebar ${
+          open
+            ? "employee-profile-sidebar-open"
+            : ""
+        }`}
+      >
+        {/* =================================================
+            BRAND
+        ================================================== */}
+
+        <div className="employee-profile-sidebar-brand">
+          <div className="employee-profile-brand-mark">
+            A
+          </div>
+
+          <div className="employee-profile-brand-text">
+            <strong>ATLAS</strong>
+
+            <span>
+              EMPLOYEE PORTAL
+            </span>
+          </div>
+        </div>
+
+        {/* =================================================
+            NAVIGATION
+        ================================================== */}
+
+        <nav className="employee-profile-navigation">
+          <div className="employee-profile-navigation-title">
+            WORKSPACE
+          </div>
+
+          {navigation.map((item) => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              end={item.end}
+              onClick={onClose}
+              className={({ isActive }) =>
+                `employee-profile-nav-item ${
+                  isActive
+                    ? "employee-profile-nav-active"
+                    : ""
+                }`
+              }
+            >
+              <span className="employee-profile-nav-icon">
+                {item.icon}
+              </span>
+
+              <span className="employee-profile-nav-label">
+                {item.label}
+              </span>
+
+              <span className="employee-profile-nav-chevron">
+                ›
+              </span>
+            </NavLink>
+          ))}
+        </nav>
+
+        {/* =================================================
+            SIDEBAR FOOTER
+        ================================================== */}
+
+        <div className="employee-profile-sidebar-footer">
+          <div className="employee-profile-sidebar-user">
+            <div className="employee-profile-sidebar-avatar">
+              {getInitials(displayName)}
+            </div>
+
+            <div className="employee-profile-sidebar-user-info">
+              <strong>
+                {displayName}
+              </strong>
+
+              <span>
+                Employee
+              </span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            className="employee-profile-logout"
+            onClick={onLogout}
+          >
+            <span className="employee-profile-logout-icon">
+              ↪
+            </span>
+
+            <span>
+              Logout
+            </span>
+          </button>
+        </div>
+      </aside>
+
+      {/* ===================================================
+          MOBILE OVERLAY
+      ==================================================== */}
+
+      {open && (
+        <button
+          type="button"
+          className="employee-profile-sidebar-overlay"
+          aria-label="Close navigation"
+          onClick={onClose}
+        />
+      )}
+    </>
+  );
+}
+
+/* =========================================================
+   PROFILE PAGE
+========================================================= */
+
 export default function Profile() {
   const navigate = useNavigate();
-  const { user } = useAuth();
 
-  const [employee, setEmployee] = useState(null);
+  const {
+    user,
+    logout,
+  } = useAuth();
 
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
+  const [sidebarOpen, setSidebarOpen] =
+    useState(false);
 
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [employee, setEmployee] =
+    useState(null);
 
-  const [editing, setEditing] = useState(false);
+  const [loading, setLoading] =
+    useState(true);
+
+  const [saving, setSaving] =
+    useState(false);
+
+  const [error, setError] =
+    useState("");
+
+  const [success, setSuccess] =
+    useState("");
+
+  const [editing, setEditing] =
+    useState(false);
 
   const [form, setForm] = useState({
     name: "",
     email: "",
     department: "",
   });
+
+  // =========================================================
+  // LOGOUT
+  // =========================================================
+
+  const handleLogout = () => {
+    setSidebarOpen(false);
+
+    logout();
+
+    navigate("/login");
+  };
 
   // =========================================================
   // LOAD PROFILE
@@ -182,32 +399,6 @@ export default function Profile() {
   }
 
   // =========================================================
-  // LOADING
-  // =========================================================
-
-  if (loading) {
-    return (
-      <div className="employee-profile-page">
-        <div className="employee-profile-card">
-
-          <div className="employee-profile-section-header">
-            <div>
-              <h2>
-                Loading your profile...
-              </h2>
-
-              <p>
-                Fetching your employee information.
-              </p>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    );
-  }
-
-  // =========================================================
   // EMPLOYEE DATA
   // =========================================================
 
@@ -252,423 +443,499 @@ export default function Profile() {
       .slice(0, 2)
       .toUpperCase() || "E";
 
+  // =========================================================
+  // RENDER
+  // =========================================================
+
   return (
-    <div className="employee-profile-page">
+    <div className="employee-profile-shell">
 
-      {/* =====================================================
-          HEADER
-      ===================================================== */}
+      {/* ===================================================
+          SIDEBAR
+      ==================================================== */}
 
-      <div className="employee-profile-header">
+      <EmployeeProfileSidebar
+        open={sidebarOpen}
+        onClose={() =>
+          setSidebarOpen(false)
+        }
+        user={user}
+        onLogout={handleLogout}
+      />
 
-        <div>
+      {/* ===================================================
+          MAIN
+      ==================================================== */}
 
-          <span className="employee-profile-eyebrow">
-            MY ACCOUNT
-          </span>
+      <main className="employee-profile-main">
 
-          <h1>
-            My Profile
-          </h1>
+        {/* =================================================
+            MOBILE HEADER
+        ================================================== */}
 
-          <p>
-            View and manage your personal
-            and employment information.
-          </p>
+        <header className="employee-profile-mobile-header">
 
-        </div>
-
-        {!editing ? (
           <button
             type="button"
-            className="employee-profile-edit-button"
-            onClick={handleEdit}
+            className="employee-profile-menu-button"
+            aria-label="Open navigation"
+            onClick={() =>
+              setSidebarOpen(true)
+            }
           >
-            Edit Profile
+            <span />
+            <span />
+            <span />
           </button>
-        ) : (
-          <button
-            type="button"
-            className="employee-profile-edit-button"
-            onClick={handleCancel}
-          >
-            Cancel
-          </button>
-        )}
 
-      </div>
+          <div className="employee-profile-mobile-brand">
 
-      {/* =====================================================
-          SUCCESS
-      ===================================================== */}
-
-      {success && (
-        <div
-          style={{
-            marginBottom: "20px",
-            padding: "13px 16px",
-            borderRadius: "10px",
-            border:
-              "1px solid rgba(34,197,94,0.2)",
-            background:
-              "rgba(34,197,94,0.07)",
-            color: "#86efac",
-            fontSize: "12px",
-            fontWeight: 600,
-          }}
-        >
-          ✓ {success}
-        </div>
-      )}
-
-      {/* =====================================================
-          ERROR
-      ===================================================== */}
-
-      {error && (
-        <div
-          style={{
-            marginBottom: "20px",
-            padding: "13px 16px",
-            borderRadius: "10px",
-            border:
-              "1px solid rgba(239,68,68,0.2)",
-            background:
-              "rgba(239,68,68,0.07)",
-            color: "#fca5a5",
-            fontSize: "12px",
-          }}
-        >
-          {error}
-        </div>
-      )}
-
-      {/* =====================================================
-          PROFILE HERO
-      ===================================================== */}
-
-      <section className="employee-profile-card employee-profile-hero">
-
-        <div className="employee-profile-avatar">
-          {initials}
-        </div>
-
-        <div className="employee-profile-identity">
-
-          <h2>
-            {employeeName}
-          </h2>
-
-          <p>
-            {role}
-          </p>
-
-          <span>
-            {employeeId} · {department}
-          </span>
-
-        </div>
-
-        <div className="employee-profile-status">
-
-          <span className="employee-profile-status-dot" />
-
-          {status}
-
-        </div>
-
-      </section>
-
-      {/* =====================================================
-          EDIT FORM
-      ===================================================== */}
-
-      {editing ? (
-        <section className="employee-profile-card">
-
-          <div className="employee-profile-section-header">
+            <div className="employee-profile-mobile-brand-mark">
+              A
+            </div>
 
             <div>
+              <strong>
+                ATLAS
+              </strong>
 
-              <h2>
-                Edit Profile
-              </h2>
-
-              <p>
-                Update your account information.
-              </p>
-
+              <span>
+                EMPLOYEE PORTAL
+              </span>
             </div>
 
           </div>
 
-          <form
-            onSubmit={handleSubmit}
-          >
+        </header>
 
-            <div className="employee-profile-grid">
+        {/* =================================================
+            CONTENT
+        ================================================== */}
 
-              <div className="employee-profile-field">
-
-                <label className="profile-edit-label">
-                  Full Name
-                </label>
-
-                <input
-                  className="profile-edit-input"
-                  type="text"
-                  name="name"
-                  value={form.name}
-                  onChange={
-                    handleChange
-                  }
-                  required
-                />
-
-              </div>
-
-              <div className="employee-profile-field">
-
-                <label className="profile-edit-label">
-                  Email Address
-                </label>
-
-                <input
-                  className="profile-edit-input"
-                  type="email"
-                  name="email"
-                  value={form.email}
-                  onChange={
-                    handleChange
-                  }
-                  required
-                />
-
-              </div>
-
-              <div className="employee-profile-field">
-
-                <label className="profile-edit-label">
-                  Department
-                </label>
-
-                <input
-                  className="profile-edit-input"
-                  type="text"
-                  name="department"
-                  value={
-                    form.department
-                  }
-                  onChange={
-                    handleChange
-                  }
-                  placeholder="Department"
-                />
-
-              </div>
-
-            </div>
-
-            <div className="profile-edit-actions">
-
-              <button
-                type="button"
-                className="employee-profile-cancel-button"
-                onClick={
-                  handleCancel
-                }
-                disabled={saving}
-              >
-                Cancel
-              </button>
-
-              <button
-                type="submit"
-                className="employee-profile-save-button"
-                disabled={saving}
-              >
-                {saving
-                  ? "Saving..."
-                  : "Save Changes"}
-              </button>
-
-            </div>
-
-          </form>
-
-        </section>
-      ) : (
-        <>
-          {/* =================================================
-              PERSONAL INFORMATION
-          ================================================= */}
-
-          <section className="employee-profile-card">
-
-            <div className="employee-profile-section-header">
-
-              <div>
-
-                <h2>
-                  Personal Information
-                </h2>
-
-                <p>
-                  Your basic contact information.
-                </p>
-
-              </div>
-
-            </div>
-
-            <div className="employee-profile-grid">
-
-              <ProfileField
-                label="Full Name"
-                value={employeeName}
-              />
-
-              <ProfileField
-                label="Email Address"
-                value={email}
-              />
-
-              <ProfileField
-                label="Department"
-                value={department}
-              />
-
-              <ProfileField
-                label="Employee ID"
-                value={employeeId}
-              />
-
-            </div>
-
-          </section>
+        <div className="employee-profile-page">
 
           {/* =================================================
-              EMPLOYMENT INFORMATION
-          ================================================= */}
+              LOADING
+          ================================================== */}
 
-          <section className="employee-profile-card">
+          {loading ? (
+            <div className="employee-profile-loading">
 
-            <div className="employee-profile-section-header">
-
-              <div>
-
-                <h2>
-                  Employment Information
-                </h2>
-
-                <p>
-                  Your role and company information.
-                </p>
-
-              </div>
-
-            </div>
-
-            <div className="employee-profile-grid">
-
-              <ProfileField
-                label="Employee ID"
-                value={employeeId}
-              />
-
-              <ProfileField
-                label="Department"
-                value={department}
-              />
-
-              <ProfileField
-                label="Role"
-                value={role}
-              />
-
-              <ProfileField
-                label="Employment Status"
-                value={status}
-              />
-
-            </div>
-
-          </section>
-
-          {/* =================================================
-              ACCOUNT INFORMATION
-          ================================================= */}
-
-          <section className="employee-profile-card">
-
-            <div className="employee-profile-section-header">
+              <div className="employee-profile-loading-spinner" />
 
               <div>
-
-                <h2>
-                  Account Information
-                </h2>
-
-                <p>
-                  Information related to your Atlas account.
-                </p>
-
-              </div>
-
-            </div>
-
-            <div className="employee-profile-account-row">
-
-              <div>
-
-                <span>
-                  Account Status
+                <span className="employee-profile-eyebrow">
+                  MY ACCOUNT
                 </span>
 
-                <strong className="employee-profile-account-active">
+                <h1>
+                  My Profile
+                </h1>
+
+                <p>
+                  Fetching your employee information.
+                </p>
+              </div>
+
+            </div>
+          ) : (
+            <>
+
+              {/* ===========================================
+                  HEADER
+              ============================================ */}
+
+              <div className="employee-profile-header">
+
+                <div>
+
+                  <span className="employee-profile-eyebrow">
+                    MY ACCOUNT
+                  </span>
+
+                  <h1>
+                    My Profile
+                  </h1>
+
+                  <p>
+                    View and manage your personal
+                    and employment information.
+                  </p>
+
+                </div>
+
+                {!editing ? (
+                  <button
+                    type="button"
+                    className="employee-profile-edit-button"
+                    onClick={handleEdit}
+                  >
+                    Edit Profile
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="employee-profile-edit-button"
+                    onClick={handleCancel}
+                  >
+                    Cancel
+                  </button>
+                )}
+
+              </div>
+
+              {/* ===========================================
+                  SUCCESS
+              ============================================ */}
+
+              {success && (
+                <div className="employee-profile-success">
+                  ✓ {success}
+                </div>
+              )}
+
+              {/* ===========================================
+                  ERROR
+              ============================================ */}
+
+              {error && (
+                <div className="employee-profile-error">
+                  {error}
+                </div>
+              )}
+
+              {/* ===========================================
+                  PROFILE HERO
+              ============================================ */}
+
+              <section className="employee-profile-card employee-profile-hero">
+
+                <div className="employee-profile-avatar">
+                  {initials}
+                </div>
+
+                <div className="employee-profile-identity">
+
+                  <h2>
+                    {employeeName}
+                  </h2>
+
+                  <p>
+                    {role}
+                  </p>
+
+                  <span>
+                    {employeeId} · {department}
+                  </span>
+
+                </div>
+
+                <div className="employee-profile-status">
+
+                  <span className="employee-profile-status-dot" />
+
                   {status}
-                </strong>
 
-              </div>
+                </div>
 
-              <div>
+              </section>
 
-                <span>
-                  Employee ID
-                </span>
+              {/* ===========================================
+                  EDIT FORM
+              ============================================ */}
 
-                <strong>
-                  {employeeId}
-                </strong>
+              {editing ? (
+                <section className="employee-profile-card">
 
-              </div>
+                  <div className="employee-profile-section-header">
 
-              <div>
+                    <div>
 
-                <span>
-                  Access Level
-                </span>
+                      <h2>
+                        Edit Profile
+                      </h2>
 
-                <strong>
-                  {role}
-                </strong>
+                      <p>
+                        Update your account information.
+                      </p>
 
-              </div>
+                    </div>
 
-            </div>
+                  </div>
 
-          </section>
-        </>
-      )}
+                  <form
+                    onSubmit={handleSubmit}
+                  >
 
+                    <div className="employee-profile-grid">
+
+                      <div className="employee-profile-field">
+
+                        <label className="profile-edit-label">
+                          Full Name
+                        </label>
+
+                        <input
+                          className="profile-edit-input"
+                          type="text"
+                          name="name"
+                          value={form.name}
+                          onChange={
+                            handleChange
+                          }
+                          required
+                        />
+
+                      </div>
+
+                      <div className="employee-profile-field">
+
+                        <label className="profile-edit-label">
+                          Email Address
+                        </label>
+
+                        <input
+                          className="profile-edit-input"
+                          type="email"
+                          name="email"
+                          value={form.email}
+                          onChange={
+                            handleChange
+                          }
+                          required
+                        />
+
+                      </div>
+
+                      <div className="employee-profile-field">
+
+                        <label className="profile-edit-label">
+                          Department
+                        </label>
+
+                        <input
+                          className="profile-edit-input"
+                          type="text"
+                          name="department"
+                          value={
+                            form.department
+                          }
+                          onChange={
+                            handleChange
+                          }
+                          placeholder="Department"
+                        />
+
+                      </div>
+
+                    </div>
+
+                    <div className="profile-edit-actions">
+
+                      <button
+                        type="button"
+                        className="employee-profile-cancel-button"
+                        onClick={
+                          handleCancel
+                        }
+                        disabled={saving}
+                      >
+                        Cancel
+                      </button>
+
+                      <button
+                        type="submit"
+                        className="employee-profile-save-button"
+                        disabled={saving}
+                      >
+                        {saving
+                          ? "Saving..."
+                          : "Save Changes"}
+                      </button>
+
+                    </div>
+
+                  </form>
+
+                </section>
+              ) : (
+                <>
+
+                  {/* =======================================
+                      PERSONAL INFORMATION
+                  ======================================== */}
+
+                  <section className="employee-profile-card">
+
+                    <div className="employee-profile-section-header">
+
+                      <div>
+
+                        <h2>
+                          Personal Information
+                        </h2>
+
+                        <p>
+                          Your basic contact information.
+                        </p>
+
+                      </div>
+
+                    </div>
+
+                    <div className="employee-profile-grid">
+
+                      <ProfileField
+                        label="Full Name"
+                        value={employeeName}
+                      />
+
+                      <ProfileField
+                        label="Email Address"
+                        value={email}
+                      />
+
+                      <ProfileField
+                        label="Department"
+                        value={department}
+                      />
+
+                      <ProfileField
+                        label="Employee ID"
+                        value={employeeId}
+                      />
+
+                    </div>
+
+                  </section>
+
+                  {/* =======================================
+                      EMPLOYMENT INFORMATION
+                  ======================================== */}
+
+                  <section className="employee-profile-card">
+
+                    <div className="employee-profile-section-header">
+
+                      <div>
+
+                        <h2>
+                          Employment Information
+                        </h2>
+
+                        <p>
+                          Your role and company information.
+                        </p>
+
+                      </div>
+
+                    </div>
+
+                    <div className="employee-profile-grid">
+
+                      <ProfileField
+                        label="Employee ID"
+                        value={employeeId}
+                      />
+
+                      <ProfileField
+                        label="Department"
+                        value={department}
+                      />
+
+                      <ProfileField
+                        label="Role"
+                        value={role}
+                      />
+
+                      <ProfileField
+                        label="Employment Status"
+                        value={status}
+                      />
+
+                    </div>
+
+                  </section>
+
+                  {/* =======================================
+                      ACCOUNT INFORMATION
+                  ======================================== */}
+
+                  <section className="employee-profile-card">
+
+                    <div className="employee-profile-section-header">
+
+                      <div>
+
+                        <h2>
+                          Account Information
+                        </h2>
+
+                        <p>
+                          Information related to your Atlas account.
+                        </p>
+
+                      </div>
+
+                    </div>
+
+                    <div className="employee-profile-account-row">
+
+                      <div>
+
+                        <span>
+                          Account Status
+                        </span>
+
+                        <strong className="employee-profile-account-active">
+                          {status}
+                        </strong>
+
+                      </div>
+
+                      <div>
+
+                        <span>
+                          Employee ID
+                        </span>
+
+                        <strong>
+                          {employeeId}
+                        </strong>
+
+                      </div>
+
+                      <div>
+
+                        <span>
+                          Access Level
+                        </span>
+
+                        <strong>
+                          {role}
+                        </strong>
+
+                      </div>
+
+                    </div>
+
+                  </section>
+
+                </>
+              )}
+
+            </>
+          )}
+
+        </div>
+      </main>
     </div>
   );
 }
 
-
-// =========================================================
-// PROFILE FIELD
-// =========================================================
+/* =========================================================
+   PROFILE FIELD
+========================================================= */
 
 function ProfileField({
   label,

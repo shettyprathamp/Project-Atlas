@@ -15,7 +15,7 @@ import RoleRoute from "./routes/RoleRoute";
 import DashboardLayout from "./components/layout/DashboardLayout";
 
 import ManagerShell from "./components/manager/ManagerShell";
-import EmployeeSidebar from "./components/employee/EmployeeSidebar";
+import EmployeeLayout from "./components/employee/EmployeeLayout";
 
 // =========================================================
 // MANAGER
@@ -103,33 +103,33 @@ function Unauthorized() {
 // =========================================================
 
 function ProtectedLayout({ children }) {
-  return <DashboardLayout>{children}</DashboardLayout>;
+  return (
+    <DashboardLayout>
+      {children}
+    </DashboardLayout>
+  );
 }
 
 // =========================================================
 // EMPLOYEE SHELL
 // =========================================================
 //
-// IMPORTANT:
-// EmployeeDashboard already contains its own sidebar.
+// ALL EMPLOYEE PAGES USE THE SAME SHELL.
 //
-// The other employee pages use this shell.
+// EmployeeLayout contains:
+//   - EmployeeSidebar
+//   - Employee main content area
 //
-// Therefore we DO NOT render EmployeeSidebar here
-// for EmployeeDashboard.
-//
-// Other employee pages get the sidebar through this shell.
+// This ensures the sidebar remains visible when navigating
+// between Dashboard, Attendance, Leave, Payslips, Profile
+// and Settings.
 //
 
 function EmployeeShell({ children }) {
   return (
-    <div className="employee-shell">
-      <EmployeeSidebar />
-
-      <main className="employee-shell-main">
-        {children}
-      </main>
-    </div>
+    <EmployeeLayout>
+      {children}
+    </EmployeeLayout>
   );
 }
 
@@ -141,6 +141,7 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
+
         <Routes>
 
           {/* ===================================================
@@ -159,19 +160,27 @@ function App() {
 
           <Route
             path="/login"
-            element={<Login />}
+            element={
+              <Login />
+            }
           />
 
           <Route
             path="/unauthorized"
-            element={<Unauthorized />}
+            element={
+              <Unauthorized />
+            }
           />
 
           {/* ===================================================
               PROTECTED
           =================================================== */}
 
-          <Route element={<ProtectedRoute />}>
+          <Route
+            element={
+              <ProtectedRoute />
+            }
+          >
 
             {/* =================================================
                 MANAGER
@@ -452,16 +461,22 @@ function App() {
               }
             >
 
-              {/* DASHBOARD
-                  Dashboard has its OWN sidebar.
-              */}
+              {/* =================================================
+                  DASHBOARD
+              ================================================= */}
 
               <Route
                 path="/employee"
-                element={<EmployeeDashboard />}
+                element={
+                  <EmployeeShell>
+                    <EmployeeDashboard />
+                  </EmployeeShell>
+                }
               />
 
-              {/* ATTENDANCE */}
+              {/* =================================================
+                  ATTENDANCE
+              ================================================= */}
 
               <Route
                 path="/employee/attendance"
@@ -472,7 +487,9 @@ function App() {
                 }
               />
 
-              {/* LEAVE */}
+              {/* =================================================
+                  LEAVE
+              ================================================= */}
 
               <Route
                 path="/employee/leave"
@@ -483,7 +500,9 @@ function App() {
                 }
               />
 
-              {/* TASKS */}
+              {/* =================================================
+                  TASKS
+              ================================================= */}
 
               <Route
                 path="/employee/tasks"
@@ -494,7 +513,9 @@ function App() {
                 }
               />
 
-              {/* PAYSLIPS */}
+              {/* =================================================
+                  PAYSLIPS
+              ================================================= */}
 
               <Route
                 path="/employee/payslips"
@@ -505,7 +526,9 @@ function App() {
                 }
               />
 
-              {/* PAYROLL */}
+              {/* =================================================
+                  PAYROLL
+              ================================================= */}
 
               <Route
                 path="/employee/payroll"
@@ -516,7 +539,9 @@ function App() {
                 }
               />
 
-              {/* PROFILE */}
+              {/* =================================================
+                  PROFILE
+              ================================================= */}
 
               <Route
                 path="/employee/profile"
@@ -527,7 +552,9 @@ function App() {
                 }
               />
 
-              {/* SETTINGS */}
+              {/* =================================================
+                  SETTINGS
+              ================================================= */}
 
               <Route
                 path="/employee/settings"
@@ -557,6 +584,7 @@ function App() {
           />
 
         </Routes>
+
       </AuthProvider>
     </BrowserRouter>
   );

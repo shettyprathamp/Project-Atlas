@@ -1,195 +1,120 @@
 /* =========================================================
-   ATLAS — EMPLOYEE ATTENDANCE — DARK THEME
+   ATLAS — EMPLOYEE ATTENDANCE
+   DARK THEME + SIDEBAR
 ========================================================= */
 
-.employee-attendance-page {
-  width: 100%;
-  max-width: none;
-
-  margin: 0;
-
-  padding: 38px 42px 60px 42px;
-
+* {
   box-sizing: border-box;
+}
+
+
+/* =========================================================
+   PREVENT DUPLICATE EMPLOYEE LAYOUT SIDEBAR
+========================================================= */
+
+.employee-layout:has(.atlas-attendance-page) > .employee-sidebar {
+  display: none !important;
+}
+
+.employee-layout:has(.atlas-attendance-page)
+  .employee-layout-mobile-header {
+  display: none !important;
+}
+
+.employee-layout:has(.atlas-attendance-page)
+  .employee-layout-content {
+  width: 100% !important;
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+
+/* =========================================================
+   ROOT
+========================================================= */
+
+.atlas-attendance-root {
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+
+  background: #080b12;
 
   color: #e5e7eb;
 }
-/* =========================================================
-   HEADER
-========================================================= */
 
-.employee-attendance-header {
-  margin-bottom: 26px;
-}
-
-.employee-attendance-eyebrow {
-  display: inline-block;
-
-  margin-bottom: 8px;
-
-  color: #818cf8;
-
-  font-size: 11px;
-  font-weight: 700;
-
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.employee-attendance-header h1 {
-  margin: 0;
-
-  color: #f8fafc;
-
-  font-size: clamp(28px, 3vw, 38px);
-  font-weight: 750;
-
-  letter-spacing: -0.035em;
-  line-height: 1.1;
-}
-
-.employee-attendance-header p {
-  max-width: 650px;
-
-  margin: 9px 0 0;
-
-  color: #94a3b8;
-
-  font-size: 14px;
-  line-height: 1.6;
-}
 
 /* =========================================================
-   TODAY
+   SIDEBAR
 ========================================================= */
 
-.employee-attendance-today {
+.atlas-attendance-sidebar {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 250px;
+  height: 100vh;
+
+  z-index: 1000;
+
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  gap: 24px;
-
-  min-height: 150px;
-
-  margin-bottom: 20px;
-  padding: 25px;
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(17, 24, 39, 0.98),
-      rgba(11, 17, 28, 0.98)
-    );
-
-  border: 1px solid rgba(255, 255, 255, 0.07);
-
-  border-radius: 15px;
-
-  box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.18);
-
-  box-sizing: border-box;
-}
-
-.employee-attendance-date-label {
-  display: block;
-
-  margin-bottom: 7px;
-
-  color: #64748b;
-
-  font-size: 10px;
-  font-weight: 750;
-
-  letter-spacing: 0.13em;
-}
-
-.employee-attendance-today-info h2 {
-  margin: 0;
-
-  color: #f1f5f9;
-
-  font-size: 21px;
-  font-weight: 700;
-
-  letter-spacing: -0.02em;
-}
-
-.employee-attendance-today-info p {
-  margin: 6px 0 0;
-
-  color: #94a3b8;
-
-  font-size: 12px;
-}
-
-/* =========================================================
-   ACTION
-========================================================= */
-
-.employee-attendance-action {
-  display: flex;
-  align-items: flex-end;
 
   flex-direction: column;
 
-  gap: 11px;
-}
+  background:
+    linear-gradient(
+      180deg,
+      #0d111a 0%,
+      #090d15 100%
+    );
 
-.employee-attendance-current-status {
-  display: flex;
-  align-items: center;
-
-  gap: 7px;
-
-  color: #94a3b8;
-
-  font-size: 11px;
-  font-weight: 600;
-}
-
-.employee-attendance-status-dot {
-  width: 7px;
-  height: 7px;
-
-  border-radius: 50%;
-
-  background: #475569;
-}
-
-.employee-attendance-status-dot.active {
-  background: #34d399;
+  border-right:
+    1px solid rgba(255, 255, 255, 0.065);
 
   box-shadow:
-    0 0 0 4px rgba(52, 211, 153, 0.1);
+    12px 0 35px rgba(0, 0, 0, 0.16);
+
+  overflow-y: auto;
+
+  overflow-x: hidden;
+
+  scrollbar-width: thin;
 }
 
-.employee-attendance-checkin,
-.employee-attendance-checkout {
-  min-width: 120px;
-  min-height: 42px;
 
-  padding: 0 18px;
+/* =========================================================
+   SIDEBAR BRAND
+========================================================= */
 
-  border-radius: 9px;
+.atlas-attendance-sidebar-brand {
+  min-height: 82px;
 
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: 650;
+  display: flex;
 
-  cursor: pointer;
+  align-items: center;
 
-  transition:
-    transform 0.18s ease,
-    background 0.18s ease,
-    border-color 0.18s ease,
-    box-shadow 0.18s ease,
-    color 0.18s ease;
+  gap: 12px;
+
+  padding: 0 21px;
+
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.055);
 }
 
-.employee-attendance-checkin {
-  border: 1px solid rgba(99, 102, 241, 0.3);
+.atlas-attendance-brand-mark {
+  width: 38px;
+  height: 38px;
+
+  flex-shrink: 0;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 11px;
 
   background:
     linear-gradient(
@@ -200,50 +125,958 @@
 
   color: #ffffff;
 
+  font-size: 17px;
+
+  font-weight: 800;
+
   box-shadow:
-    0 7px 20px rgba(79, 70, 229, 0.22);
+    0 8px 20px rgba(79, 70, 229, 0.24);
 }
 
-.employee-attendance-checkin:hover {
+.atlas-attendance-brand-text {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.atlas-attendance-brand-text strong {
+  color: #f8fafc;
+
+  font-size: 15px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.08em;
+}
+
+.atlas-attendance-brand-text span {
+  color: #64748b;
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.12em;
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.atlas-attendance-navigation {
+  flex: 1;
+
+  padding: 24px 12px;
+}
+
+.atlas-attendance-navigation-title {
+  padding:
+    0 12px
+    10px;
+
+  color: #475569;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.16em;
+}
+
+.atlas-attendance-navigation nav {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+
+/* =========================================================
+   NAV ITEM
+========================================================= */
+
+.atlas-attendance-nav-item {
+  position: relative;
+
+  min-height: 45px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 0 12px;
+
+  border-radius: 10px;
+
+  color: #7f8a9d;
+
+  text-decoration: none;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.atlas-attendance-nav-item:hover {
+  color: #dbe3ee;
+
+  background:
+    rgba(255, 255, 255, 0.035);
+}
+
+.atlas-attendance-nav-active {
+  color: #f8fafc !important;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(99, 102, 241, 0.17),
+      rgba(99, 102, 241, 0.07)
+    );
+
+  border:
+    1px solid rgba(99, 102, 241, 0.13);
+
+  box-shadow:
+    inset 3px 0 0 #6366f1;
+}
+
+.atlas-attendance-nav-icon {
+  width: 24px;
+  height: 24px;
+
+  flex-shrink: 0;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 7px;
+
+  color: #64748b;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  font-size: 14px;
+
+  transition:
+    color 0.18s ease,
+    background 0.18s ease;
+}
+
+.atlas-attendance-nav-active
+  .atlas-attendance-nav-icon {
+  color: #a5b4fc;
+
+  background:
+    rgba(99, 102, 241, 0.12);
+}
+
+.atlas-attendance-nav-item:hover
+  .atlas-attendance-nav-icon {
+  color: #a5b4fc;
+}
+
+.atlas-attendance-nav-label {
+  flex: 1;
+
+  white-space: nowrap;
+}
+
+.atlas-attendance-nav-chevron {
+  color: #3f4b60;
+
+  font-size: 17px;
+
+  line-height: 1;
+
+  transition:
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.atlas-attendance-nav-item:hover
+  .atlas-attendance-nav-chevron {
+  color: #64748b;
+
+  transform: translateX(2px);
+}
+
+.atlas-attendance-nav-active
+  .atlas-attendance-nav-chevron {
+  color: #818cf8;
+}
+
+
+/* =========================================================
+   SIDEBAR FOOTER
+========================================================= */
+
+.atlas-attendance-sidebar-footer {
+  padding: 14px 12px 17px;
+
+  border-top:
+    1px solid rgba(255, 255, 255, 0.055);
+}
+
+
+/* =========================================================
+   SIDEBAR USER
+========================================================= */
+
+.atlas-attendance-sidebar-user {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding:
+    8px
+    9px
+    13px;
+}
+
+.atlas-attendance-sidebar-avatar {
+  width: 34px;
+  height: 34px;
+
+  flex-shrink: 0;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 9px;
+
+  color: #c7d2fe;
+
+  background:
+    rgba(99, 102, 241, 0.12);
+
+  border:
+    1px solid rgba(99, 102, 241, 0.16);
+
+  font-size: 11px;
+
+  font-weight: 800;
+}
+
+.atlas-attendance-sidebar-user-info {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.atlas-attendance-sidebar-user-info strong {
+  color: #cbd5e1;
+
+  font-size: 11px;
+
+  font-weight: 650;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+.atlas-attendance-sidebar-user-info span {
+  color: #526074;
+
+  font-size: 9px;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+.atlas-attendance-logout {
+  width: 100%;
+
+  min-height: 40px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 0 11px;
+
+  border:
+    1px solid transparent;
+
+  border-radius: 9px;
+
+  background: transparent;
+
+  color: #718096;
+
+  font-family: inherit;
+
+  font-size: 11px;
+
+  font-weight: 650;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    color 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.atlas-attendance-logout:hover {
+  color: #fca5a5;
+
+  background:
+    rgba(248, 113, 113, 0.055);
+
+  border-color:
+    rgba(248, 113, 113, 0.08);
+}
+
+.atlas-attendance-logout-icon {
+  width: 24px;
+  height: 24px;
+
+  display: grid;
+
+  place-items: center;
+
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.atlas-attendance-main {
+  width: calc(100% - 250px);
+
+  min-height: 100vh;
+
+  margin-left: 250px;
+
+  background: #080b12;
+}
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.atlas-attendance-page {
+  width: 100%;
+
+  min-height: 100vh;
+
+  box-sizing: border-box;
+
+  padding: 38px 42px 60px;
+
+  background:
+    radial-gradient(
+      circle at 80% 0%,
+      rgba(79, 70, 229, 0.07),
+      transparent 30%
+    ),
+    #080b12;
+
+  color: #e5e7eb;
+}
+
+
+/* =========================================================
+   MOBILE HEADER
+========================================================= */
+
+.atlas-attendance-mobile-header {
+  display: none;
+
+  height: 64px;
+
+  align-items: center;
+
+  padding: 0 18px;
+
+  background: #0d111a;
+
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.06);
+}
+
+.atlas-attendance-menu-button {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-direction: column;
+
+  gap: 4px;
+
+  padding: 0;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.07);
+
+  border-radius: 9px;
+
+  background: #111827;
+
+  cursor: pointer;
+}
+
+.atlas-attendance-menu-button span {
+  width: 17px;
+  height: 2px;
+
+  display: block;
+
+  border-radius: 2px;
+
+  background: #cbd5e1;
+}
+
+.atlas-attendance-mobile-brand {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  margin-left: 12px;
+
+  color: #f8fafc;
+
+  font-size: 13px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.08em;
+}
+
+.atlas-attendance-mobile-brand-mark {
+  width: 28px;
+  height: 28px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 8px;
+
   background:
     linear-gradient(
       135deg,
-      #5b54eb,
-      #7174f5
+      #4f46e5,
+      #6366f1
     );
 
-  transform: translateY(-1px);
+  color: #ffffff;
 
-  box-shadow:
-    0 10px 25px rgba(79, 70, 229, 0.3);
+  font-size: 12px;
+
+  font-weight: 800;
 }
 
-.employee-attendance-checkout {
-  border: 1px solid rgba(248, 113, 113, 0.2);
+
+/* =========================================================
+   SIDEBAR OVERLAY
+========================================================= */
+
+.atlas-attendance-sidebar-overlay {
+  display: none;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.atlas-attendance-loading {
+  width: 100%;
+
+  min-height: 320px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-direction: column;
+
+  box-sizing: border-box;
+
+  padding: 40px;
+
+  background: #0d111a;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.07);
+
+  border-radius: 16px;
+
+  text-align: center;
+
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.18);
+}
+
+.atlas-attendance-spinner {
+  width: 34px;
+  height: 34px;
+
+  margin-bottom: 18px;
+
+  border: 3px solid #273449;
+
+  border-top-color: #6366f1;
+
+  border-radius: 50%;
+
+  animation:
+    atlasAttendanceSpin 0.8s linear infinite;
+}
+
+.atlas-attendance-loading h2 {
+  margin: 0;
+
+  color: #f8fafc;
+
+  font-size: 19px;
+
+  font-weight: 700;
+}
+
+.atlas-attendance-loading p {
+  margin: 7px 0 0;
+
+  color: #718096;
+
+  font-size: 13px;
+}
+
+@keyframes atlasAttendanceSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.atlas-attendance-header {
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  gap: 24px;
+
+  margin-bottom: 26px;
+}
+
+.atlas-attendance-eyebrow {
+  display: inline-block;
+
+  margin-bottom: 8px;
+
+  color: #818cf8;
+
+  font-size: 10px;
+
+  font-weight: 750;
+
+  letter-spacing: 0.15em;
+
+  text-transform: uppercase;
+}
+
+.atlas-attendance-header h1 {
+  margin: 0;
+
+  color: #f8fafc;
+
+  font-size: clamp(
+    28px,
+    3vw,
+    38px
+  );
+
+  font-weight: 750;
+
+  letter-spacing: -0.035em;
+
+  line-height: 1.1;
+}
+
+.atlas-attendance-header p {
+  margin: 9px 0 0;
+
+  color: #8792a5;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+.atlas-attendance-date {
+  flex-shrink: 0;
+
+  min-width: 190px;
+
+  padding: 14px 17px;
+
+  box-sizing: border-box;
+
+  background: #0d111a;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.07);
+
+  border-radius: 11px;
+
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.atlas-attendance-date span {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #64748b;
+
+  font-size: 9px;
+
+  font-weight: 750;
+
+  letter-spacing: 0.13em;
+}
+
+.atlas-attendance-date strong {
+  display: block;
+
+  color: #dbe3ee;
+
+  font-size: 12px;
+
+  font-weight: 650;
+
+  line-height: 1.45;
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.atlas-attendance-error {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 20px;
+
+  padding: 13px 15px;
 
   color: #fca5a5;
 
   background:
-    rgba(127, 29, 29, 0.12);
+    rgba(127, 29, 29, 0.16);
+
+  border:
+    1px solid rgba(248, 113, 113, 0.16);
+
+  border-radius: 10px;
+
+  font-size: 12px;
 }
 
-.employee-attendance-checkout:hover {
-  background:
-    rgba(127, 29, 29, 0.2);
+.atlas-attendance-error-icon {
+  width: 22px;
+  height: 22px;
 
-  border-color:
-    rgba(248, 113, 113, 0.32);
+  flex-shrink: 0;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 50%;
 
   color: #fecaca;
 
-  transform: translateY(-1px);
+  background:
+    rgba(248, 113, 113, 0.12);
+
+  font-size: 11px;
+
+  font-weight: 800;
 }
 
+
 /* =========================================================
-   SUMMARY
+   TODAY ATTENDANCE
 ========================================================= */
 
-.employee-attendance-summary {
+.atlas-attendance-today-card {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 24px;
+
+  min-height: 145px;
+
+  margin-bottom: 18px;
+
+  padding: 25px;
+
+  box-sizing: border-box;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(17, 24, 39, 0.98),
+      rgba(11, 17, 28, 0.98)
+    );
+
+  border:
+    1px solid rgba(255, 255, 255, 0.07);
+
+  border-radius: 15px;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+.atlas-attendance-today-info {
+  display: flex;
+
+  align-items: center;
+
+  gap: 17px;
+}
+
+.atlas-attendance-status-icon {
+  width: 55px;
+  height: 55px;
+
+  flex-shrink: 0;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 14px;
+
+  background: #151c2a;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.06);
+
+  color: #64748b;
+
+  font-size: 24px;
+}
+
+.atlas-attendance-status-icon.is-working {
+  color: #6ee7b7;
+
+  background:
+    rgba(52, 211, 153, 0.08);
+
+  border-color:
+    rgba(52, 211, 153, 0.13);
+}
+
+.atlas-attendance-status-icon.is-completed {
+  color: #818cf8;
+
+  background:
+    rgba(99, 102, 241, 0.09);
+
+  border-color:
+    rgba(99, 102, 241, 0.13);
+}
+
+.atlas-attendance-card-label {
+  margin-bottom: 6px;
+
+  color: #64748b;
+
+  font-size: 9px;
+
+  font-weight: 750;
+
+  letter-spacing: 0.13em;
+}
+
+.atlas-attendance-today-info h2 {
+  margin: 0;
+
+  color: #f1f5f9;
+
+  font-size: 20px;
+
+  font-weight: 700;
+
+  letter-spacing: -0.02em;
+}
+
+.atlas-attendance-today-info p {
+  margin: 6px 0 0;
+
+  color: #7f8a9d;
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.atlas-attendance-actions {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  flex-wrap: wrap;
+}
+
+.atlas-attendance-primary-button {
+  min-width: 120px;
+
+  min-height: 41px;
+
+  padding: 0 18px;
+
+  border:
+    1px solid rgba(99, 102, 241, 0.32);
+
+  border-radius: 9px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #4f46e5,
+      #6366f1
+    );
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 7px 20px rgba(79, 70, 229, 0.20);
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    opacity 0.18s ease;
+}
+
+.atlas-attendance-primary-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 10px 25px rgba(79, 70, 229, 0.30);
+}
+
+.atlas-attendance-primary-button:disabled {
+  opacity: 0.55;
+
+  cursor: not-allowed;
+}
+
+.atlas-attendance-completed {
+  min-height: 40px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  padding: 0 14px;
+
+  box-sizing: border-box;
+
+  border-radius: 9px;
+
+  color: #6ee7b7;
+
+  background:
+    rgba(52, 211, 153, 0.08);
+
+  border:
+    1px solid rgba(52, 211, 153, 0.12);
+
+  font-size: 11px;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   SUMMARY GRID
+========================================================= */
+
+.atlas-attendance-summary-grid {
   display: grid;
 
   grid-template-columns:
@@ -251,13 +1084,20 @@
 
   gap: 14px;
 
-  margin-bottom: 24px;
+  margin-bottom: 22px;
 }
 
-.employee-attendance-summary-card {
-  min-height: 92px;
+
+/* =========================================================
+   SUMMARY CARD
+========================================================= */
+
+.atlas-attendance-summary-card {
+  min-height: 94px;
 
   padding: 17px;
+
+  box-sizing: border-box;
 
   background:
     linear-gradient(
@@ -266,44 +1106,69 @@
       rgba(12, 17, 28, 0.96)
     );
 
-  border: 1px solid rgba(255, 255, 255, 0.065);
+  border:
+    1px solid rgba(255, 255, 255, 0.065);
 
   border-radius: 14px;
 
   box-shadow:
     0 8px 25px rgba(0, 0, 0, 0.14);
 
-  box-sizing: border-box;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease;
 }
 
-.employee-attendance-summary-card span {
+.atlas-attendance-summary-card:hover {
+  transform: translateY(-1px);
+
+  border-color:
+    rgba(99, 102, 241, 0.17);
+}
+
+.atlas-attendance-summary-label {
   display: block;
 
   margin-bottom: 7px;
 
-  color: #94a3b8;
+  color: #64748b;
 
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 9px;
+
+  font-weight: 750;
+
+  letter-spacing: 0.12em;
 }
 
-.employee-attendance-summary-card strong {
+.atlas-attendance-summary-card strong {
+  display: block;
+
+  margin-bottom: 5px;
+
   color: #f8fafc;
 
   font-size: 21px;
+
   font-weight: 750;
 
   letter-spacing: -0.025em;
 }
 
+.atlas-attendance-summary-card small {
+  color: #657184;
+
+  font-size: 10px;
+}
+
+
 /* =========================================================
-   HISTORY CARD
+   PANEL
 ========================================================= */
 
-.employee-attendance-card {
+.atlas-attendance-panel {
   overflow: hidden;
 
-  margin-bottom: 24px;
+  margin-bottom: 22px;
 
   background:
     linear-gradient(
@@ -312,7 +1177,8 @@
       rgba(10, 15, 25, 0.98)
     );
 
-  border: 1px solid rgba(255, 255, 255, 0.065);
+  border:
+    1px solid rgba(255, 255, 255, 0.065);
 
   border-radius: 15px;
 
@@ -320,97 +1186,188 @@
     0 12px 35px rgba(0, 0, 0, 0.16);
 }
 
-.employee-attendance-card-header {
+.atlas-attendance-panel-heading {
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
 
   gap: 20px;
 
-  padding: 22px 24px;
+  padding: 21px 24px;
 
-  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.055);
 }
 
-.employee-attendance-card-header h2 {
+.atlas-attendance-panel-heading span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #64748b;
+
+  font-size: 9px;
+
+  font-weight: 750;
+
+  letter-spacing: 0.13em;
+}
+
+.atlas-attendance-panel-heading h2 {
   margin: 0;
 
   color: #eef2f7;
 
   font-size: 17px;
+
   font-weight: 700;
 
   letter-spacing: -0.015em;
 }
 
-.employee-attendance-card-header p {
-  margin: 4px 0 0;
 
-  color: #717b8b;
+/* =========================================================
+   MONTHLY SUMMARY
+========================================================= */
 
-  font-size: 11px;
+.atlas-attendance-month-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 14px;
+
+  padding: 20px 24px 24px;
 }
 
-.employee-attendance-filter {
-  display: inline-flex;
-  align-items: center;
 
-  gap: 12px;
+/* =========================================================
+   REFRESH
+========================================================= */
 
-  min-height: 36px;
+.atlas-attendance-refresh {
+  min-height: 35px;
 
-  padding: 0 12px;
+  padding: 0 13px;
 
-  color: #cbd5e1;
-
-  background: #111827;
-
-  border: 1px solid #273449;
+  border:
+    1px solid #273449;
 
   border-radius: 8px;
 
+  background: #111827;
+
+  color: #cbd5e1;
+
   font-family: inherit;
+
   font-size: 11px;
+
+  font-weight: 650;
 
   cursor: pointer;
 
-  outline: none;
-
   transition:
+    background 0.18s ease,
     border-color 0.18s ease,
-    background 0.18s ease;
+    color 0.18s ease;
 }
 
-.employee-attendance-filter:hover {
+.atlas-attendance-refresh:hover:not(:disabled) {
   background: #172033;
 
   border-color: #3b4a61;
+
+  color: #f1f5f9;
 }
 
-.employee-attendance-filter:focus {
-  border-color: #6366f1;
+.atlas-attendance-refresh:disabled {
+  opacity: 0.45;
 
-  box-shadow:
-    0 0 0 3px rgba(99, 102, 241, 0.1);
+  cursor: not-allowed;
 }
 
-.employee-attendance-filter span {
-  color: #64748b;
-
-  font-size: 14px;
-}
 
 /* =========================================================
-   TABLE
+   EMPTY
 ========================================================= */
 
-.employee-attendance-table-wrapper {
+.atlas-attendance-empty {
+  min-height: 230px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-direction: column;
+
+  padding: 30px;
+
+  box-sizing: border-box;
+
+  text-align: center;
+
+  background:
+    rgba(8, 11, 18, 0.25);
+}
+
+.atlas-attendance-empty-icon {
+  width: 48px;
+  height: 48px;
+
+  display: grid;
+
+  place-items: center;
+
+  margin-bottom: 13px;
+
+  border-radius: 13px;
+
+  background: #151c2a;
+
+  color: #64748b;
+
+  font-size: 22px;
+}
+
+.atlas-attendance-empty strong {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #cbd5e1;
+
+  font-size: 13px;
+}
+
+.atlas-attendance-empty span {
+  color: #64748b;
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   TABLE WRAPPER
+========================================================= */
+
+.atlas-attendance-table-wrapper {
   width: 100%;
 
   overflow-x: auto;
 }
 
-.employee-attendance-table {
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.atlas-attendance-table {
   width: 100%;
 
   min-width: 700px;
@@ -418,85 +1375,71 @@
   border-collapse: collapse;
 }
 
-.employee-attendance-table thead {
+.atlas-attendance-table thead {
   background: #0f172a;
 }
 
-.employee-attendance-table th {
+.atlas-attendance-table th {
   padding: 12px 20px;
 
   color: #64748b;
 
-  border-bottom: 1px solid #273449;
+  border-bottom:
+    1px solid #273449;
 
-  font-size: 10px;
+  font-size: 9px;
+
   font-weight: 750;
 
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
 
   text-align: left;
-  text-transform: uppercase;
 
   white-space: nowrap;
 }
 
-.employee-attendance-table td {
+.atlas-attendance-table td {
   padding: 15px 20px;
 
   color: #94a3b8;
 
-  border-bottom: 1px solid rgba(30, 41, 59, 0.8);
+  border-bottom:
+    1px solid rgba(30, 41, 59, 0.8);
 
   font-size: 12px;
 
   white-space: nowrap;
 }
 
-.employee-attendance-table tbody tr:last-child td {
+.atlas-attendance-table tbody tr:last-child td {
   border-bottom: 0;
 }
 
-.employee-attendance-table tbody tr {
+.atlas-attendance-table tbody tr {
   transition:
     background 0.15s ease;
 }
 
-.employee-attendance-table tbody tr:hover {
-  background: rgba(99, 102, 241, 0.035);
+.atlas-attendance-table tbody tr:hover {
+  background:
+    rgba(99, 102, 241, 0.035);
 }
 
-/* =========================================================
-   DATE
-========================================================= */
-
-.employee-attendance-date strong {
-  display: block;
-
+.atlas-attendance-table td strong {
   color: #dbe3ee;
 
-  font-size: 12px;
   font-weight: 650;
 }
 
-.employee-attendance-date span {
-  display: block;
-
-  margin-top: 2px;
-
-  color: #64748b;
-
-  font-size: 10px;
-}
 
 /* =========================================================
-   STATUS
+   STATUS BADGE
 ========================================================= */
 
-.employee-attendance-status {
+.atlas-attendance-status-badge {
   display: inline-flex;
-  align-items: center;
 
-  gap: 6px;
+  align-items: center;
 
   min-height: 27px;
 
@@ -505,126 +1448,217 @@
   border-radius: 7px;
 
   font-size: 10px;
+
   font-weight: 700;
 
   white-space: nowrap;
 }
 
-.employee-attendance-status-small-dot {
-  width: 6px;
-  height: 6px;
-
-  border-radius: 50%;
-
-  background: currentColor;
-}
-
-.employee-attendance-status.present {
+.atlas-attendance-status-badge.status-present {
   color: #6ee7b7;
 
   background:
     rgba(52, 211, 153, 0.08);
 
-  border: 1px solid
-    rgba(52, 211, 153, 0.12);
+  border:
+    1px solid rgba(52, 211, 153, 0.12);
 }
 
-.employee-attendance-status.late {
+.atlas-attendance-status-badge.status-late {
   color: #fdba74;
 
   background:
     rgba(251, 146, 60, 0.08);
 
-  border: 1px solid
-    rgba(251, 146, 60, 0.12);
+  border:
+    1px solid rgba(251, 146, 60, 0.12);
 }
 
-.employee-attendance-status.on-leave {
-  color: #c4b5fd;
-
-  background:
-    rgba(139, 92, 246, 0.09);
-
-  border: 1px solid
-    rgba(139, 92, 246, 0.13);
-}
-
-.employee-attendance-status.absent {
+.atlas-attendance-status-badge.status-absent {
   color: #fca5a5;
 
   background:
     rgba(248, 113, 113, 0.08);
 
-  border: 1px solid
-    rgba(248, 113, 113, 0.12);
+  border:
+    1px solid rgba(248, 113, 113, 0.12);
 }
+
 
 /* =========================================================
    TABLET
 ========================================================= */
 
-@media (max-width: 900px) {
-  .employee-attendance-summary {
+@media (max-width: 1000px) {
+
+  .atlas-attendance-page {
+    padding:
+      30px
+      28px
+      50px;
+  }
+
+  .atlas-attendance-summary-grid {
     grid-template-columns:
       repeat(2, minmax(0, 1fr));
   }
+
 }
+
+
+/* =========================================================
+   SMALL TABLET
+========================================================= */
+
+@media (max-width: 760px) {
+
+  .atlas-attendance-sidebar {
+    width: min(280px, 86vw);
+
+    transform:
+      translateX(-100%);
+
+    transition:
+      transform 0.25s ease;
+
+    box-shadow:
+      15px 0 45px rgba(0, 0, 0, 0.30);
+  }
+
+  .atlas-attendance-sidebar-open {
+    transform:
+      translateX(0);
+  }
+
+  .atlas-attendance-sidebar-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 999;
+
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 0;
+
+    border: 0;
+
+    background:
+      rgba(0, 0, 0, 0.58);
+
+    cursor: pointer;
+  }
+
+  .atlas-attendance-main {
+    width: 100%;
+
+    margin-left: 0;
+  }
+
+  .atlas-attendance-mobile-header {
+    display: flex;
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 900;
+  }
+
+  .atlas-attendance-header {
+    flex-direction: column;
+  }
+
+  .atlas-attendance-date {
+    width: 100%;
+  }
+
+  .atlas-attendance-today-card {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .atlas-attendance-actions {
+    width: 100%;
+
+    justify-content: flex-start;
+  }
+
+  .atlas-attendance-month-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+}
+
 
 /* =========================================================
    MOBILE
 ========================================================= */
 
-@media (max-width: 640px) {
-  .employee-attendance-page {
-    padding-bottom: 28px;
+@media (max-width: 560px) {
+
+  .atlas-attendance-page {
+    padding:
+      24px
+      16px
+      35px;
   }
 
-  .employee-attendance-header h1 {
-    font-size: 27px;
+  .atlas-attendance-header h1 {
+    font-size: 28px;
   }
 
-  .employee-attendance-header p {
+  .atlas-attendance-header p {
     font-size: 12px;
   }
 
-  .employee-attendance-today {
-    align-items: flex-start;
-
-    flex-direction: column;
-
+  .atlas-attendance-today-card {
     padding: 19px;
   }
 
-  .employee-attendance-today-info h2 {
+  .atlas-attendance-today-info {
+    align-items: flex-start;
+  }
+
+  .atlas-attendance-status-icon {
+    width: 45px;
+    height: 45px;
+
+    font-size: 20px;
+  }
+
+  .atlas-attendance-today-info h2 {
     font-size: 17px;
   }
 
-  .employee-attendance-action {
+  .atlas-attendance-actions {
     align-items: stretch;
+
+    flex-direction: column;
 
     width: 100%;
   }
 
-  .employee-attendance-current-status {
+  .atlas-attendance-primary-button,
+  .atlas-attendance-completed {
+    width: 100%;
+
     justify-content: center;
   }
 
-  .employee-attendance-checkin,
-  .employee-attendance-checkout {
-    width: 100%;
-  }
-
-  .employee-attendance-summary {
-    grid-template-columns: 1fr;
+  .atlas-attendance-summary-grid {
+    grid-template-columns:
+      1fr;
 
     gap: 10px;
   }
 
-  .employee-attendance-summary-card {
-    min-height: 82px;
-  }
-
-  .employee-attendance-card-header {
+  .atlas-attendance-panel-heading {
     align-items: flex-start;
 
     flex-direction: column;
@@ -632,14 +1666,22 @@
     padding: 18px;
   }
 
-  .employee-attendance-filter {
+  .atlas-attendance-refresh {
     width: 100%;
-
-    justify-content: space-between;
   }
 
-  .employee-attendance-table th,
-  .employee-attendance-table td {
-    padding: 12px 14px;
+  .atlas-attendance-month-grid {
+    padding:
+      16px
+      18px
+      18px;
   }
+
+  .atlas-attendance-table th,
+  .atlas-attendance-table td {
+    padding:
+      12px
+      14px;
+  }
+
 }

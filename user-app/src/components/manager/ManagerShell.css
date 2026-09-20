@@ -1,29 +1,30 @@
 /* =========================================================
    ATLAS — MANAGER SHELL
-   DARK MODE ONLY
-   ========================================================= */
+   Desktop / Tablet / Phone
+========================================================= */
 
 
 /* =========================================================
-   ROOT SHELL
-   ========================================================= */
+   ROOT
+========================================================= */
 
 .manager-shell {
   width: 100%;
+  min-width: 0;
   min-height: 100vh;
-
-  display: flex;
-  flex-direction: row;
+  min-height: 100dvh;
 
   margin: 0;
   padding: 0;
+
+  display: flex;
+  flex-direction: row;
 
   background: #080b12;
   color: #f8fafc;
 
   overflow-x: hidden;
 
-  /* Manager theme variables */
   --manager-bg: #080b12;
   --manager-surface: #0f131c;
   --manager-surface-soft: #141925;
@@ -41,35 +42,63 @@
   --manager-primary: #6366f1;
   --manager-primary-soft: rgba(99, 102, 241, 0.14);
   --manager-primary-border: rgba(99, 102, 241, 0.35);
-}
 
-
-/* =========================================================
-   GLOBAL BOX SIZING
-   ========================================================= */
-
-.manager-shell,
-.manager-shell *,
-.manager-main,
-.manager-page {
   box-sizing: border-box;
 }
 
 
 /* =========================================================
-   SIDEBAR
-   ========================================================= */
+   GLOBAL BOX SIZING
+========================================================= */
+
+.manager-shell *,
+.manager-shell *::before,
+.manager-shell *::after {
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   MOBILE HEADER
+========================================================= */
+
+.manager-mobile-header {
+  display: none;
+}
+
+
+/* =========================================================
+   SIDEBAR WRAPPER — DESKTOP
+========================================================= */
+
+.manager-sidebar-wrapper {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 250px;
+  height: 100vh;
+  height: 100dvh;
+
+  z-index: 9999;
+
+  pointer-events: auto;
+}
+
+
+/* =========================================================
+   SIDEBAR — DESKTOP
+========================================================= */
 
 .manager-sidebar {
   width: 250px;
   min-width: 250px;
 
-  height: 100vh;
+  height: 100%;
+  min-height: 100%;
 
-  position: fixed;
-
-  top: 0;
-  left: 0;
+  position: relative;
 
   display: flex;
   flex-direction: column;
@@ -81,18 +110,14 @@
 
   border-right: 1px solid #202735;
 
-  z-index: 100;
-
   overflow-y: auto;
   overflow-x: hidden;
-
-  box-sizing: border-box;
 }
 
 
 /* =========================================================
    BRAND
-   ========================================================= */
+========================================================= */
 
 .manager-brand {
   padding: 26px 22px 24px;
@@ -101,7 +126,7 @@
 
   background: #0b0f17;
 
-  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .manager-brand-title {
@@ -127,7 +152,7 @@
 
 /* =========================================================
    NAVIGATION
-   ========================================================= */
+========================================================= */
 
 .manager-navigation {
   flex: 1;
@@ -139,7 +164,7 @@
 
   background: #0b0f17;
 
-  box-sizing: border-box;
+  min-height: 0;
 }
 
 .manager-section-title {
@@ -156,7 +181,7 @@
 
 /* =========================================================
    NAV ITEM
-   ========================================================= */
+========================================================= */
 
 .manager-nav-item {
   width: 100%;
@@ -186,28 +211,17 @@
 
   cursor: pointer;
 
-  box-sizing: border-box;
-
   transition:
     background 0.15s ease,
     color 0.15s ease;
+
+  touch-action: manipulation;
 }
-
-
-/* =========================================================
-   NAV HOVER
-   ========================================================= */
 
 .manager-nav-item:hover {
   background: #151b27;
-
   color: #f8fafc;
 }
-
-
-/* =========================================================
-   ACTIVE NAV ITEM
-   ========================================================= */
 
 .manager-nav-item.active {
   background: rgba(99, 102, 241, 0.14);
@@ -216,14 +230,8 @@
 
   font-weight: 600;
 
-  box-shadow:
-    inset 3px 0 0 #6366f1;
+  box-shadow: inset 3px 0 0 #6366f1;
 }
-
-
-/* =========================================================
-   ICON
-   ========================================================= */
 
 .manager-nav-item svg {
   flex-shrink: 0;
@@ -231,19 +239,18 @@
 
 
 /* =========================================================
-   SETTINGS PUSH
-   ========================================================= */
+   SETTINGS SPACE
+========================================================= */
 
 .manager-settings-space {
   flex: 1;
-
   min-height: 20px;
 }
 
 
 /* =========================================================
    SIDEBAR FOOTER
-   ========================================================= */
+========================================================= */
 
 .manager-sidebar-footer {
   padding: 14px 12px;
@@ -252,13 +259,13 @@
 
   background: #0b0f17;
 
-  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 
 /* =========================================================
    USER
-   ========================================================= */
+========================================================= */
 
 .manager-user {
   display: flex;
@@ -267,6 +274,8 @@
   gap: 10px;
 
   padding: 8px 8px 12px;
+
+  min-width: 0;
 }
 
 .manager-user-avatar {
@@ -316,11 +325,11 @@
 
 /* =========================================================
    LOGOUT
-   ========================================================= */
+========================================================= */
 
 .manager-logout {
   width: 100%;
-  height: 38px;
+  min-height: 38px;
 
   display: flex;
   align-items: center;
@@ -342,12 +351,12 @@
 
   cursor: pointer;
 
-  box-sizing: border-box;
-
   transition:
     background 0.15s ease,
     color 0.15s ease,
     border-color 0.15s ease;
+
+  touch-action: manipulation;
 }
 
 .manager-logout:hover {
@@ -360,84 +369,51 @@
 
 
 /* =========================================================
-   MAIN CONTENT
-   ========================================================= */
+   MAIN — DESKTOP
+========================================================= */
 
 .manager-main {
   width: calc(100% - 250px);
 
   min-width: 0;
+
   min-height: 100vh;
+  min-height: 100dvh;
 
   margin-left: 250px;
-
   padding: 0;
 
-  box-sizing: border-box;
-
   background: #080b12;
-
   color: #f8fafc;
+
+  overflow-x: hidden;
 }
 
 
 /* =========================================================
-   PAGE
-   ========================================================= */
+   PAGE — DESKTOP
+========================================================= */
 
 .manager-page {
   width: 100%;
+  min-width: 0;
 
   min-height: 100vh;
+  min-height: 100dvh;
 
   margin: 0;
-
   padding: 24px 28px 40px;
 
-  box-sizing: border-box;
-
   background: #080b12;
-
   color: #f8fafc;
-}
 
-
-/* =========================================================
-   MANAGER THEME VARIABLES
-   ========================================================= */
-
-.manager-shell {
-  --manager-bg: #080b12;
-
-  --manager-surface: #0f131c;
-
-  --manager-surface-soft: #141925;
-
-  --manager-border: #202735;
-
-  --manager-border-soft: #1a202c;
-
-  --manager-text: #f8fafc;
-
-  --manager-text-secondary: #cbd5e1;
-
-  --manager-text-muted: #94a3b8;
-
-  --manager-hover: #151b27;
-
-  --manager-hover-strong: #1b2230;
-
-  --manager-primary: #6366f1;
-
-  --manager-primary-soft: rgba(99, 102, 241, 0.14);
-
-  --manager-primary-border: rgba(99, 102, 241, 0.35);
+  overflow-x: hidden;
 }
 
 
 /* =========================================================
    SCROLLBAR
-   ========================================================= */
+========================================================= */
 
 .manager-sidebar::-webkit-scrollbar {
   width: 6px;
@@ -459,10 +435,15 @@
 
 
 /* =========================================================
-   RESPONSIVE
-   ========================================================= */
+   TABLET
+   601px — 1100px
+========================================================= */
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) and (min-width: 601px) {
+
+  .manager-sidebar-wrapper {
+    width: 220px;
+  }
 
   .manager-sidebar {
     width: 220px;
@@ -476,33 +457,534 @@
   }
 
   .manager-page {
-    padding: 20px 18px 32px;
+    padding: 20px 20px 34px;
+  }
+
+  .manager-brand {
+    padding: 22px 18px;
+  }
+
+  .manager-navigation {
+    padding: 14px 10px;
+  }
+
+  .manager-nav-item {
+    min-height: 44px;
+
+    padding-left: 10px;
+    padding-right: 10px;
+
+    font-size: 12px;
+  }
+
+  .manager-sidebar-footer {
+    padding: 12px 10px;
   }
 }
 
 
-@media (max-width: 700px) {
+/* =========================================================
+   PHONE
+   600px AND BELOW
+
+   IMPORTANT:
+   Header = 100% width at very top
+   Main = 100% width underneath header
+   Sidebar = dropdown overlay
+   No desktop left margin
+   No desktop width calculation
+========================================================= */
+
+@media (max-width: 600px) {
+
+  /* =======================================================
+     ROOT
+  ======================================================= */
+
+  .manager-shell {
+    width: 100%;
+    min-width: 0;
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    display: block;
+
+    margin: 0;
+    padding: 0;
+
+    overflow-x: hidden;
+  }
+
+
+  /* =======================================================
+     MOBILE HEADER
+  ======================================================= */
+
+  .manager-mobile-header {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 64px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 15px;
+
+    margin: 0;
+
+    background: #0b0f17;
+
+    border-bottom: 1px solid #202735;
+
+    z-index: 10001;
+
+    box-sizing: border-box;
+  }
+
+
+  /* =======================================================
+     MOBILE BRAND
+  ======================================================= */
+
+  .manager-mobile-brand {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+  }
+
+  .manager-mobile-brand-title {
+    font-size: 14px;
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+
+    line-height: 1;
+
+    color: #f8fafc;
+  }
+
+  .manager-mobile-brand-role {
+    margin-top: 5px;
+
+    font-size: 8px;
+    font-weight: 600;
+
+    letter-spacing: 1.2px;
+
+    line-height: 1;
+
+    color: #94a3b8;
+  }
+
+
+  /* =======================================================
+     HAMBURGER
+  ======================================================= */
+
+  .manager-mobile-menu {
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    padding: 0;
+    margin: 0;
+
+    border: 1px solid #293244;
+    border-radius: 8px;
+
+    background: #0f141e;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+  }
+
+  .manager-mobile-menu span {
+    width: 19px;
+    height: 2px;
+
+    display: block;
+
+    border-radius: 999px;
+
+    background: #cbd5e1;
+
+    transition:
+      transform 0.2s ease,
+      opacity 0.2s ease;
+  }
+
+  .manager-mobile-menu.is-open span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .manager-mobile-menu.is-open span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .manager-mobile-menu.is-open span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+
+  /* =======================================================
+     SIDEBAR WRAPPER
+     
+     Full width.
+     Starts directly below header.
+     Does NOT occupy layout space.
+  ======================================================= */
+
+  .manager-sidebar-wrapper {
+    position: fixed;
+
+    top: 64px;
+    left: 0;
+    right: 0;
+
+    width: 100%;
+    max-width: none;
+
+    height: calc(100dvh - 64px);
+    max-height: calc(100dvh - 64px);
+
+    margin: 0;
+    padding: 0;
+
+    z-index: 10000;
+
+    transform: translateY(-105%);
+
+    transition: transform 220ms ease;
+
+    pointer-events: none;
+
+    box-shadow:
+      0 12px 30px rgba(0, 0, 0, 0.45);
+  }
+
+  .manager-sidebar-wrapper.mobile-sidebar-open {
+    transform: translateY(0);
+
+    pointer-events: auto;
+  }
+
+
+  /* =======================================================
+     SIDEBAR
+     
+     Full width dropdown.
+  ======================================================= */
 
   .manager-sidebar {
-    width: 200px;
-    min-width: 200px;
+    width: 100%;
+    min-width: 0;
+
+    height: 100%;
+    min-height: 0;
+
+    max-height: calc(100dvh - 64px);
+
+    margin: 0;
+    padding: 0;
+
+    border-right: none;
+    border-bottom: 1px solid #202735;
+
+    background: #0b0f17;
+
+    overflow-y: auto;
+    overflow-x: hidden;
   }
+
+
+  /* =======================================================
+     OVERLAY
+  ======================================================= */
+
+  .manager-sidebar-overlay {
+    position: fixed;
+
+    top: 64px;
+    left: 0;
+
+    width: 100%;
+    height: calc(100dvh - 64px);
+
+    margin: 0;
+    padding: 0;
+
+    border: none;
+
+    background: rgba(0, 0, 0, 0.48);
+
+    z-index: 9998;
+
+    cursor: pointer;
+  }
+
+
+  /* =======================================================
+     SIDEBAR BRAND
+  ======================================================= */
+
+  .manager-brand {
+    padding: 18px 16px;
+
+    border-bottom: 1px solid #202735;
+  }
+
+
+  /* =======================================================
+     NAVIGATION
+  ======================================================= */
+
+  .manager-navigation {
+    flex: none;
+
+    width: 100%;
+
+    padding: 10px;
+  }
+
+  .manager-section-title {
+    margin: 14px 10px 7px;
+
+    font-size: 9px;
+  }
+
+  .manager-nav-item {
+    width: 100%;
+
+    min-height: 48px;
+
+    padding-left: 13px;
+    padding-right: 13px;
+
+    margin-bottom: 3px;
+
+    font-size: 13px;
+  }
+
+
+  /* =======================================================
+     REMOVE EMPTY SETTINGS SPACE
+  ======================================================= */
+
+  .manager-settings-space {
+    flex: none;
+
+    min-height: 0;
+
+    height: 0;
+  }
+
+
+  /* =======================================================
+     FOOTER
+  ======================================================= */
+
+  .manager-sidebar-footer {
+    padding: 12px;
+  }
+
+  .manager-logout {
+    min-height: 44px;
+  }
+
+
+  /* =======================================================
+     MAIN CONTENT
+     
+     THIS IS THE IMPORTANT PART:
+     FULL SCREEN WIDTH.
+     NO 250px / 220px CALCULATION.
+     NO LEFT MARGIN.
+     STARTS BELOW THE 64px HEADER.
+  ======================================================= */
 
   .manager-main {
-    width: calc(100% - 200px);
+    width: 100%;
+    min-width: 0;
 
-    margin-left: 200px;
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    margin: 0;
+    padding: 0;
+
+    display: block;
+
+    background: #080b12;
+
+    overflow-x: hidden;
   }
 
+
+  /* =======================================================
+     PAGE
+     
+     Full width below the header.
+  ======================================================= */
+
   .manager-page {
-    padding: 16px 12px 28px;
+    width: 100%;
+    min-width: 0;
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    margin: 0;
+    padding: 80px 13px 26px;
+
+    background: #080b12;
+
+    overflow-x: hidden;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   380px AND BELOW
+========================================================= */
+
+@media (max-width: 380px) {
+
+  .manager-mobile-header {
+    height: 60px;
+
+    padding: 0 12px;
+  }
+
+  .manager-mobile-brand-title {
+    font-size: 13px;
+  }
+
+  .manager-mobile-brand-role {
+    font-size: 7px;
+  }
+
+  .manager-mobile-menu {
+    width: 40px;
+    height: 40px;
+  }
+
+
+  /* SIDEBAR */
+
+  .manager-sidebar-wrapper {
+    top: 60px;
+
+    width: 100%;
+
+    height: calc(100dvh - 60px);
+    max-height: calc(100dvh - 60px);
+  }
+
+  .manager-sidebar {
+    width: 100%;
+
+    height: 100%;
+
+    max-height: calc(100dvh - 60px);
+  }
+
+
+  /* OVERLAY */
+
+  .manager-sidebar-overlay {
+    top: 60px;
+
+    width: 100%;
+    height: calc(100dvh - 60px);
+  }
+
+
+  /* MAIN */
+
+  .manager-main {
+    width: 100%;
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    margin: 0;
+    padding: 0;
+  }
+
+
+  /* PAGE */
+
+  .manager-page {
+    width: 100%;
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    margin: 0;
+
+    padding: 74px 10px 22px;
+  }
+
+  .manager-nav-item {
+    min-height: 46px;
+
+    font-size: 12px;
+  }
+}
+
+
+/* =========================================================
+   TOUCH DEVICES
+========================================================= */
+
+@media (hover: none) and (pointer: coarse) {
+
+  .manager-nav-item:hover {
+    background: transparent;
+
+    color: #94a3b8;
+  }
+
+  .manager-nav-item.active:hover {
+    background: rgba(99, 102, 241, 0.14);
+
+    color: #818cf8;
+  }
+
+  .manager-logout:hover {
+    background: #0f141e;
+
+    border-color: #293244;
+
+    color: #94a3b8;
   }
 }
 
 
 /* =========================================================
    REDUCED MOTION
-   ========================================================= */
+========================================================= */
 
 html.atlas-manager-reduced-motion *,
 html.atlas-manager-reduced-motion *::before,
@@ -519,17 +1001,15 @@ html.atlas-manager-reduced-motion *::after {
 
 /* =========================================================
    COMPACT MODE
-   ========================================================= */
+========================================================= */
 
 html.atlas-manager-compact .manager-page {
   padding-top: 18px;
-
   padding-bottom: 24px;
 }
 
 html.atlas-manager-compact .manager-navigation {
   padding-top: 10px;
-
   padding-bottom: 10px;
 }
 
@@ -539,6 +1019,45 @@ html.atlas-manager-compact .manager-nav-item {
 
 html.atlas-manager-compact .manager-brand {
   padding-top: 20px;
-
   padding-bottom: 18px;
+}
+
+
+/* =========================================================
+   MOBILE COMPACT MODE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  html.atlas-manager-compact .manager-page {
+    padding-top: 80px;
+    padding-bottom: 22px;
+  }
+
+  html.atlas-manager-compact .manager-navigation {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  html.atlas-manager-compact .manager-nav-item {
+    min-height: 44px;
+  }
+
+  html.atlas-manager-compact .manager-brand {
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE COMPACT — VERY SMALL
+========================================================= */
+
+@media (max-width: 380px) {
+
+  html.atlas-manager-compact .manager-page {
+    padding-top: 74px;
+    padding-bottom: 22px;
+  }
 }

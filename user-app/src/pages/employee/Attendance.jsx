@@ -1,631 +1,1200 @@
-import { useEffect, useState } from "react";
-import "./Attendance.css";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+
+import {
+  NavLink,
+  useNavigate,
+} from "react-router-dom";
 
 import api from "../../services/api";
-// If your api.js is located somewhere else, adjust this import path.
-
+import "./Attendance.css";
 
 export default function Attendance() {
+  const navigate = useNavigate();
+
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   const [todayAttendance, setTodayAttendance] = useState(null);
   const [attendanceHistory, setAttendanceHistory] = useState([]);
 
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
-
   const [error, setError] = useState("");
 
+  /* =========================================================
+     SIDEBAR NAVIGATION
+  ========================================================= */
 
-  // =========================================================
-  // TODAY
-  // =========================================================
+  const employeeNavigation = [
+    {
+      label: "Dashboard",
+      path: "/employee",
+      icon: "▦",
+    },
+    {
+      label: "Attendance",
+      path: "/employee/attendance",
+      icon: "◷",
+    },
+    {
+      label: "Leave",
+      path: "/employee/leave",
+      icon: "▣",
+    },
+    {
+      label: "Payslips",
+      path: "/employee/payslips",
+      icon: "₹",
+    },
+    {
+      label: "My Profile",
+      path: "/employee/profile",
+      icon: "●",
+    },
+  ];
 
-  const today = new Date();
+  /* =========================================================
+     CLOSE MOBILE SIDEBAR
+  ========================================================= */
 
-  const formattedDate = today.toLocaleDateString("en-IN", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+  const closeSidebar = () => {
+    setSidebarOpen(false);
+  };
 
+  /* =========================================================
+     LOGOUT
+  ========================================================= */
 
-  // =========================================================
-  // FETCH ATTENDANCE
-  // =========================================================
+  const handleLogout = () => {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("atlas_user");
 
-  const fetchAttendance = async () => {
+    sessionStorage.removeItem("access_token");
+    sessionStorage.removeItem("atlas_user");
+
+    setSidebarOpen(false);
+
+    navigate("/login", {
+      replace: true,
+    });
+  };
+
+  /* =========================================================
+     LOAD ATTENDANCE
+  ========================================================= */
+
+  const loadAttendance = useCallback(async () => {
     try {
-      setLoading(true);
       setError("");
 
-      const [todayResponse, historyResponse] = await Promise.all([
+      const results = await Promise.allSettled([
         api.get("/employee/attendance/today"),
         api.get("/employee/attendance"),
       ]);
 
-      setTodayAttendance(todayResponse.data);
-      setAttendanceHistory(historyResponse.data || []);
+      const todayResult = results[0];
+      const historyResult = results[1];
+
+      if (todayResult.status === "fulfilled") {
+        setTodayAttendance(todayResult.value.data);
+      } else {
+        setTodayAttendance(null);
+      }
+
+      if (historyResult.status === "fulfilled") {
+        const data = historyResult.value.data;
+
+        if (Array.isArray(data)) {
+          setAttendanceHistory(data);
+        } else if (Array.isArray(data?.items)) {
+          setAttendanceHistory(data.items);
+        } else if (Array.isArray(data?.data)) {
+          setAttendanceHistory(data.data);
+        } else {
+          setAttendanceHistory([]);
+        }
+      } else {
+        setAttendanceHistory([]);
+      }
+
+      const successfulRequest = results.some(
+        (result) => result.status === "fulfilled"
+      );
+
+      if (!successfulRequest) {
+        throw new Error("Unable to load attendance.");
+      }
     } catch (err) {
-      console.error("Failed to load attendance:", err);
+      console.error(
+        "Attendance loading error:",
+        err
+      );
 
       setError(
-        err.response?.data?.detail ||
+        err?.response?.data?.detail ||
+          err?.message ||
           "Unable to load attendance information."
       );
     } finally {
       setLoading(false);
     }
-  };
-
-
-  // =========================================================
-  // INITIAL LOAD
-  // =========================================================
-
-  useEffect(() => {
-    fetchAttendance();
   }, []);
 
+  useEffect(() => {
+    loadAttendance();
+  }, [loadAttendance]);
 
-  // =========================================================
-  // CHECKED-IN STATE
-  // =========================================================
+  /* =========================================================
+     DATE
+  ========================================================= */
+
+  const today = useMemo(() => {
+    return new Date().toLocaleDateString("en-IN", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  }, []);
+
+  /* =========================================================
+     ATTENDANCE VALUES
+  ========================================================= */
+
+  const checkInTime =
+    todayAttendance?.check_in ??
+    todayAttendance?.checkIn ??
+    todayAttendance?.check_in_time ??
+    todayAttendance?.checkInTime ??
+    null;
+
+  const checkOutTime =
+    todayAttendance?.check_out ??
+    todayAttendance?.checkOut ??
+    todayAttendance?.check_out_time ??
+    todayAttendance?.checkOutTime ??
+    null;
+
+  const attendanceStatus =
+    todayAttendance?.status ||
+    (checkOutTime
+      ? "Completed"
+      : checkInTime
+      ? "Working"
+      : "Not Started");
 
   const isCheckedIn =
-    todayAttendance?.check_in != null &&
-    todayAttendance?.check_out == null;
+    Boolean(checkInTime) && !checkOutTime;
 
+  const isCompleted =
+    Boolean(checkInTime) && Boolean(checkOutTime);
 
-  // =========================================================
-  // FORMAT TIME
-  // =========================================================
+  /* =========================================================
+     FORMAT TIME
+  ========================================================= */
 
-  const formatTime = (time) => {
-    if (!time) {
+  const formatTime = (value) => {
+    if (!value) {
+      return "--:--";
+    }
+
+    const raw = String(value).trim();
+
+    /*
+     * Backend time formats:
+     * HH:mm:ss
+     * HH:mm:ss.SSSS
+     * HH:mm
+     */
+
+    const match = raw.match(
+      /^(\d{1,2}):(\d{2}):(\d{2})(?:\.\d+)?$/
+    );
+
+    if (match) {
+      let hours = Number(match[1]);
+      const minutes = match[2];
+
+      const period =
+        hours >= 12 ? "PM" : "AM";
+
+      hours = hours % 12;
+
+      if (hours === 0) {
+        hours = 12;
+      }
+
+      return `${hours}:${minutes} ${period}`;
+    }
+
+    const shortMatch = raw.match(
+      /^(\d{1,2}):(\d{2})$/
+    );
+
+    if (shortMatch) {
+      let hours = Number(shortMatch[1]);
+      const minutes = shortMatch[2];
+
+      const period =
+        hours >= 12 ? "PM" : "AM";
+
+      hours = hours % 12;
+
+      if (hours === 0) {
+        hours = 12;
+      }
+
+      return `${hours}:${minutes} ${period}`;
+    }
+
+    const date = new Date(raw);
+
+    if (!Number.isNaN(date.getTime())) {
+      return date.toLocaleTimeString("en-IN", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      });
+    }
+
+    return raw;
+  };
+
+  /* =========================================================
+     FORMAT DATE
+  ========================================================= */
+
+  const formatDate = (value) => {
+    if (!value) {
       return "—";
     }
 
-    const [hours, minutes] = time.split(":");
+    try {
+      const date = new Date(value);
 
-    const date = new Date();
+      if (Number.isNaN(date.getTime())) {
+        return String(value);
+      }
 
-    date.setHours(
-      Number(hours),
-      Number(minutes),
-      0,
-      0
-    );
-
-    return date.toLocaleTimeString("en-IN", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    });
+      return date.toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      });
+    } catch {
+      return String(value);
+    }
   };
 
+  /* =========================================================
+     WORKED TIME
+  ========================================================= */
 
-  // =========================================================
-  // WORKING HOURS
-  // =========================================================
-
-  const calculateWorkingHours = (
+  const calculateWorkedTime = (
     checkIn,
     checkOut
   ) => {
-    if (!checkIn || !checkOut) {
-      return "—";
+    if (!checkIn) {
+      return "Not started";
     }
 
-    const [inHours, inMinutes] = checkIn
-      .split(":")
-      .map(Number);
-
-    const [outHours, outMinutes] = checkOut
-      .split(":")
-      .map(Number);
-
-    const startMinutes =
-      inHours * 60 + inMinutes;
-
-    const endMinutes =
-      outHours * 60 + outMinutes;
-
-    let difference =
-      endMinutes - startMinutes;
-
-    // Handles overnight shifts.
-    if (difference < 0) {
-      difference += 24 * 60;
+    if (!checkOut) {
+      return "In progress";
     }
 
-    const hours = Math.floor(
-      difference / 60
+    const start = new Date(checkIn);
+    const end = new Date(checkOut);
+
+    if (
+      Number.isNaN(start.getTime()) ||
+      Number.isNaN(end.getTime())
+    ) {
+      return "Completed";
+    }
+
+    const difference = Math.max(
+      0,
+      end.getTime() - start.getTime()
     );
 
-    const minutes = difference % 60;
+    const totalMinutes = Math.floor(
+      difference / 60000
+    );
 
-    return `${hours}h ${minutes
-      .toString()
-      .padStart(2, "0")}m`;
+    const hours = Math.floor(
+      totalMinutes / 60
+    );
+
+    const minutes =
+      totalMinutes % 60;
+
+    return `${hours}h ${minutes}m`;
   };
 
+  /* =========================================================
+     TODAY WORKED TIME
+  ========================================================= */
 
-  // =========================================================
-  // CHECK IN
-  // =========================================================
+  const workedToday = useMemo(() => {
+    return calculateWorkedTime(
+      checkInTime,
+      checkOutTime
+    );
+  }, [checkInTime, checkOutTime]);
+
+  /* =========================================================
+     MONTHLY SUMMARY
+  ========================================================= */
+
+  const monthlySummary = useMemo(() => {
+    const now = new Date();
+
+    const month = now.getMonth();
+    const year = now.getFullYear();
+
+    let present = 0;
+    let late = 0;
+    let absent = 0;
+
+    attendanceHistory.forEach((item) => {
+      const dateValue =
+        item?.date ||
+        item?.attendance_date ||
+        item?.attendanceDate ||
+        item?.created_at;
+
+      if (!dateValue) {
+        return;
+      }
+
+      const date = new Date(dateValue);
+
+      if (Number.isNaN(date.getTime())) {
+        return;
+      }
+
+      if (
+        date.getMonth() !== month ||
+        date.getFullYear() !== year
+      ) {
+        return;
+      }
+
+      const status = String(
+        item?.status || ""
+      ).toLowerCase();
+
+      if (status === "late") {
+        present += 1;
+        late += 1;
+        return;
+      }
+
+      if (
+        status === "present" ||
+        status === "checked_in" ||
+        status === "completed" ||
+        item?.check_in ||
+        item?.checkIn
+      ) {
+        present += 1;
+        return;
+      }
+
+      if (status === "absent") {
+        absent += 1;
+      }
+    });
+
+    return {
+      present,
+      late,
+      absent,
+    };
+  }, [attendanceHistory]);
+
+  /* =========================================================
+     SORT HISTORY
+  ========================================================= */
+
+  const sortedHistory = useMemo(() => {
+    return [...attendanceHistory].sort(
+      (a, b) => {
+        const dateA = new Date(
+          a?.date ||
+            a?.attendance_date ||
+            a?.attendanceDate ||
+            a?.created_at ||
+            0
+        );
+
+        const dateB = new Date(
+          b?.date ||
+            b?.attendance_date ||
+            b?.attendanceDate ||
+            b?.created_at ||
+            0
+        );
+
+        return (
+          dateB.getTime() -
+          dateA.getTime()
+        );
+      }
+    );
+  }, [attendanceHistory]);
+
+  /* =========================================================
+     CHECK IN
+  ========================================================= */
 
   const handleCheckIn = async () => {
-    try {
-      setActionLoading(true);
-      setError("");
-
-      const response = await api.post(
-        "/employee/attendance/check-in"
-      );
-
-      setTodayAttendance(response.data);
-
-      // Refresh history as well.
-      const historyResponse = await api.get(
-        "/employee/attendance"
-      );
-
-      setAttendanceHistory(
-        historyResponse.data || []
-      );
-    } catch (err) {
-      console.error(
-        "Check-in failed:",
-        err
-      );
-
-      setError(
-        err.response?.data?.detail ||
-          "Unable to check in."
-      );
-    } finally {
-      setActionLoading(false);
-    }
-  };
-
-
-  // =========================================================
-  // CHECK OUT
-  // =========================================================
-
-  const handleCheckOut = async () => {
-    try {
-      setActionLoading(true);
-      setError("");
-
-      const response = await api.post(
-        "/employee/attendance/check-out"
-      );
-
-      setTodayAttendance(response.data);
-
-      // Refresh history.
-      const historyResponse = await api.get(
-        "/employee/attendance"
-      );
-
-      setAttendanceHistory(
-        historyResponse.data || []
-      );
-    } catch (err) {
-      console.error(
-        "Check-out failed:",
-        err
-      );
-
-      setError(
-        err.response?.data?.detail ||
-          "Unable to check out."
-      );
-    } finally {
-      setActionLoading(false);
-    }
-  };
-
-
-  // =========================================================
-  // ATTENDANCE ACTION
-  // =========================================================
-
-  const handleAttendance = () => {
     if (actionLoading) {
       return;
     }
 
-    if (isCheckedIn) {
-      handleCheckOut();
-    } else {
-      handleCheckIn();
+    try {
+      setActionLoading(true);
+      setError("");
+
+      await api.post(
+        "/employee/attendance/check-in"
+      );
+
+      await loadAttendance();
+    } catch (err) {
+      console.error(
+        "Check-in error:",
+        err
+      );
+
+      setError(
+        err?.response?.data?.detail ||
+          "Unable to check in. Please try again."
+      );
+    } finally {
+      setActionLoading(false);
     }
   };
 
+  /* =========================================================
+     CHECK OUT
+  ========================================================= */
 
-  // =========================================================
-  // MONTHLY DAYS
-  // =========================================================
+  const handleCheckOut = async () => {
+    if (actionLoading) {
+      return;
+    }
 
-  const presentDays = attendanceHistory.filter(
-    (record) =>
-      record.status === "Present" ||
-      record.status === "Late"
-  ).length;
+    try {
+      setActionLoading(true);
+      setError("");
 
+      await api.post(
+        "/employee/attendance/check-out"
+      );
 
-  // =========================================================
-  // LOADING
-  // =========================================================
+      await loadAttendance();
+    } catch (err) {
+      console.error(
+        "Check-out error:",
+        err
+      );
+
+      setError(
+        err?.response?.data?.detail ||
+          "Unable to check out. Please try again."
+      );
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  /* =========================================================
+     LOADING
+  ========================================================= */
 
   if (loading) {
     return (
-      <div className="employee-attendance-page">
-        <div className="employee-attendance-header">
-          <div>
-            <span className="employee-attendance-eyebrow">
-              MY WORK
-            </span>
+      <div className="atlas-attendance-root">
 
-            <h1>Attendance</h1>
+        <AttendanceSidebar
+          navigation={employeeNavigation}
+          sidebarOpen={sidebarOpen}
+          closeSidebar={closeSidebar}
+          handleLogout={handleLogout}
+        />
 
-            <p>
-              Loading your attendance...
-            </p>
+        <main className="atlas-attendance-main">
+
+          <div className="atlas-attendance-page">
+
+            <div className="atlas-attendance-loading">
+
+              <div className="atlas-attendance-spinner" />
+
+              <h2>
+                Loading attendance
+              </h2>
+
+              <p>
+                Please wait while we load your attendance.
+              </p>
+
+            </div>
+
           </div>
-        </div>
+
+        </main>
+
       </div>
     );
   }
 
-
-  // =========================================================
-  // RENDER
-  // =========================================================
+  /* =========================================================
+     MAIN
+  ========================================================= */
 
   return (
-    <div className="employee-attendance-page">
+    <div className="atlas-attendance-root">
 
       {/* =====================================================
-          HEADER
-          ===================================================== */}
+          SIDEBAR
+      ===================================================== */}
 
-      <div className="employee-attendance-header">
-        <div>
-          <span className="employee-attendance-eyebrow">
-            MY WORK
-          </span>
-
-          <h1>Attendance</h1>
-
-          <p>
-            Track your daily attendance, working hours
-            and attendance history.
-          </p>
-        </div>
-      </div>
-
+      <AttendanceSidebar
+        navigation={employeeNavigation}
+        sidebarOpen={sidebarOpen}
+        closeSidebar={closeSidebar}
+        handleLogout={handleLogout}
+      />
 
       {/* =====================================================
-          ERROR
-          ===================================================== */}
+          MAIN
+      ===================================================== */}
 
-      {error && (
-        <div
-          style={{
-            marginBottom: "16px",
-            padding: "12px 14px",
-            borderRadius: "10px",
-            background: "#fef2f2",
-            border: "1px solid #fecaca",
-            color: "#b91c1c",
-            fontSize: "13px",
-          }}
-        >
-          {error}
-        </div>
-      )}
+      <main className="atlas-attendance-main">
 
+        {/* MOBILE HEADER */}
 
-      {/* =====================================================
-          TODAY CARD
-          ===================================================== */}
-
-      <section className="employee-attendance-today">
-
-        <div className="employee-attendance-today-info">
-
-          <span className="employee-attendance-date-label">
-            TODAY
-          </span>
-
-          <h2>
-            {formattedDate}
-          </h2>
-
-          <p>
-            {isCheckedIn
-              ? "You are currently checked in."
-              : todayAttendance?.check_out
-              ? "You have completed your attendance for today."
-              : "You have not checked in yet."}
-          </p>
-
-        </div>
-
-
-        <div className="employee-attendance-action">
-
-          <div className="employee-attendance-current-status">
-
-            <span
-              className={
-                isCheckedIn
-                  ? "employee-attendance-status-dot active"
-                  : "employee-attendance-status-dot"
-              }
-            />
-
-            {isCheckedIn
-              ? "Checked In"
-              : todayAttendance?.check_out
-              ? "Completed"
-              : "Not Checked In"}
-
-          </div>
-
-
-          {!todayAttendance?.check_out && (
-            <button
-              className={
-                isCheckedIn
-                  ? "employee-attendance-checkout"
-                  : "employee-attendance-checkin"
-              }
-              onClick={handleAttendance}
-              disabled={actionLoading}
-            >
-              {actionLoading
-                ? "Please wait..."
-                : isCheckedIn
-                ? "Check Out"
-                : "Check In"}
-            </button>
-          )}
-
-        </div>
-
-      </section>
-
-
-      {/* =====================================================
-          SUMMARY
-          ===================================================== */}
-
-      <div className="employee-attendance-summary">
-
-        <div className="employee-attendance-summary-card">
-          <span>
-            Today's Check In
-          </span>
-
-          <strong>
-            {formatTime(
-              todayAttendance?.check_in
-            )}
-          </strong>
-        </div>
-
-
-        <div className="employee-attendance-summary-card">
-          <span>
-            Today's Check Out
-          </span>
-
-          <strong>
-            {formatTime(
-              todayAttendance?.check_out
-            )}
-          </strong>
-        </div>
-
-
-        <div className="employee-attendance-summary-card">
-          <span>
-            Working Hours
-          </span>
-
-          <strong>
-            {calculateWorkingHours(
-              todayAttendance?.check_in,
-              todayAttendance?.check_out
-            )}
-          </strong>
-        </div>
-
-
-        <div className="employee-attendance-summary-card">
-          <span>
-            This Month
-          </span>
-
-          <strong>
-            {presentDays} Days
-          </strong>
-        </div>
-
-      </div>
-
-
-      {/* =====================================================
-          ATTENDANCE HISTORY
-          ===================================================== */}
-
-      <section className="employee-attendance-card">
-
-        <div className="employee-attendance-card-header">
-
-          <div>
-            <h2>
-              Attendance History
-            </h2>
-
-            <p>
-              Your recent attendance records.
-            </p>
-          </div>
-
+        <div className="atlas-attendance-mobile-header">
 
           <button
-            className="employee-attendance-filter"
             type="button"
+            className="atlas-attendance-menu-button"
+            onClick={() =>
+              setSidebarOpen(true)
+            }
+            aria-label="Open navigation"
           >
-            This Month
-            <span>⌄</span>
+            <span />
+            <span />
+            <span />
+          </button>
+
+          <div className="atlas-attendance-mobile-brand">
+            <div className="atlas-attendance-mobile-brand-mark">
+              A
+            </div>
+
+            <span>
+              ATLAS
+            </span>
+          </div>
+
+        </div>
+
+        <div className="atlas-attendance-page">
+
+          {/* =====================================================
+              HEADER
+          ===================================================== */}
+
+          <header className="atlas-attendance-header">
+
+            <div>
+
+              <div className="atlas-attendance-eyebrow">
+                EMPLOYEE PORTAL
+              </div>
+
+              <h1>
+                Attendance
+              </h1>
+
+              <p>
+                Track your working hours and attendance history.
+              </p>
+
+            </div>
+
+            <div className="atlas-attendance-date">
+
+              <span>
+                TODAY
+              </span>
+
+              <strong>
+                {today}
+              </strong>
+
+            </div>
+
+          </header>
+
+          {/* =====================================================
+              ERROR
+          ===================================================== */}
+
+          {error && (
+            <div className="atlas-attendance-error">
+
+              <div className="atlas-attendance-error-icon">
+                !
+              </div>
+
+              <span>
+                {error}
+              </span>
+
+            </div>
+          )}
+
+          {/* =====================================================
+              TODAY ATTENDANCE
+          ===================================================== */}
+
+          <section className="atlas-attendance-today-card">
+
+            <div className="atlas-attendance-today-info">
+
+              <div
+                className={`atlas-attendance-status-icon ${
+                  isCheckedIn
+                    ? "is-working"
+                    : isCompleted
+                    ? "is-completed"
+                    : ""
+                }`}
+              >
+                ◷
+              </div>
+
+              <div>
+
+                <div className="atlas-attendance-card-label">
+                  TODAY'S ATTENDANCE
+                </div>
+
+                <h2>
+                  {isCompleted
+                    ? "Attendance completed"
+                    : isCheckedIn
+                    ? "You're currently working"
+                    : "Ready to start your day?"}
+                </h2>
+
+                <p>
+                  {isCompleted
+                    ? `Worked ${workedToday} today.`
+                    : isCheckedIn
+                    ? `Checked in at ${formatTime(
+                        checkInTime
+                      )}.`
+                    : "Check in when you begin work."}
+                </p>
+
+              </div>
+
+            </div>
+
+            <div className="atlas-attendance-actions">
+
+              {!checkInTime && (
+                <button
+                  type="button"
+                  className="atlas-attendance-primary-button"
+                  onClick={handleCheckIn}
+                  disabled={actionLoading}
+                >
+                  {actionLoading
+                    ? "Checking in..."
+                    : "Check In"}
+                </button>
+              )}
+
+              {isCheckedIn && (
+                <button
+                  type="button"
+                  className="atlas-attendance-primary-button"
+                  onClick={handleCheckOut}
+                  disabled={actionLoading}
+                >
+                  {actionLoading
+                    ? "Checking out..."
+                    : "Check Out"}
+                </button>
+              )}
+
+              {isCompleted && (
+                <div className="atlas-attendance-completed">
+                  ✓ Day completed
+                </div>
+              )}
+
+            </div>
+
+          </section>
+
+          {/* =====================================================
+              TODAY SUMMARY
+          ===================================================== */}
+
+          <section className="atlas-attendance-summary-grid">
+
+            <SummaryCard
+              label="CHECK IN"
+              value={formatTime(checkInTime)}
+              detail="Today's start time"
+            />
+
+            <SummaryCard
+              label="CHECK OUT"
+              value={formatTime(checkOutTime)}
+              detail="Today's end time"
+            />
+
+            <SummaryCard
+              label="WORKED TODAY"
+              value={workedToday}
+              detail="Total working time"
+            />
+
+            <SummaryCard
+              label="STATUS"
+              value={String(
+                attendanceStatus
+              )}
+              detail="Current attendance"
+            />
+
+          </section>
+
+          {/* =====================================================
+              MONTHLY SUMMARY
+          ===================================================== */}
+
+          <section className="atlas-attendance-panel">
+
+            <div className="atlas-attendance-panel-heading">
+
+              <div>
+
+                <span>
+                  THIS MONTH
+                </span>
+
+                <h2>
+                  Attendance Summary
+                </h2>
+
+              </div>
+
+            </div>
+
+            <div className="atlas-attendance-month-grid">
+
+              <SummaryCard
+                label="PRESENT"
+                value={monthlySummary.present}
+                detail="Days present"
+              />
+
+              <SummaryCard
+                label="LATE"
+                value={monthlySummary.late}
+                detail="Late arrivals"
+              />
+
+              <SummaryCard
+                label="ABSENT"
+                value={monthlySummary.absent}
+                detail="Absent days"
+              />
+
+            </div>
+
+          </section>
+
+          {/* =====================================================
+              HISTORY
+          ===================================================== */}
+
+          <section className="atlas-attendance-panel">
+
+            <div className="atlas-attendance-panel-heading">
+
+              <div>
+
+                <span>
+                  HISTORY
+                </span>
+
+                <h2>
+                  Attendance Records
+                </h2>
+
+              </div>
+
+              <button
+                type="button"
+                className="atlas-attendance-refresh"
+                onClick={loadAttendance}
+                disabled={
+                  loading ||
+                  actionLoading
+                }
+              >
+                ↻ Refresh
+              </button>
+
+            </div>
+
+            {sortedHistory.length === 0 ? (
+
+              <div className="atlas-attendance-empty">
+
+                <div className="atlas-attendance-empty-icon">
+                  ◷
+                </div>
+
+                <strong>
+                  No attendance records
+                </strong>
+
+                <span>
+                  Your attendance history will appear here.
+                </span>
+
+              </div>
+
+            ) : (
+
+              <div className="atlas-attendance-table-wrapper">
+
+                <table className="atlas-attendance-table">
+
+                  <thead>
+
+                    <tr>
+                      <th>
+                        DATE
+                      </th>
+
+                      <th>
+                        CHECK IN
+                      </th>
+
+                      <th>
+                        CHECK OUT
+                      </th>
+
+                      <th>
+                        WORKED
+                      </th>
+
+                      <th>
+                        STATUS
+                      </th>
+                    </tr>
+
+                  </thead>
+
+                  <tbody>
+
+                    {sortedHistory.map(
+                      (item, index) => {
+
+                        const itemDate =
+                          item?.date ||
+                          item?.attendance_date ||
+                          item?.attendanceDate ||
+                          item?.created_at;
+
+                        const itemCheckIn =
+                          item?.check_in ||
+                          item?.checkIn ||
+                          item?.check_in_time ||
+                          item?.checkInTime ||
+                          null;
+
+                        const itemCheckOut =
+                          item?.check_out ||
+                          item?.checkOut ||
+                          item?.check_out_time ||
+                          item?.checkOutTime ||
+                          null;
+
+                        const itemStatus =
+                          item?.status ||
+                          (itemCheckOut
+                            ? "Completed"
+                            : itemCheckIn
+                            ? "Present"
+                            : "Absent");
+
+                        const normalizedStatus =
+                          String(
+                            itemStatus
+                          ).toLowerCase();
+
+                        return (
+                          <tr
+                            key={
+                              item?.id ??
+                              `${itemDate}-${index}`
+                            }
+                          >
+
+                            <td>
+                              <strong>
+                                {formatDate(
+                                  itemDate
+                                )}
+                              </strong>
+                            </td>
+
+                            <td>
+                              {formatTime(
+                                itemCheckIn
+                              )}
+                            </td>
+
+                            <td>
+                              {formatTime(
+                                itemCheckOut
+                              )}
+                            </td>
+
+                            <td>
+                              {calculateWorkedTime(
+                                itemCheckIn,
+                                itemCheckOut
+                              )}
+                            </td>
+
+                            <td>
+
+                              <span
+                                className={`atlas-attendance-status-badge ${
+                                  normalizedStatus ===
+                                  "absent"
+                                    ? "status-absent"
+                                    : normalizedStatus ===
+                                      "late"
+                                    ? "status-late"
+                                    : "status-present"
+                                }`}
+                              >
+                                {String(
+                                  itemStatus
+                                )}
+                              </span>
+
+                            </td>
+
+                          </tr>
+                        );
+                      }
+                    )}
+
+                  </tbody>
+
+                </table>
+
+              </div>
+
+            )}
+
+          </section>
+
+        </div>
+
+      </main>
+
+    </div>
+  );
+}
+
+/* =========================================================
+   ATTENDANCE SIDEBAR
+========================================================= */
+
+function AttendanceSidebar({
+  navigation,
+  sidebarOpen,
+  closeSidebar,
+  handleLogout,
+}) {
+  return (
+    <>
+      <aside
+        className={`atlas-attendance-sidebar ${
+          sidebarOpen
+            ? "atlas-attendance-sidebar-open"
+            : ""
+        }`}
+      >
+
+        {/* BRAND */}
+
+        <div className="atlas-attendance-sidebar-brand">
+
+          <div className="atlas-attendance-brand-mark">
+            A
+          </div>
+
+          <div className="atlas-attendance-brand-text">
+
+            <strong>
+              ATLAS
+            </strong>
+
+            <span>
+              EMPLOYEE PORTAL
+            </span>
+
+          </div>
+
+        </div>
+
+        {/* NAVIGATION */}
+
+        <div className="atlas-attendance-navigation">
+
+          <div className="atlas-attendance-navigation-title">
+            WORKSPACE
+          </div>
+
+          <nav>
+
+            {navigation.map((item) => (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                end={item.path === "/employee"}
+                onClick={closeSidebar}
+                className={({ isActive }) =>
+                  `atlas-attendance-nav-item ${
+                    isActive
+                      ? "atlas-attendance-nav-active"
+                      : ""
+                  }`
+                }
+              >
+
+                <span className="atlas-attendance-nav-icon">
+                  {item.icon}
+                </span>
+
+                <span className="atlas-attendance-nav-label">
+                  {item.label}
+                </span>
+
+                <span className="atlas-attendance-nav-chevron">
+                  ›
+                </span>
+
+              </NavLink>
+            ))}
+
+          </nav>
+
+        </div>
+
+        {/* FOOTER */}
+
+        <div className="atlas-attendance-sidebar-footer">
+
+          <div className="atlas-attendance-sidebar-user">
+
+            <div className="atlas-attendance-sidebar-avatar">
+              E
+            </div>
+
+            <div className="atlas-attendance-sidebar-user-info">
+
+              <strong>
+                Employee
+              </strong>
+
+              <span>
+                Employee Portal
+              </span>
+
+            </div>
+
+          </div>
+
+          <button
+            type="button"
+            className="atlas-attendance-logout"
+            onClick={handleLogout}
+          >
+
+            <span className="atlas-attendance-logout-icon">
+              ↪
+            </span>
+
+            <span>
+              Logout
+            </span>
+
           </button>
 
         </div>
 
+      </aside>
 
-        <div className="employee-attendance-table-wrapper">
+      {sidebarOpen && (
+        <button
+          type="button"
+          className="atlas-attendance-sidebar-overlay"
+          onClick={closeSidebar}
+          aria-label="Close navigation"
+        />
+      )}
+    </>
+  );
+}
 
-          <table className="employee-attendance-table">
+/* =========================================================
+   SUMMARY CARD
+========================================================= */
 
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Check In</th>
-                <th>Check Out</th>
-                <th>Working Hours</th>
-                <th>Status</th>
-              </tr>
-            </thead>
+function SummaryCard({
+  label,
+  value,
+  detail,
+}) {
+  return (
+    <div className="atlas-attendance-summary-card">
 
+      <span className="atlas-attendance-summary-label">
+        {label}
+      </span>
 
-            <tbody>
+      <strong>
+        {value}
+      </strong>
 
-              {attendanceHistory.length === 0 ? (
-
-                <tr>
-                  <td
-                    colSpan="5"
-                    style={{
-                      textAlign: "center",
-                      padding: "30px",
-                    }}
-                  >
-                    No attendance records found.
-                  </td>
-                </tr>
-
-              ) : (
-
-                attendanceHistory.map(
-                  (record) => {
-
-                    const recordDate =
-                      new Date(
-                        `${record.date}T00:00:00`
-                      );
-
-                    const formattedRecordDate =
-                      recordDate.toLocaleDateString(
-                        "en-IN",
-                        {
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric",
-                        }
-                      );
-
-                    const recordDay =
-                      recordDate.toLocaleDateString(
-                        "en-IN",
-                        {
-                          weekday: "long",
-                        }
-                      );
-
-
-                    return (
-                      <tr
-                        key={record.id}
-                      >
-
-                        <td>
-
-                          <div className="employee-attendance-date">
-
-                            <strong>
-                              {formattedRecordDate}
-                            </strong>
-
-                            <span>
-                              {recordDay}
-                            </span>
-
-                          </div>
-
-                        </td>
-
-
-                        <td>
-                          {formatTime(
-                            record.check_in
-                          )}
-                        </td>
-
-
-                        <td>
-                          {formatTime(
-                            record.check_out
-                          )}
-                        </td>
-
-
-                        <td>
-                          {calculateWorkingHours(
-                            record.check_in,
-                            record.check_out
-                          )}
-                        </td>
-
-
-                        <td>
-
-                          <span
-                            className={`employee-attendance-status ${record.status
-                              .toLowerCase()
-                              .replace(
-                                /\s+/g,
-                                "-"
-                              )}`}
-                          >
-
-                            <span className="employee-attendance-status-small-dot" />
-
-                            {record.status}
-
-                          </span>
-
-                        </td>
-
-                      </tr>
-                    );
-                  }
-                )
-
-              )}
-
-            </tbody>
-
-          </table>
-
-        </div>
-
-      </section>
+      <small>
+        {detail}
+      </small>
 
     </div>
   );
